@@ -1,0 +1,48 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brigitas Bodite Products</title>
+	<meta charset="utf-8" />
+
+    <link rel="stylesheet" href="@Url.Content(@"~/Content/css/croppic.css")" />
+    <link rel="stylesheet" href="@Url.Content(@"~/Content/css/admin_products.css")" />
+
+    <style>
+        
+    </style>
+
+</head>
+<body ng-app="BoditeAdmin">
+    
+    <products>
+        <div id="productFilterBar">
+            <product-searchbox></product-searchbox>
+            <input type="button" ng-click="products.create()" value="Create new" />
+        </div>
+
+        <product ng-repeat="p in products.filteredItems track by p._id" ng-init="product.init(p)">            
+            <form>
+                <div class="names">
+                    <input ng-model="product.working.name.LV" class="latvian-input" />
+                    <input ng-model="product.working.name.RU" class="russian-input" />
+                </div>
+
+                <image-set images="product.working.images"></image-set>
+
+                <input type="button" ng-click="product.save()" value="Save" />
+                <input type="button" ng-click="product.revert()" value="Revert" />
+            </form>
+        </product>
+
+
+    </products>
+
+    <script src="@Url.Content(@"~/Content/js/jquery.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/angular.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/fuse.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/math.uuid.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/bodite_croppic.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/bodite_admin.js")"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+
+* {
+    font-family: serif;
+}
+
+
+body {
+    margin: 0;
+    background-color: rgb(240, 240, 240);
+}
+
+
+#cropContainerHeader {
+    width: 400px;
+    height: 400px;
+    position: absolute; /* or fixed or absolute */
+}
+
+
+product-image {
+    display: inline-block;
+    width: 140px;
+    height: 140px;
+}
+
+product-image .productImage {
+    width: 120px;
+    height: 120px;
+}
+
+
+div#productFilterBar {
+    display: block;
+    width: 100%;
+    background-color: darkblue;
+    padding-left: 3px;
+    box-shadow: 0 2px 2px;
+    margin-bottom: 2px;
+}
+
+div#productFilterBar input {
+    margin: 4px;
+}
+
+product-searchbox input {
+    width: 250px;
+}
+
+
+
+
+
+
+
+
+product {
+    display: inline-block;
+    margin: 3px 7px 7px 7px;
+    padding: 4px;
+    background-color: royalblue;
+    box-shadow: 3px 3px 6px black;
+}
+
+product.dirty {
+    background-color: red;
+}
+
+
+
+product .names {
+    display: inline-block;
+    vertical-align: top;
+}
+
+product .names input {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 0;
+    margin: 4px;
+    padding: 4px;
+    font-weight: bold;
+}
+
+
+
+
+image-set {
+    display: inline-block;
+    vertical-align: top;
+
+    background-color: rgba(255,255,255,0.4);
+    padding:5px;
+}
+
+image-set-record {    
+    position: relative;
+    margin: 5px;
+}
+
+image-set-record img {
+    width:120px;
+}
+
+image-set-record input[type="button"] {
+    opacity: 0.1;
+    border: 0;
+    position: absolute;
+    right:0px;
+}
+
+image-set-record input[type="button"]:hover {    
+    opacity: 1;
+}
+
+

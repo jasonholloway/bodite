@@ -1,0 +1,10 @@
+﻿@using Bodite.Services;
+@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Bodite.Front.ViewModel.ProductGrid>
+<div>
+    @foreach(var p in Model.Products) {
+        <div>
+            <h3>@p.Name.LV</h3>
+            <img src="@(p.Image != null ? p.Image.MediumURL : Url.Content("~/content/default_product.png"))" />
+        </div>
+    }
+</div>

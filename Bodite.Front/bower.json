@@ -1,0 +1,27 @@
+{
+  "name": "bodite",
+  "version": "0.1",
+  "authors": [
+    "Jason Holloway <miceeatnicerice@hotmail.com>"
+  ],
+  "description": "Brigitas Bodite",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#~1.4.7",
+    "jquery": "~2.1.4",
+    "jquery-validation": "*",
+    "bootstrap": "*",
+    "fuse": "*",
+    "croppic": "*"
+  },
+  "resolutions": {
+    "angular": "~1.4.7"
+  }
+}
