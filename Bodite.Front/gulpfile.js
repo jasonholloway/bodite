@@ -17,7 +17,7 @@ var config = {
         './bower_components/angular/angular.js',
         './bower_components/angular-advanced-searchbox/dist/angular-advanced-searchbox.js',
         './bower_components/angular-bootstrap/ui-bootstrap.js',
-       // './bower_components/fuse/src/fuse.js',
+        './bower_components/angular-route/angular-route.js',
         './bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
         './bower_components/pica/dist/pica.js',
         './bower_components/aws-sdk-js/dist/aws-sdk.js',

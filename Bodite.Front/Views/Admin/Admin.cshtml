@@ -15,6 +15,14 @@
 </head>
 <body ng-app="BoditeAdmin">
     
+    <section ng-view>
+
+    </section>
+
+
+
+
+
     <products>
         <div id="productFilterBar">
             <product-searchbox></product-searchbox>
@@ -46,6 +54,7 @@
 
     <script src="@Url.Content(@"~/Content/js/jquery.js")"></script>
     <script src="@Url.Content(@"~/Content/js/angular.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/angular-route.js")"></script>
     <script src="@Url.Content(@"~/Content/js/smap-shim.js")"></script>
     <script src="@Url.Content(@"~/Content/js/bodite_fuse.js")"></script>
     <script src="@Url.Content(@"~/Content/js/math.uuid.js")"></script>
@@ -54,5 +63,6 @@
     <script src="@Url.Content(@"~/Content/js/aws-sdk.js")"></script>
     <script src="@Url.Content(@"~/Content/js/bodite_croppic.js")"></script>
     <script src="@Url.Content(@"~/Content/js/bodite_admin.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/bodite_routes.js")"></script>
 </body>
 </html>

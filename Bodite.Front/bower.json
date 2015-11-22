@@ -14,7 +14,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "angularjs#~1.4.7",
+    "angular": "angularjs#~1.4.8",
+    "angular-route": "*",
     "jquery": "~2.1.4",
     "jquery-validation": "*",
     "bootstrap": "*",

@@ -1,4 +1,4 @@
-/// <reference path="angular.js" />
+﻿/// <reference path="angular.js" />
 /// <reference path="jquery.js" />
 /// <reference path="fuse.js" />
 /// <reference path="croppic.js" />
@@ -7,7 +7,7 @@
 /// <reference path="aws-sdk.js" />
 /// <reference path="smap-shim.js" />
 
-var adminApp = angular.module('BoditeAdmin', []);
+var adminApp = angular.module('BoditeAdmin', ['ngRoute']);
 
 
 
@@ -253,7 +253,7 @@ adminApp.directive('imageSet', ['croppic', function(croppic)
                     $scope.$apply();
                 }.bind(this),
                 function () {
-                    alert('FAILURE!');
+                    alert('Failed to save image!');
                 })
 
             }.bind(this);

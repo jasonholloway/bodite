@@ -13,7 +13,7 @@ namespace Bodite.Front.Modules
     {
         public AdminModule() {
             
-            Get[@"/admin"] = p => View["Data/Products.cshtml"];
+            Get[@"/admin"] = p => View["Admin/Admin.cshtml"];
             
         }
     }

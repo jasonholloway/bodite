@@ -124,10 +124,14 @@
     <Content Include="Content\js\bodite_admin.js" />
     <Content Include="Content\js\bodite_croppic.js" />
     <Content Include="Content\js\bodite_fuse.js" />
+    <Content Include="Content\js\bodite_routes.js" />
     <Content Include="Content\js\math.uuid.js" />
     <Content Include="Content\misc\angular-advanced-searchbox.html" />
+    <Content Include="Content\templates\admin\categories.html" />
+    <Content Include="Content\templates\admin\dashboard.html" />
+    <Content Include="Content\templates\admin\products.html" />
     <Content Include="gulpfile.js" />
-    <None Include="Views\Data\Products.cshtml" />
+    <None Include="Views\Admin\Admin.cshtml" />
     <Content Include="Views\HomePage.cshtml" />
     <Content Include="Views\Menu.cshtml" />
     <Content Include="bower.json" />
