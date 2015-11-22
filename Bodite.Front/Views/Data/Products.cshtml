@@ -28,6 +28,12 @@
                     <input ng-model="product.working.name.RU" class="russian-input" />
                 </div>
 
+                <div class="description">
+                    <textarea class="latvian-input"></textarea>
+                    <textarea class="russian-input"></textarea>
+                </div>
+
+
                 <image-set images="product.working.images"></image-set>
 
                 <input type="button" ng-click="product.save()" value="Save" />
@@ -40,8 +46,12 @@
 
     <script src="@Url.Content(@"~/Content/js/jquery.js")"></script>
     <script src="@Url.Content(@"~/Content/js/angular.js")"></script>
-    <script src="@Url.Content(@"~/Content/js/fuse.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/smap-shim.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/bodite_fuse.js")"></script>
     <script src="@Url.Content(@"~/Content/js/math.uuid.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/canvas-to-blob.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/pica.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/aws-sdk.js")"></script>
     <script src="@Url.Content(@"~/Content/js/bodite_croppic.js")"></script>
     <script src="@Url.Content(@"~/Content/js/bodite_admin.js")"></script>
 </body>

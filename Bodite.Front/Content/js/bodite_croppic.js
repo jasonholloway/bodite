@@ -92,48 +92,10 @@
 		loader:{},
 		
 		init: function () {
-			var that = this;
-			
+			var that = this;			
 			that.objW = that.obj.width();
-			that.objH = that.obj.height();
-			
-			// reset rotation
-		//	that.actualRotation = 0;
-			
-		//	if( $.isEmptyObject(that.defaultImg)){ that.defaultImg = that.obj.find('img'); }
-			
-		//	that.createImgUploadControls();
-			
-		//	if( $.isEmptyObject(that.options.loadPicture)){				
-		//		that.bindImgUploadControl();
-		//	}else{				
-		//		that.loadExistingImage();
-		//	}			
-			
+			that.objH = that.obj.height();			
 		},
-		/*createImgUploadControls: function(){
-			var that = this;
-			
-			var cropControlUpload = '';
-			if(that.options.customUploadButtonId ===''){ cropControlUpload = '<i class="cropControlUpload"></i>'; }
-			var cropControlRemoveCroppedImage = '<i class="cropControlRemoveCroppedImage"></i>';
-			
-			if( $.isEmptyObject(that.croppedImg)){ cropControlRemoveCroppedImage=''; }
-			if( !$.isEmptyObject(that.options.loadPicture)){ cropControlUpload='';}
-
-			var html =    '<div class="cropControls cropControlsUpload"> ' + cropControlUpload + cropControlRemoveCroppedImage + ' </div>';
-			that.outputDiv.append(html);
-			
-			that.cropControlsUpload = that.outputDiv.find('.cropControlsUpload');
-			
-			if(that.options.customUploadButtonId ===''){ that.imgUploadControl = that.outputDiv.find('.cropControlUpload'); }
-			else{	that.imgUploadControl = $('#'+that.options.customUploadButtonId); that.imgUploadControl.show();	}
-
-			if( !$.isEmptyObject(that.croppedImg)){
-				that.cropControlRemoveCroppedImage = that.outputDiv.find('.cropControlRemoveCroppedImage');
-			}
-			
-		},*/
 
 		getLocalFile: function ()
 		{
@@ -163,95 +125,99 @@
 		},
 
 
+
+		open : function(blob) {		
+		    var that = this;
+            
+		    return new Promise(function (success, fail) {
+
+		        if (that.options.onBeforeImgUpload) that.options.onBeforeImgUpload.call(that);
+
+		        that.showLoader();
+
+		        if (typeof FileReader == "undefined") {
+		            if (that.options.onError) that.options.onError.call(that, "processInline is not supported by your Browser");
+		            that.reset();
+		            return;
+		        }
+
+		        var reader = new FileReader();
+
+		        reader.onload = function (e) {
+		            var image = new Image();
+		            image.src = e.target.result;
+		            image.onload = function () {
+		                that.imgInitW = that.imgW = image.width;
+		                that.imgInitH = that.imgH = image.height;
+
+		                if (that.options.modal) { that.createModal(); }
+		                if (!$.isEmptyObject(that.croppedImg)) { that.croppedImg.remove(); }
+
+		                that.imgUrl = image.src;
+
+		                that.obj.append('<img src="' + image.src + '">');
+
+		                that.initCropper(
+                            function (spec) {                                
+                                success({
+                                    image: image,
+                                    resizeWidth: spec.imgW,
+                                    resizeHeight: spec.imgH,
+                                    cropX: spec.imgX1,
+                                    cropY: spec.imgY1,
+                                    cropWidth: spec.cropW,
+                                    cropHeight: spec.cropH
+                                });
+                            },
+                            function () {
+                                //...
+                            });
+                        
+		                that.hideLoader();
+
+                        
+		                //var cropData = {
+		                //    imgUrl: that.imgUrl,
+		                //    imgInitW: that.imgInitW,
+		                //    imgInitH: that.imgInitH,
+		                //    imgW: that.imgW,
+		                //    imgH: that.imgH,
+		                //    imgY1: Math.abs(parseInt(that.img.css('top'))),
+		                //    imgX1: Math.abs(parseInt(that.img.css('left'))),
+		                //    cropH: that.objH,
+		                //    cropW: that.objW,
+		                //    rotation: that.actualRotation
+		                //};
+
+
+
+
+		        //        if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
+
+		            }
+		        };
+                
+                reader.onerror = function(e) { fail(e) }
+                reader.onabort = function(e) { fail(e) }
+
+		        reader.readAsDataURL(blob);
+		    })
+		},
+
+
+
+
 		load: function() {
             
 		    var that = this;
 
 		    this.getLocalFile()
             .then(function(blob) {
-
-                if (that.options.onBeforeImgUpload) that.options.onBeforeImgUpload.call(that);
-
-                that.showLoader();
-                
-                if (typeof FileReader == "undefined") {
-                    if (that.options.onError) that.options.onError.call(that, "processInline is not supported by your Browser");
-                    that.reset();
-                    return;
-                }
-                
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    var image = new Image();
-                    image.src = e.target.result;
-                    image.onload = function () {
-                        that.imgInitW = that.imgW = image.width;
-                        that.imgInitH = that.imgH = image.height;
-
-                        if (that.options.modal) { that.createModal(); }
-                        if (!$.isEmptyObject(that.croppedImg)) { that.croppedImg.remove(); }
-
-                        that.imgUrl = image.src;
-
-                        that.obj.append('<img src="' + image.src + '">');
-
-                        that.initCropper();
-                        that.hideLoader();
-
-                        if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
-
-                    }
-                };
-
-                reader.readAsDataURL(blob);
+                crop(blob)
             });
             
         },
-
-
-
-
-
-
-		/*
-		loadExistingImage: function(){
-			var that = this;
-			
-			if( $.isEmptyObject(that.croppedImg)){
-				if (that.options.onBeforeImgUpload) that.options.onBeforeImgUpload.call(that);
-			
-				that.showLoader();
-				if(that.options.modal){	that.createModal(); }
-				if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
-				
-				that.imgUrl=that.options.loadPicture ;
-				
-				var img =$('<img src="'+ that.options.loadPicture +'">');
-				that.obj.append(img);
-				img.load(function() {
-					that.imgInitW = that.imgW = this.width;
-					that.imgInitH = that.imgH = this.height;
-					that.initCropper();
-					that.hideLoader();
-					if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
-				});	
-						
-			}else{					
-				that.cropControlRemoveCroppedImage.on('click',function(){ 
-					that.croppedImg.remove();
-					$(this).hide();
-					
-					if( !$.isEmptyObject(that.defaultImg)){ 
-						that.obj.append(that.defaultImg);
-					}					
-					if(that.options.outputUrlId !== ''){	$('#'+that.options.outputUrlId).val('');	}
-					that.croppedImg = '';
-					that.reset();
-				});	
-			}
-			
-		},*/
+        
 
 
 		afterUpload: function(data){
@@ -313,7 +279,7 @@
 			that.modal = {};
 		},
 
-		initCropper: function(){
+		initCropper: function(onCropped, onReset) {
 			var that = this;
 			
 			/*SET UP SOME VARS*/
@@ -321,7 +287,7 @@
 			that.img.wrap('<div class="cropImgWrapper" style="overflow:hidden; z-index:1; position:absolute; width:'+that.objW+'px; height:'+that.objH+'px;"></div>');
 	
 			/*INIT DRAGGING*/
-			that.createCropControls();
+			that.createCropControls(onCropped, onReset);
 			
 			if(that.options.imgEyecandy){ that.createEyecandy(); }
 			that.initDrag();
@@ -358,7 +324,7 @@
 			
 		},
 		
-		createCropControls: function(){
+		createCropControls: function(onCropped, onReset){
 			var that = this;
 			
 			// CREATE CONTROLS
@@ -410,10 +376,10 @@
 	        that.cropControlZoomOut.on('click', function() { that.rotate(that.options.rotateFactor); });
 	        
 	        that.cropControlCrop = that.cropControlsCrop.find('.cropControlCrop');
-			that.cropControlCrop.on('click',function(){ that.crop(); });
+			that.cropControlCrop.on('click',function(){ that.crop(onCropped); });
 
 			that.cropControlReset = that.cropControlsCrop.find('.cropControlReset');
-			that.cropControlReset.on('click',function(){ that.reset(); });				
+			that.cropControlReset.on('click',function(){ that.reset(onReset); });				
 			
 		},
 
@@ -490,24 +456,24 @@
 			
 		},
 
-	    rotate: function(x) {
-	        var that = this;
-	        that.actualRotation += x;
-	        that.img.css({
-	            '-webkit-transform': 'rotate(' + that.actualRotation + 'deg)',
-	            '-moz-transform': 'rotate(' + that.actualRotation + 'deg)',
-	            'transform': 'rotate(' + that.actualRotation + 'deg)',
-	        });
-	        if(that.options.imgEyecandy) {
-	            that.imgEyecandy.css({
-	                '-webkit-transform': 'rotate(' + that.actualRotation + 'deg)',
-	                '-moz-transform': 'rotate(' + that.actualRotation + 'deg)',
-	                'transform': 'rotate(' + that.actualRotation + 'deg)',
-	            });
-	        }
-	        if (typeof that.options.onImgRotate == 'function')
-	            that.options.onImgRotate.call(that);
-	    },
+	    //rotate: function(x) {
+	    //    var that = this;
+	    //    that.actualRotation += x;
+	    //    that.img.css({
+	    //        '-webkit-transform': 'rotate(' + that.actualRotation + 'deg)',
+	    //        '-moz-transform': 'rotate(' + that.actualRotation + 'deg)',
+	    //        'transform': 'rotate(' + that.actualRotation + 'deg)',
+	    //    });
+	    //    if(that.options.imgEyecandy) {
+	    //        that.imgEyecandy.css({
+	    //            '-webkit-transform': 'rotate(' + that.actualRotation + 'deg)',
+	    //            '-moz-transform': 'rotate(' + that.actualRotation + 'deg)',
+	    //            'transform': 'rotate(' + that.actualRotation + 'deg)',
+	    //        });
+	    //    }
+	    //    if (typeof that.options.onImgRotate == 'function')
+	    //        that.options.onImgRotate.call(that);
+	    //},
 
 		zoom :function(x){
 			var that = this;
@@ -576,14 +542,15 @@
 		},
 
 
-		crop:function(){
+		crop:function(onCropped){
 			var that = this;
 			
 			if (that.options.onBeforeImgCrop) that.options.onBeforeImgCrop.call(that);
 			
 			that.cropControlsCrop.hide();
 			that.showLoader();
-	
+	          
+
 			var cropData = {
 					imgUrl:that.imgUrl,
 					imgInitW:that.imgInitW,
@@ -597,65 +564,77 @@
 					rotation:that.actualRotation
 				};
 			
-			var formData;
+			onCropped(cropData);
+
+			if (that.options.imgEyecandy)
+			    that.imgEyecandy.hide();
+
+			that.destroy();
+
+			that.hideLoader();
+
+			return;
+
+
+			//var formData;
 			
-			if(typeof FormData == 'undefined'){
-				var XHR = new XMLHttpRequest();
-				var urlEncodedData = "";
-				var urlEncodedDataPairs = [];
+			//if(typeof FormData == 'undefined'){
+			//	var XHR = new XMLHttpRequest();
+			//	var urlEncodedData = "";
+			//	var urlEncodedDataPairs = [];
 				
-				for(var key in cropData) {
-				  urlEncodedDataPairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(cropData[key]));
-				}
-				for(var key in that.options.cropData) {
-				  urlEncodedDataPairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(that.options.cropData[key]));
-				}
-				urlEncodedData  = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			//	for(var key in cropData) {
+			//	  urlEncodedDataPairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(cropData[key]));
+			//	}
+			//	for(var key in that.options.cropData) {
+			//	  urlEncodedDataPairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(that.options.cropData[key]));
+			//	}
+			//	urlEncodedData  = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
 								
-				XHR.addEventListener('error', function(event) {
-					if (that.options.onError) that.options.onError.call(that,"XHR Request failed");
-				});
-				XHR.onreadystatechange=function(){
-				if (XHR.readyState==4 && XHR.status==200)
-					{
-						that.afterCrop(XHR.responseText);
-					}
-				}
-				XHR.open('POST', that.options.cropUrl);
+			//	XHR.addEventListener('error', function(event) {
+			//		if (that.options.onError) that.options.onError.call(that,"XHR Request failed");
+			//	});
+			//	XHR.onreadystatechange=function(){
+			//	if (XHR.readyState==4 && XHR.status==200)
+			//		{
+			//			that.afterCrop(XHR.responseText);
+			//		}
+			//	}
+			//	XHR.open('POST', that.options.cropUrl);
 
-				XHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-				XHR.setRequestHeader('Content-Length', urlEncodedData.length);
+			//	XHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			//	XHR.setRequestHeader('Content-Length', urlEncodedData.length);
 
-				XHR.send(urlEncodedData);
+			//	XHR.send(urlEncodedData);
 				
-			}else{
-				formData = new FormData();
-				for (var key in cropData) {				
-					if( cropData.hasOwnProperty(key) ) {
-							formData.append( key , cropData[key] );
-					}
-				}
+			//}else{
+			//	formData = new FormData();
+			//	for (var key in cropData) {				
+			//		if( cropData.hasOwnProperty(key) ) {
+			//				formData.append( key , cropData[key] );
+			//		}
+			//	}
 				
-				for (var key in that.options.cropData) {
-					if( that.options.cropData.hasOwnProperty(key) ) {
-							formData.append( key , that.options.cropData[key] );
-					}
-				}
+			//	for (var key in that.options.cropData) {
+			//		if( that.options.cropData.hasOwnProperty(key) ) {
+			//				formData.append( key , that.options.cropData[key] );
+			//		}
+			//	}
 				
-				$.ajax({
-					url: that.options.cropUrl,
-					data: formData,
-					context: document.body,
-					cache: false,
-					contentType: false,
-					processData: false,
-					type: 'POST'				
-				}).always(function (data) {
+			//	$.ajax({
+			//		url: that.options.cropUrl,
+			//		data: formData,
+			//		context: document.body,
+			//		cache: false,
+			//		contentType: false,
+			//		processData: false,
+			//		type: 'POST'				
+			//	}).always(function (data) {
 
-					that.afterCrop(data);
+			//		that.afterCrop(data);
 
-				});
-			}
+			//	});
+			//}
         },
 
 

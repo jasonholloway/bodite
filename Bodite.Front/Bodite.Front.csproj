@@ -123,6 +123,7 @@
     <Content Include="Content\img\empty_image.png" />
     <Content Include="Content\js\bodite_admin.js" />
     <Content Include="Content\js\bodite_croppic.js" />
+    <Content Include="Content\js\bodite_fuse.js" />
     <Content Include="Content\js\math.uuid.js" />
     <Content Include="Content\misc\angular-advanced-searchbox.html" />
     <Content Include="gulpfile.js" />

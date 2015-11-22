@@ -282,8 +282,7 @@
    * @param {Object} options
    * @public
    */
-  function Fuse(list, options) {
-    this.list = list;
+  function Fuse(options) {
     this.options = options = options || {};
 
     var i, len, key, keys;
@@ -342,11 +341,9 @@
    * @return {Array} A list of all serch matches.
    * @public
    */
-  Fuse.prototype.search = function(pattern) {
+  Fuse.prototype.search = function(map, pattern) {
     var searcher = new(this.options.searchFn)(pattern, this.options),
       j, item,
-      list = this.list,
-      dataLen = list.length,
       options = this.options,
       searchKeys = this.options.keys,
       searchKeysLen = searchKeys.length,
@@ -399,26 +396,18 @@
       }
     };
 
-    // Check the first item in the list, if it's a string, then we assume
-    // that every item in the list is also a string, and thus it's a flattened array.
-    if (typeof list[0] === 'string') {
-      // Iterate over every item
-      for (var i = 0; i < dataLen; i++) {
-        analyzeText(list[i], i, i);
-      }
-    } else {
-      // Otherwise, the first item is an Object (hopefully), and thus the searching
-      // is done on the values of the keys of each item.
+    // Iterate over every item
+    var i = 0;
 
-      // Iterate over every item
-      for (var i = 0; i < dataLen; i++) {
-        item = list[i];
-        // Iterate over every key
+    map.forEach(function (v, k, m) {
+        var item = v;
+      
         for (j = 0; j < searchKeysLen; j++) {
-          analyzeText(options.getFn(item, searchKeys[j]), item, i);
+            analyzeText(options.getFn(item, searchKeys[j]), item, i);
         }
-      }
-    }
+
+        i++;
+    })
 
     if (options.shouldSort) {
       rawResults.sort(options.sortFn);

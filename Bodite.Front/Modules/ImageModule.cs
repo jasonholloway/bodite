@@ -1,6 +1,7 @@
 ﻿using Bodite.Images;
 using Bodite.Services;
 using Nancy;
+using Nancy.Extensions;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -26,33 +27,51 @@ namespace Bodite.Front.Modules
             };
 
 
-            Post[@"/images/cropandstore"] = p => 
-            {                
-                var imgString = (string)Request.Form.imgUrl;
 
-
-                var matched = Regex.Match(imgString, @"data:.*?;base64,(.*)");
-
-                if(!matched.Success) { 
-                    throw new InvalidOperationException("Image Base64 string not in acceptable format!");
-                }
-
-                imgString = matched.Groups[1].Value; 
-
-                var imgData = Convert.FromBase64String(imgString);
+            Post[@"/images"] = p => 
+            {             
+                var img = Image.FromStream(Request.Body, true);
                 
-                using(var imgDataStream = new MemoryStream(imgData)) 
+                var storeToken = imageStore.Add(img);
+                
+                return Response.AsJson(new {
+                    status = "success",
+                    url = storeToken.Uri?.ToString() ?? $"images/{storeToken.Key}"
+                });                
+            };
+
+
+
+            Post[@"/images/cropandstore"] = p => 
+            {
+                //var imgString = (string)Request.Form.imgUrl;
+
+
+                //var matched = Regex.Match(imgString, @"data:.*?;base64,(.*)");
+
+                //if(!matched.Success) { 
+                //    throw new InvalidOperationException("Image Base64 string not in acceptable format!");
+                //}
+
+                //imgString = matched.Groups[1].Value; 
+
+                //var imgData = Convert.FromBase64String(imgString);
+
+                var h = Request.Headers["Content-Type"];
+
+
+                using(var imgDataStream = Request.Body) // new MemoryStream(imgData)) 
                 {
                     var img = Image.FromStream(imgDataStream, true);
                     
                     var spec = new ImageCropper.Spec() {
                                     Image = img,
-                                    ResizeRect = new RectangleF(0, 0, (float)Request.Form.imgW, (float)Request.Form.imgH),
+                                    ResizeRect = new RectangleF(0, 0, (float)Request.Query["resizeWidth"], (float)Request.Query["resizeHeight"]),
                                     CropRect = new Rectangle(
-                                                    (int)(float)Request.Form.imgX1,
-                                                    (int)(float)Request.Form.imgY1, 
-                                                    (int)(float)Request.Form.cropW,
-                                                    (int)(float)Request.Form.cropH)
+                                                    (int)(float)Request.Query["cropX"],
+                                                    (int)(float)Request.Query["cropY"], 
+                                                    (int)(float)Request.Query["cropWidth"],
+                                                    (int)(float)Request.Query["cropHeight"])
                                 };
 
                     var cropped = ImageCropper.Crop(spec);

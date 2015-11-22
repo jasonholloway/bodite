@@ -2,23 +2,75 @@
 /// <reference path="jquery.js" />
 /// <reference path="fuse.js" />
 /// <reference path="croppic.js" />
+/// <reference path="pica.js" />
 /// <reference path="math.uuid.js" />
+/// <reference path="aws-sdk.js" />
+/// <reference path="smap-shim.js" />
 
 var adminApp = angular.module('BoditeAdmin', []);
 
 
 
+adminApp.service('aws', [function () {
+    AWS.config.update({
+        accessKeyId: 'AKIAJBNPCUXVCW3HFRHA',
+        secretAccessKey: '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'
+    });
+
+    AWS.config.region = 'eu-central-1';
+
+    return AWS;
+}])
+
+
+
+
+adminApp.service('imageRepo', ['aws', function (aws) {
+    
+    var createKey = function() {
+        return 'prodimg/' + Math.uuidFast();
+    }
+
+    return {
+        getUrl: function(key) {
+            return 'https://s3.eu-central-1.amazonaws.com/bodite/' + key;
+        },
+                
+        save: function(blob) {
+            return new Promise(function(success, failed) {                                
+                var key = createKey();
+
+                var bucket = new AWS.S3({params: {Bucket: 'bodite'}});
+
+                var params = {
+                    Key: key,
+                    Body: blob,
+                    ACL: 'public-read',
+                    ContentType: blob.type,
+                    //ContentMD5: ''
+                };
+
+                bucket.upload(params, function (err, data) {
+                    if(err) failed(err);
+                    else success(key);
+                });          
+            })
+        }
+    }
+}])
+
+
 adminApp.service('productRepo', ['$http', function($http) {
-    var items = [];
+    var items = new Map();
     var fuse;
     
     $http.get('http://localhost:5984/bbapp/_design/bbapp/_view/all_products')
-    .then(function(resp) {
-        items = $.map(resp.data.rows, function(r) {
-            return r.value;            
+    .then(function (resp) {        
+        for(var row of resp.data.rows) {
+            items.set(row.id, row.value);
         }
-        );
-        fuse = new Fuse(items,{
+        
+        fuse = new Fuse({
             keys: ['name.LV', 'name.RU'],
             threshold: 0.45
         });
@@ -30,7 +82,7 @@ adminApp.service('productRepo', ['$http', function($http) {
         items: items,
                 
         filter: function(term) {
-            return fuse ? fuse.search(term) : [];
+            return fuse ? fuse.search(items, term) : [];
         },
         
         create: function() {
@@ -43,7 +95,7 @@ adminApp.service('productRepo', ['$http', function($http) {
                 images: []
             }
             
-            items.push(prod);
+            items.set(prod._id, prod);
             
             return prod;
         },
@@ -55,8 +107,7 @@ adminApp.service('productRepo', ['$http', function($http) {
                 .then(function (r) {
                     prod._rev = r.data.rev;
 
-                    //update product array here!!!
-                    //...                    
+                    items.set(prod._id, prod);
 
                     fulfilled(prod);
                 }, function() {
@@ -99,7 +150,7 @@ adminApp.directive('productSearchbox', function() {
 
 
 
-adminApp.service('croppic', function() {
+adminApp.service('croppic', ['$http', 'imageRepo', function($http, imageRepo) {
     return {
         loadAndCrop: function(sourcePath) {
                        
@@ -119,11 +170,58 @@ adminApp.service('croppic', function() {
                 croppic.objW = 400;
                 croppic.objH = 400;
                 
-                croppic.load();                
+                croppic.getLocalFile()
+                .then(function(blob) {
+                    croppic.open(blob)
+                    .then(function(spec) {
+                        croppic.destroy();
+
+                        var canvSource = document.createElement('canvas');
+                        canvSource.width = spec.image.width;
+                        canvSource.height = spec.image.height;
+                        
+                        var canvResized = document.createElement('canvas');
+                        canvResized.width = spec.resizeWidth;
+                        canvResized.height = spec.resizeHeight;
+                        
+                        var ctxSource = canvSource.getContext('2d');
+                        ctxSource.drawImage(spec.image, 0, 0);
+
+                        pica.resizeCanvas(
+                            canvSource,
+                            canvResized,
+                            {
+                                unsharpAmount: 0, 
+                                unsharpRadius: 0.6, 
+                                unsharpThreshop: 2 
+                            },
+                            function (err) {
+                                if (err) { rejected() }
+                                
+                                var canvCropped = canvSource;
+                                canvCropped.width = spec.cropWidth;
+                                canvCropped.height = spec.cropHeight;
+
+                                var ctxCropped = canvCropped.getContext('2d');
+                                ctxCropped.drawImage(canvResized, spec.cropX, spec.cropY, spec.cropWidth, spec.cropHeight, 0, 0, spec.cropWidth, spec.cropHeight);
+                                                                
+                                canvCropped.toBlob(function (blob) {
+                                    imageRepo.save(blob)
+                                    .then(function(key) {
+                                        fulfilled(key);
+                                    }, function () {
+                                        rejected();
+                                    })
+                                }, "image/jpeg", 0.8);
+                            });
+
+
+                    })
+                });
             });          
         }
     }
-})
+}])
 
 
 
@@ -146,14 +244,17 @@ adminApp.directive('imageSet', ['croppic', function(croppic)
                 //...
 
                 croppic.loadAndCrop('')
-                .then(function (url) {
+                .then(function (key) {
                     if(!this.images) {
                         this.images = [];
                     }
 
-                    this.images.push({ url: url });
+                    this.images.push({ key: key });
                     $scope.$apply();
-                }.bind(this))
+                }.bind(this),
+                function () {
+                    alert('FAILURE!');
+                })
 
             }.bind(this);
         },
@@ -167,7 +268,7 @@ adminApp.directive('imageSet', ['croppic', function(croppic)
 }])
 
 
-adminApp.directive('imageSetRecord', function() 
+adminApp.directive('imageSetRecord', ['imageRepo', function(imageRepo) 
 {
     return {
         restrict: 'E',
@@ -183,91 +284,20 @@ adminApp.directive('imageSetRecord', function()
                                                     return i !== this.image
                                                  }.bind(this));
             }
+
+            this.url = imageRepo.getUrl(this.image.key)
         },
         controllerAs: '$c',
 
         template: [
             '<input type="button" value="Remove" ng-click="$c.remove()" />' +
-            '<img src="{{$c.image.url}}" />' 
+            '<img src="{{$c.url}}" crossOrigin="anonymous" />' 
         ].join()
     }    
 
-})
+}])
 
 
-
-adminApp.directive('productImage', function() {
-    
-    var loadCroppic = function(div, bt) {
-        
-        var onCroppedCallbacks = [];
-        
-        var options = {
-            customUploadButtonId: bt.attr('id'),
-            processInline: true,
-            modal: true,
-            cropUrl: 'images/cropandstore',
-            rotateControls: false,
-            
-            onAfterImgCrop: function(resp) {
-                onCroppedCallbacks.forEach(function(fn) {
-                    fn(resp.url)
-                }
-                )
-            }
-        }
-        
-        var croppic = new Croppic(div.attr('id'),options);
-        
-        croppic.objW = 400;
-        croppic.objH = 400;
-        
-        return {
-            onCropped: function(fn) {
-                onCroppedCallbacks.push(fn)
-            }
-        }
-    }
-    
-    
-    return {
-        restrict: 'E',
-        scope: true,
-        link: function(scope, elem) {
-            var uuid = Math.uuidFast();
-            
-            var imgDiv = $('<div id=\'productImage' + uuid + '\' />')
-            .addClass('productImage')
-            .appendTo(elem);
-            
-            var loadButton = $('<input type=\'button\' value=\'Add picture...\' id=\'imageLoadButton' + uuid + '\' />')
-            .addClass('loadButton')
-            .appendTo(elem);
-            
-            var prod = scope.product;
-            
-            if (prod.images && prod.images.length > 0) {
-                imgDiv.css('background-image', 'url(' + prod.images[0].url + ')');
-            }
-            
-            loadCroppic(imgDiv, loadButton)
-            .onCropped(function(url) {
-                scope.$applyAsync(function() {
-                    if (!prod.images) {
-                        prod.images = [];
-                    }
-                    
-                    prod.images.push({
-                        url: url,
-                        size: 'large'
-                    });
-                    $(imgDiv).css('background-image', 'url(' + url + ')');
-                })
-            })
-        }
-    }
-}
-)
 
 
 adminApp.directive('products', function () {
@@ -354,38 +384,3 @@ adminApp.directive('product', function () {
 
 
 
-
-
-//adminApp.controller('ProductController', ['$scope', '$http', 'productRepo', function($scope, $http, repo) {
-    
-    
-//    $scope.save = function() {
-//        var prod = $scope.product;
-        
-//        $http.put('http://localhost:5984/bbapp/' + encodeURIComponent(prod._id), prod)
-//        .then(function(r) {
-//            prod._rev = r.data.rev;
-            
-//            $scope.$applyAsync(function() {
-//                repo.dirtyItems = repo.dirtyItems.filter(function(x) {
-//                    x._id != prod._id
-//                }
-//                );
-//                //   .splice().delete(prod._id);
-//            }
-//            );
-            
-//            //trigger style changes and what-not
-//            //...
-//        }
-//        , 
-//        function() {
-//            window.alert('ERROR UPDATING PRODUCT!!!');
-//        }
-//        );
-//    }
-
-
-
-//}
-//]);

@@ -19,7 +19,9 @@
     "jquery-validation": "*",
     "bootstrap": "*",
     "fuse": "*",
-    "croppic": "*"
+    "pica": "*",
+    "aws-sdk-js": "*",
+    "smap": "*"
   },
   "resolutions": {
     "angular": "~1.4.7"
