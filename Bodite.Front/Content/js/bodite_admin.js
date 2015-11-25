@@ -6,12 +6,17 @@
 /// <reference path="math.uuid.js" />
 /// <reference path="aws-sdk.js" />
 /// <reference path="smap-shim.js" />
+/// <reference path="jquery.fancytree-all.js" />
 
 var adminApp = angular.module('BoditeAdmin', ['ngRoute']);
 
 
 
 adminApp.service('aws', [function () {
+
+    //get access key from server, via details
+    //...
+
     AWS.config.update({
         accessKeyId: 'AKIAJBNPCUXVCW3HFRHA',
         secretAccessKey: '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'
@@ -378,8 +383,10 @@ adminApp.directive('product', function () {
             }
 
         }]
+        
     }
 })
+
 
 
 

@@ -113,3 +113,74 @@ image-set-record input[type="button"]:hover {
 }
 
 
+
+
+
+
+#sectionMenu {
+    background-color: darkblue;
+}
+
+#sectionMenu li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#sectionMenu a {
+    color: white;
+    font-family: sans-serif;
+}
+
+
+
+
+/******************************************************/
+
+
+#categoryPage {
+    width: 100%;
+    background-color: white;
+}
+
+category-tree {
+    display: inline-block;
+    clear: none;
+    width: 50%;
+}
+
+category-tree.isDirty {
+    border: 2px solid red;
+}
+
+
+#categoryEdit {
+    display: inline-block;
+    vertical-align:top;
+}
+
+
+
+
+.hidden {
+    display: none;    
+}
+
+
+
+
+span.fancytree-node {
+    width: initial;
+}
+
+div.extras {
+    display: inline-block;
+    font-size: x-small;
+}
+
+
+div.extras input {
+    border: none;
+    background: none;
+    text-decoration: underline;
+    color: blue;
+}

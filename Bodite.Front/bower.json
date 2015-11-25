@@ -18,11 +18,15 @@
     "angular-route": "*",
     "jquery": "~2.1.4",
     "jquery-validation": "*",
+    "jquery-contextmenu": "*",
     "bootstrap": "*",
     "fuse": "*",
+    "blueimp-canvas-to-blob": "*",
     "pica": "*",
     "aws-sdk-js": "*",
-    "smap": "*"
+    "smap": "*",
+    "fancytree": "*",
+    "croppic": "*"
   },
   "resolutions": {
     "angular": "~1.4.7"

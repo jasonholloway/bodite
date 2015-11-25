@@ -5,7 +5,9 @@
     <title>Brigitas Bodite Products</title>
 	<meta charset="utf-8" />
 
+    <link rel="stylesheet" href="@Url.Content(@"~/Content/css/bootstrap.css")" />
     <link rel="stylesheet" href="@Url.Content(@"~/Content/css/croppic.css")" />
+    <link rel="stylesheet" href="@Url.Content(@"~/Content/css/ui.fancytree.css")" />
     <link rel="stylesheet" href="@Url.Content(@"~/Content/css/admin_products.css")" />
 
     <style>
@@ -14,45 +16,20 @@
 
 </head>
 <body ng-app="BoditeAdmin">
-    
-    <section ng-view>
 
-    </section>
+    <nav id="sectionMenu">
+        <ul>
+            <li><a href="./admin">Dashboard</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#categories">Categories</a></li>
+        </ul>
+    </nav>
 
-
-
-
-
-    <products>
-        <div id="productFilterBar">
-            <product-searchbox></product-searchbox>
-            <input type="button" ng-click="products.create()" value="Create new" />
-        </div>
-
-        <product ng-repeat="p in products.filteredItems track by p._id" ng-init="product.init(p)">            
-            <form>
-                <div class="names">
-                    <input ng-model="product.working.name.LV" class="latvian-input" />
-                    <input ng-model="product.working.name.RU" class="russian-input" />
-                </div>
-
-                <div class="description">
-                    <textarea class="latvian-input"></textarea>
-                    <textarea class="russian-input"></textarea>
-                </div>
-
-
-                <image-set images="product.working.images"></image-set>
-
-                <input type="button" ng-click="product.save()" value="Save" />
-                <input type="button" ng-click="product.revert()" value="Revert" />
-            </form>
-        </product>
-
-
-    </products>
+    <section ng-view></section>
 
     <script src="@Url.Content(@"~/Content/js/jquery.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/jquery-ui.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/contextmenu.js")"></script>
     <script src="@Url.Content(@"~/Content/js/angular.js")"></script>
     <script src="@Url.Content(@"~/Content/js/angular-route.js")"></script>
     <script src="@Url.Content(@"~/Content/js/smap-shim.js")"></script>
@@ -61,8 +38,11 @@
     <script src="@Url.Content(@"~/Content/js/canvas-to-blob.js")"></script>
     <script src="@Url.Content(@"~/Content/js/pica.js")"></script>
     <script src="@Url.Content(@"~/Content/js/aws-sdk.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/jquery.fancytree.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/jquery.fancytree.dnd.js")"></script>
     <script src="@Url.Content(@"~/Content/js/bodite_croppic.js")"></script>
     <script src="@Url.Content(@"~/Content/js/bodite_admin.js")"></script>
+    <script src="@Url.Content(@"~/Content/js/bodite_admin_categories.js")"></script>
     <script src="@Url.Content(@"~/Content/js/bodite_routes.js")"></script>
 </body>
 </html>

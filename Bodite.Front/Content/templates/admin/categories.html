@@ -1,1 +1,12 @@
-﻿<b>CATEGORIES</b>
+﻿
+<div id="categoryPage" ng-controller="categoryController as categories">
+
+    <category-tree ng-model="categories.workingTree">
+    </category-tree>
+
+    <div id="categoryEdit">
+        <input ng-model="categories.current.name.LV" />
+        <input ng-model="categories.current.name.RU" />
+    </div>
+
+</div>

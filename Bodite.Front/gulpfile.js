@@ -12,6 +12,7 @@ var config = {
     //JavaScript files that will be combined into a jquery bundle
     scriptPaths: [
         './bower_components/jquery/dist/jquery.js',
+        './bower_components/jquery-ui/jquery-ui.js',
         './bower_components/jquery-validation/dist/jquery.validate.js',
         './bower_components/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js',
         './bower_components/angular/angular.js',
@@ -21,18 +22,24 @@ var config = {
         './bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
         './bower_components/pica/dist/pica.js',
         './bower_components/aws-sdk-js/dist/aws-sdk.js',
-        './bower_components/smap/smap-shim.js'
+        './bower_components/smap/smap-shim.js',
+        './bower_components/fancytree/dist/jquery.fancytree.js',
+        './bower_components/fancytree/dist/src/jquery.fancytree.dnd.js',
+        './bower_components/jquery-contextmenu/contextmenu.js'
     ],
 
 
     cssPaths: [
+        './bower_components/bootstrap/dist/css/bootstrap.css',
         './bower_components/angular-advanced-searchbox/dist/angular-advanced-searchbox.css',
-        './bower_components/croppic/assets/css/croppic.css'
+        './bower_components/croppic/assets/css/croppic.css',
+        './bower_components/fancytree/dist/skin-xp/ui.fancytree.css'
     ],
 
 
     imgPaths: [
-        './bower_components/croppic/assets/img/cropperIcons.png'
+        './bower_components/croppic/assets/img/cropperIcons.png',
+        './bower_components/fancytree/dist/skin-xp/*.gif'
     ],
 
 
@@ -56,7 +63,7 @@ gulp.task('css', [], function () {
 
 gulp.task('img', [], function () {
     return gulp.src(config.imgPaths)
-                .pipe(gulp.dest('./Content/img'))
+                .pipe(gulp.dest('./Content/css'))
                 .pipe(print());
 });
 
