@@ -122,7 +122,9 @@
     <Content Include="Content\img\default_product.png" />
     <Content Include="Content\img\empty_image.png" />
     <Content Include="Content\js\bodite_admin.js" />
+    <Content Include="Content\js\bodite_admin_categories.js" />
     <Content Include="Content\js\bodite_croppic.js" />
+    <Content Include="Content\js\bodite_fancytree.js" />
     <Content Include="Content\js\bodite_fuse.js" />
     <Content Include="Content\js\bodite_routes.js" />
     <Content Include="Content\js\math.uuid.js" />

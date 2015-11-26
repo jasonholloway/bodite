@@ -11,43 +11,25 @@
 
 
 adminApp.service('categoryRepo', ['$http', function ($http) {
-        
+    
+    this.loadCategoryTree = function () {        
+        return $http.get('http://localhost:5984/bbapp/categorytree')
+        .then(function (resp) {
+            if (resp.data) {
+                return resp.data;
+            }
 
-    this.loadCategoryTree = function () {
-        return {
-            roots: [{
-                id: 'abc',
-                name: {
-                    LV: 'Jason',
-                    RU: 'Jasonski'
-                },
-                children: [
-                ]
-            },
-                    {
-                        id: 'uyvyy',
-                        name: {
-                            LV: 'Vitnija',
-                            RU: 'Vitters'
-                        },
-                        children: [
-                            {
-                                id: 'ppppp',
-                                name: {
-                                    LV: 'Wendy',
-                                    RU: 'Vladimir'
-                                },
-                                children: []
-                            }
-                        ]
-                    }
-            ]
-        }
+            throw Error('Response without data!');
+        });
     }
 
-
-
-
+    this.saveCategoryTree = function(tree) {
+        return $http.put('http://localhost:5984/bbapp/categorytree', tree)
+        .then(function (r) {
+            tree._rev = r.data.rev;
+            return tree;
+        })
+    }
 
 }])
 
@@ -55,25 +37,36 @@ adminApp.service('categoryRepo', ['$http', function ($http) {
 
 
 
-adminApp.controller('categoryController', ['$scope', 'categoryRepo', function ($scope, repo) {
+adminApp.controller('categoryTreeController', ['$scope', 'categoryRepo', function ($scope, repo) {
 
-    var pristineTree = repo.loadCategoryTree();
-    this.workingTree = angular.copy(pristineTree);
-    
+    var pristineTree = { roots: [] }
+    this.workingTree = { roots: [] };
     this.isPristine = true;
-
-    this.current = {};
 
     this.revert = function () {
         this.workingTree = angular.copy(pristineTree);
         this.isPristine = true;
-        this.current = {};
     }
 
     this.save = function () {
-        alert('Save to repo!!!');
+        repo.saveCategoryTree(this.workingTree)
+        .then(function () {
+            pristineTree = angular.copy(this.workingTree);
+            this.isPristine = true;
+        }.bind(this));
     }
-
+    
+    this.createCategory = function () {
+        return {
+            _id: 'category/' + Math.uuidFast(),
+            name: {
+                LV: 'New Category',
+                RU: undefined
+            },
+            children: []
+        }
+    }
+    
     //GRIMLY INEFFICIENT! 
     $scope.$watch(
         function() {
@@ -85,7 +78,27 @@ adminApp.controller('categoryController', ['$scope', 'categoryRepo', function ($
             }.bind(this))
         }.bind(this),
         true);
+
+    //how about, categories stored and served normalised
+    //but then a special serverside view would aggregate them all into a tree
+    //...
+
+    repo.loadCategoryTree()
+    .then(function (tree) {
+        pristineTree = tree;
+        this.workingTree = angular.copy(pristineTree);
+        this.isPristine = true;
+    }.bind(this))
+
+
 }])
+
+
+
+adminApp.controller('categoryController', ['$scope', function($scope) {
+    this.category = $scope.$parent.category;
+}])
+
 
 
 
@@ -113,78 +126,66 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
         restrict: 'E',
         scope: true,
         link: function (scope, elem) {
-
-            var projectViewRoots = function(catRoots) {
-                return mapNodes(catRoots,
-                            function(n) {
-                                return {
-                                    title: n.name.LV,
-                                    catNode: n
-                                }
-                            });
-            }
-
-
-
-            var viewRoots = projectViewRoots(scope.categories.workingTree.roots);
             
-
             var fixCatNodes = function (treeNodes, catNodes) {
                 //clear catNodes array and fill with catNode references of treeNodes array
                 Array.prototype.splice.apply(catNodes, [0, catNodes.length]
                                                         .concat(treeNodes
-                                                                    ? $.map(treeNodes, function (tn) { return tn.data.catNode; })
+                                                                    ? $.map(treeNodes, function (tn) { return tn.data; })
                                                                     : []));                
                 if(treeNodes) {                                                                 
                     for(var tn of treeNodes) {
-                        if (!tn.data.catNode.children) {
-                            tn.data.catNode.children = [];
+                        if (!tn.data.children) {
+                            tn.data.children = [];
                         }
 
-                        fixCatNodes(tn.children, tn.data.catNode.children);
+                        fixCatNodes(tn.children, tn.data.children);
                     }
                 }
             }
             
 
 
-            var renderExtras = function (node) {
-                if (!$(node.li).find('.extras').length) {                    
-                    var div = $('<div class="extras hidden" />');
-                    
-                    $('<input type="button" value="add sibling" />')
+            var renderExtrasRight = function (node) {
+                $(node.divBefore)
+                    .addClass('extras')
+                    .append('<span class="key">{{category._id}}</span>')
+                    .append('<input ng-model="category.name.LV">')
+                    .append('<input ng-model="category.name.RU">')
+                    .append(
+                        $('<input type="button" value="delete" />')
                             .click(function () {
-                                node.addNode({
-                                    title: 'New Node',
-                                    catNode: {
-                                        name: { LV: 'New Node' }
-                                    }
-                                }, 'after');
-
-                                fixCatNodes(node.tree.rootNode.children, scope.categories.workingTree.roots);
-                            })
-                            .appendTo(div);
-                            
-                    $('<input type="button" value="delete" />')
-                            .click(function() {
-                                if(!confirm('Are you sure you want to delete category ' + node.title + ' and all of its children?')) {
+                                if(!confirm('Are you sure you want to delete category ' + node.data.name.LV + ' and all of its children?')) {
                                     return;
                                 }
 
                                 node.remove();
                                 fixCatNodes(node.tree.rootNode.children, scope.categories.workingTree.roots);
+                                scope.$apply();
                             })
-                            .appendTo(div);
+                            )
+            }
 
 
-                    div.appendTo(node.li);
-                    
-                    node.extrasDiv = div;
-                }
+            var renderExtrasBelow = function(node) {
+                $(node.divAfter).addClass('extras');
+
+                $('<input type="button" value="add" />')
+                    .click(function () {
+                        var n = node.addNode(scope.categories.createCategory(), 'over');
+
+                        node.setExpanded(true);
+                        
+                        fixCatNodes(node.tree.rootNode.children, scope.categories.workingTree.roots);
+                    })
+                    .appendTo(node.divAfter);                
             }
 
 
             var tree;
+
+
+
 
             var saveButton = $('<input type="button" value="Save" />')
                                 .click(function() { 
@@ -197,17 +198,24 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
                                 .click(function() { 
                                     scope.categories.revert(); 
                                     scope.$apply();
-                                    
-                                    tree.fancytree('getTree').reload(projectViewRoots(scope.categories.workingTree.roots));
                                     })
                                 .appendTo(elem);
+            
+
+            scope.$watch(
+                    function() {
+                        return scope.categories.workingTree;
+                    },
+                    function(v) {
+                        tree.fancytree('getTree').reload(v.roots);
+                    })
 
             scope.$watch(
                     function() {
                         return scope.categories.isPristine;
                         }, 
-                    function() {
-                        if(scope.categories.isPristine) {
+                    function(v) {
+                        if(v) {
                             elem.removeClass('isDirty');
                             saveButton.addClass('hidden');
                             revertButton.addClass('hidden');
@@ -221,19 +229,27 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
 
 
             tree = elem.fancytree({
-                source: viewRoots,
-                extensions: ["dnd"],
+                source: scope.categories.workingTree.roots,
+                extensions: ["dnd", "bodite_fancytree"],
+                keyboard: false,
+
+                //must be better callback than select...
                                 
                 select: function(event, data) {
-                    scope.$applyAsync(function() { 
-                        scope.categories.current = data.node.data.catNode;
-                    });
-
                     if(data.node.selected) {
-                        $(data.node.extrasDiv).removeClass('hidden');
+                        $(data.node.divBefore).removeClass('hidden');
+
+                        for(var n = data.node; n && n.title !== 'root'; n = n.parent) {                                                
+                            $(n.divAfter).removeClass('hidden');
+                        }
+                                                
                     }
                     else {
-                        $(data.node.extrasDiv).addClass('hidden');
+                        $(data.node.divBefore).addClass('hidden');
+
+                        for(var n = data.node; n && n.title !== 'root'; n = n.parent) {                                                
+                            $(n.divAfter).addClass('hidden');
+                        }
                     }
                 },
 
@@ -249,27 +265,55 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
                     }
                 },
 
-                createNode: function(event, data) {
-                    //add a listener - SHOULD STORE THIS AND REMOVE ON DELETE!
-                    data.node.deregWatch = scope.$watch(
-                                                function() { 
-                                                    return data.node.data.catNode.name.LV; 
-                                                    },
-                                                function(vNew) { 
-                                                    data.node.title = vNew; 
-                                                    data.node.renderTitle();
-                                                });
-                    renderExtras(data.node);
+                createNode: function (event, data) {
+
+                    data.node.setTitle('{{category.name.LV}}');
+
+                    renderExtrasRight(data.node);
+                    renderExtrasBelow(data.node);
+
+                    data.node.scope = scope.$new();
+                    data.node.scope.category = data.node.data;
+
+                    var linker = $compile(data.node.li);
+                    linker(data.node.scope);
+                },
+
+                init: function (event, data) {                    
+                    var nRoot = data.tree.rootNode;
+
+                    if(data.tree.divAfter) {
+                        data.tree.divAfter.empty();
+                    }
+                    else {
+                        data.tree.divAfter = $('<div>').insertAfter(nRoot.ul);
+                    }
+
+                    nRoot.divAfter = data.tree.divAfter;
+                                             
+                    renderExtrasBelow(nRoot);
+
+                    var deselect = function (nodes) {
+                        for(var n of nodes) {
+                            $(n.divAfter).addClass('hidden');
+
+                            if (n.divBefore) {
+                                $(n.divBefore).addClass('hidden');
+                            }
+
+                            if(n.children) deselect(n.children);
+                        }
+                    }
+
+                    deselect(nRoot.children);
                 },
 
                 removeNode: function(event, data) {
-                    if(data.node.deregWatch) {
-                        data.node.deregWatch();
-                        delete data.node.deregWatch;
-                    }  
+                    if(data.node.scope) {
+                        data.node.scope.$destroy();
+                    }
                 },
-        
-
+       
                 dnd: {
                     // Available options with their default:
                     //autoExpandMS: 1000,   // Expand nodes after n milliseconds of hovering
@@ -316,18 +360,19 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
                         // allow changing the order:
                         //    return ["before", "after"];
                         // Accept everything:
-                        return true;
+                        return !!data.otherNode;
                     },
                     dragOver: function (node, data) {
                     },
                     dragLeave: function (node, data) {
                     },
                     dragStop: function (node, data) {
-                        renderExtras(node);
+                       // renderExtras(node);
                     },
                     dragDrop: function (node, data) {                        
                         data.otherNode.moveTo(node, data.hitMode);
                         fixCatNodes(data.tree.rootNode.children, scope.categories.workingTree.roots);   
+                        scope.$apply();
                     }
                 },
             });
@@ -335,6 +380,10 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
         }
     }
 }])
+
+
+
+
 
 
 

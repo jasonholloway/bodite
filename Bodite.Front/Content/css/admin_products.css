@@ -145,7 +145,7 @@ image-set-record input[type="button"]:hover {
 category-tree {
     display: inline-block;
     clear: none;
-    width: 50%;
+    width: 100%;
 }
 
 category-tree.isDirty {
@@ -174,13 +174,50 @@ span.fancytree-node {
 
 div.extras {
     display: inline-block;
-    font-size: x-small;
+}
+
+
+div.extras.before {
+    margin-left: 15px;
 }
 
 
 div.extras input {
+    font-size: small;
+    margin-right: 5px;
+}
+
+
+
+div.extras.before span.key {
+    font-size: xx-small;
+    display: block;
+}
+
+div.extras.before span.key:before {
+    content: '_id: ';
+}
+
+
+span.fancytree-node {
+    display: block;
+    vertical-align: top;
+}
+
+
+
+
+
+
+div.extras input[type="button"] {
+    font-size: x-small;
     border: none;
     background: none;
-    text-decoration: underline;
+    font-style: italic;
+    /*text-decoration: underline;*/
     color: blue;
+}
+
+div.extras.after {
+    margin-left: 32px;
 }
