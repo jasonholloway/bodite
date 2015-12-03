@@ -1,9 +1,12 @@
-/// <reference path="angular.js" />
-/// <reference path="bodite_admin.js" />
+﻿
+
+var adminApp = angular.module('BoditeAdmin', ['ngRoute']);
+
+
 
 adminApp.config(['$routeProvider', function ($routeProvider) {
 
-    $routeProvider    
+    $routeProvider
     .when('/products', {
         templateUrl: 'Content/templates/admin/products.html'
     })

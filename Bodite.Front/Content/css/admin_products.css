@@ -172,35 +172,39 @@ span.fancytree-node {
     width: initial;
 }
 
-div.extras {
+div.extrasRight {
+    position: absolute;
+    left: 100px;
     display: inline-block;
+    margin-left: 30px;
 }
 
 
-div.extras.before {
-    margin-left: 15px;
-}
 
-
-div.extras input {
+div.extrasRight input {
     font-size: small;
     margin-right: 5px;
 }
 
 
 
-div.extras.before span.key {
+div.extrasRight span.key {
     font-size: xx-small;
-    display: block;
+    float: left;
 }
 
-div.extras.before span.key:before {
+div.extrasRight span.key:before {
     content: '_id: ';
 }
 
 
+div.extrasRight input[type="button"] {
+    float: left;
+}
+
+
 span.fancytree-node {
-    display: block;
+    display: inline-block;
     vertical-align: top;
 }
 
@@ -209,7 +213,8 @@ span.fancytree-node {
 
 
 
-div.extras input[type="button"] {
+div.extrasRight input[type="button"],
+div.extrasBelow input[type="button"] {
     font-size: x-small;
     border: none;
     background: none;
@@ -218,6 +223,6 @@ div.extras input[type="button"] {
     color: blue;
 }
 
-div.extras.after {
+div.extrasBelow {
     margin-left: 32px;
 }

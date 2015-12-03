@@ -121,12 +121,16 @@
     <Content Include="Content\css\admin_products.css" />
     <Content Include="Content\img\default_product.png" />
     <Content Include="Content\img\empty_image.png" />
-    <Content Include="Content\js\bodite_admin.js" />
-    <Content Include="Content\js\bodite_admin_categories.js" />
+    <Content Include="Content\js\bb-admin.js" />
+    <Content Include="Content\js\bb-aws.js" />
+    <Content Include="Content\js\bb-category-picker.js" />
+    <Content Include="Content\js\bb-image-picker.js" />
+    <Content Include="Content\js\bb-repos.js" />
+    <Content Include="Content\js\bb-products.js" />
+    <Content Include="Content\js\bb-categories.js" />
     <Content Include="Content\js\bodite_croppic.js" />
     <Content Include="Content\js\bodite_fancytree.js" />
     <Content Include="Content\js\bodite_fuse.js" />
-    <Content Include="Content\js\bodite_routes.js" />
     <Content Include="Content\js\math.uuid.js" />
     <Content Include="Content\misc\angular-advanced-searchbox.html" />
     <Content Include="Content\templates\admin\categories.html" />
@@ -150,7 +154,9 @@
       <Name>Bodite</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

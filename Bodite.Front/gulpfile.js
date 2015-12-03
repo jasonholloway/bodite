@@ -7,6 +7,7 @@ var copy = require('gulp-copy');
 var bower = require('gulp-bower');
 var sourcemaps = require('gulp-sourcemaps');
 var print = require('gulp-print');
+var gulpif = require('gulp-if');
 
 var config = {
     //JavaScript files that will be combined into a jquery bundle
@@ -30,6 +31,7 @@ var config = {
 
 
     cssPaths: [
+        './bower_components/jquery-ui/themes/smoothness/jquery-ui.css',
         './bower_components/bootstrap/dist/css/bootstrap.css',
         './bower_components/angular-advanced-searchbox/dist/angular-advanced-searchbox.css',
         './bower_components/croppic/assets/css/croppic.css',
@@ -61,7 +63,14 @@ gulp.task('css', [], function () {
                 .pipe(print());
 });
 
-gulp.task('img', [], function () {
+
+gulp.task('jquery-ui-img', [], function () {
+    return gulp.src('./bower_components/jquery-ui/themes/smoothness/images/*.*')
+                .pipe(gulp.dest('./Content/css/images'))
+                .pipe(print());
+});
+
+gulp.task('img', ['jquery-ui-img'], function () {
     return gulp.src(config.imgPaths)
                 .pipe(gulp.dest('./Content/css'))
                 .pipe(print());

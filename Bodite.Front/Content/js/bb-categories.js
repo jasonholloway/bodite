@@ -12,11 +12,62 @@
 
 adminApp.service('categoryRepo', ['$http', function ($http) {
     
-    this.loadCategoryTree = function () {        
+    //should cache categories...
+    //only reset on successful save
+
+    var catTree;
+    var catMap;
+    
+
+    var buildCrawler = function (fn) {
+        var crawler;
+
+        crawler = function (nodes, path) {
+            if (!path) path = [];
+
+            for(var n of nodes) {
+                fn(n, path);
+
+                if (n.children) {
+                    path.push(n);
+                    crawler(n.children, path);
+                    path.pop();
+                }
+            }
+        }
+
+        return crawler;
+    }
+
+
+    this.getCategoryMap = function () {
+        if (catMap) return new Promise(function (success) { success(catMap); });
+        
+        return this.loadCategoryTree()
+        .then(function (tree) {
+            catMap = new Map();
+
+            buildCrawler(function (n, p) {
+                catMap.set(n._id, n);
+            })(tree.roots);
+
+            return catMap;
+        });
+    }
+
+
+    this.loadCategoryTree = function () {
+        if (catTree) return new Promise(function (success) { return catTree; });
+
         return $http.get('http://localhost:5984/bbapp/categorytree')
         .then(function (resp) {
             if (resp.data) {
-                return resp.data;
+                buildCrawler(function (n, path) {
+                    n.$$path = path.slice();
+                    n.$$pathString = $.map(n.$$path, function (x) { return '/' + x.name.LV }).join('') + '/' + n.name.LV;
+                })(resp.data.roots);
+
+                return catTree = resp.data;                
             }
 
             throw Error('Response without data!');
@@ -26,9 +77,29 @@ adminApp.service('categoryRepo', ['$http', function ($http) {
     this.saveCategoryTree = function(tree) {
         return $http.put('http://localhost:5984/bbapp/categorytree', tree)
         .then(function (r) {
+            catMap = undefined;
             tree._rev = r.data.rev;
-            return tree;
+            return catTree = tree;
         })
+    }
+
+
+    this.getCategoryByKey = function (key) {
+        return this.getCategoryMap()
+        .then(function (map) { return map.get(key); })
+    }
+
+    this.getCategories = function() {
+        return this.getCategoryMap()
+        .then(function (map) {
+            var r = [];
+
+            for(var v of map.values()) {
+                r.push(v);
+            }
+
+            return r;
+        });
     }
 
 }])
@@ -146,16 +217,33 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
             
 
 
+
+            var forEachNode = function(fn, nodes) {
+                if(!nodes) nodes = tree.rootNode.children;
+
+                nodes.forEach(function(n) {
+                    fn(n);
+                    
+                    if(n.children) {
+                        forEachNode(fn, n.children);
+                    }
+                })
+            }
+
+
+
+
             var renderExtrasRight = function (node) {
+
                 $(node.divBefore)
-                    .addClass('extras')
-                    .append('<span class="key">{{category._id}}</span>')
+                    .addClass('extrasRight')
                     .append('<input ng-model="category.name.LV">')
                     .append('<input ng-model="category.name.RU">')
+                    .append('<span class="key">{{category._id}}</span>')
                     .append(
                         $('<input type="button" value="delete" />')
                             .click(function () {
-                                if(!confirm('Are you sure you want to delete category ' + node.data.name.LV + ' and all of its children?')) {
+                                if (!confirm('Are you sure you want to delete category ' + node.data.name.LV + ' and all of its children?')) {
                                     return;
                                 }
 
@@ -168,7 +256,7 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
 
 
             var renderExtrasBelow = function(node) {
-                $(node.divAfter).addClass('extras');
+                $(node.divAfter).addClass('extrasBelow');
 
                 $('<input type="button" value="add" />')
                     .click(function () {
@@ -180,7 +268,6 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
                     })
                     .appendTo(node.divAfter);                
             }
-
 
             var tree;
 
@@ -254,8 +341,9 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
                 },
 
                 click: function(event, data) {
-                    data.tree.getSelectedNodes().forEach(function(n) { n.toggleSelected(); });                    
-                    data.node.toggleSelected();
+                    data.tree.getSelectedNodes().forEach(function(n) { n.setSelected(false); }); 
+                                       
+                    data.node.setSelected(true);
                 },
 
                 keydown: function(event, data) {
@@ -277,6 +365,9 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
 
                     var linker = $compile(data.node.li);
                     linker(data.node.scope);
+
+                    data.node.setSelected(true);
+                    data.node.setSelected(false);
                 },
 
                 init: function (event, data) {                    
@@ -370,9 +461,16 @@ adminApp.directive('categoryTree', ['$compile', function ($compile) {
                        // renderExtras(node);
                     },
                     dragDrop: function (node, data) {                        
-                        data.otherNode.moveTo(node, data.hitMode);
+                        var n = data.otherNode;
+
+                        n.moveTo(node, data.hitMode);
                         fixCatNodes(data.tree.rootNode.children, scope.categories.workingTree.roots);   
                         scope.$apply();
+
+                        node.setExpanded(true);
+
+                        n.setSelected(false);
+                        n.setSelected(true);
                     }
                 },
             });

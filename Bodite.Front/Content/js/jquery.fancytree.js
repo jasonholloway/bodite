@@ -3028,9 +3028,9 @@ $.extend(Fancytree.prototype,
 				this.nodeRenderStatus(ctx);
 			}
 			// Allow tweaking after node state was rendered
-			//if ( opts.renderNode ){
-			//	opts.renderNode.call(tree, {type: "renderNode"}, ctx);
-			//}
+			if ( opts.renderNode ){
+				opts.renderNode.call(tree, {type: "renderNode"}, ctx);
+			}
 		}
 
 		// Visit child nodes
@@ -3102,11 +3102,7 @@ $.extend(Fancytree.prototype,
 //				parent.ul.appendChild(node.li);
 				parent.ul.insertBefore(node.li, successorLi);
 			}
-
-			if (opts.renderNode) {
-			    opts.renderNode.call(tree, { type: "renderNode" }, ctx);
-			}
-		}        
+		}
 	},
 	/** Create HTML inside the node's outer &lt;span> (i.e. expander, checkbox,
 	 * icon, and title).
