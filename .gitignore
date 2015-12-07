@@ -20,6 +20,8 @@ packages
 .nuget
 project.lock.json
 .vs
+.vscode
+Bodite.Front/Content/*/*
 
 
 *.log

@@ -4,6 +4,10 @@
   "description": "Brigitas Bodite",
   "main": "index.js",
   "dependencies": {
+    "browserify": "^5.13.1",
+    "browserify-sourcemap-root-transform": "^0.1.2",
+    "pica": "^1.1.1",
+    "through": "^2.3.8"
   },
   "devDependencies": {
     "bower": "^1.6.5",

@@ -11,10 +11,17 @@ namespace Bodite.Front.Modules
 {
     public class AdminModule : NancyModule
     {
-        public AdminModule() {
+        public AdminModule() : base("/admin") {
             
-            Get[@"/admin"] = p => View["Admin/Admin.cshtml"];
-            
+            Get[@"/"] = p => View["Admin/Admin.cshtml"];
+
+            Post[@"/login"] = p => {
+                return Response.AsJson(new {
+                    key = "12345678",
+                    user = "Jason"
+                });
+            }; 
+                        
         }
     }
 }

@@ -22,11 +22,10 @@
     "bootstrap": "*",
     "fuse": "*",
     "blueimp-canvas-to-blob": "*",
-    "pica": "*",
-    "aws-sdk-js": "*",
     "smap": "*",
     "fancytree": "*",
-    "croppic": "*"
+    "croppic": "*",
+    "angular-dialog-service": "~5.2.9"
   },
   "resolutions": {
     "angular": "~1.4.7"
