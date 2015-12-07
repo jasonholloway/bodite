@@ -7,7 +7,8 @@
     "browserify": "^5.13.1",
     "browserify-sourcemap-root-transform": "^0.1.2",
     "pica": "^1.1.1",
-    "through": "^2.3.8"
+    "through": "^2.3.8",
+    "vinyl-source-stream": "^1.1.0"
   },
   "devDependencies": {
     "bower": "^1.6.5",
