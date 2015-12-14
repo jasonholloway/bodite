@@ -1,0 +1,124 @@
+/*----------------------------------------------------------------------------------------------------------
+                                    PRODUCT PAGE PRODUCT CONTENT
+----------------------------------------------------------------------------------------------------------*/
+
+.product_page
+{
+float:none;
+display:block;
+width:500px;
+margin-left:auto;
+margin-right:auto;  
+}
+
+.product_title
+{
+border-top:2px solid lightgray;
+padding-top:10px;
+width:100%;
+margin-left:auto;
+margin-right:auto;
+margin-bottom:10px;
+}
+
+.product_page_image
+{
+    width:250px;
+    height:250px;
+    float:left;
+    margin-right:15px;
+    border: 3px solid #FFE271;
+    border-radius:10px 10px 10px 10px;
+}
+
+p.product_page_description
+{
+    text-align: left;
+    float:left;
+    width:45%;
+}
+
+.product_page_size
+{
+    display:block;
+}
+
+.add_to_cart_button
+{
+    height:auto;
+    width:auto;
+    background: -moz-linear-gradient(#FFA319, #FFE271);
+	background: -webkit-linear-gradient(#FFA319, #FFE271);
+	background: -o-linear-gradient(#FFA319, #FFE271);
+	background: linear-gradient(#FFA319, #FFE271);
+    padding:5px 8px 5px 8px;
+    border-radius:7px;
+    border-bottom: 2px solid gray;
+    border-top: 2px solid #bababa;
+    border-left: 2px solid #a2a2a2;
+    border-right: 2px solid #a2a2a2;
+    
+    margin-top:30px;
+    color:#660066;
+    font-size: 1.266em;
+    font-weight:600;
+}
+
+.add_to_cart_button:hover
+{
+ background: -moz-linear-gradient(#ff6200, #ffba00);
+	background: -webkit-linear-gradient(#ff6200, #ffba00);
+	background: -o-linear-gradient(#ff6200, #ffba00);
+	background: linear-gradient(#ff6200, #ffba00);
+    color:black;
+}
+
+.product_page_share
+{
+    display:block;
+}
+
+.product_page_back_button img
+{
+  height:20px;
+}
+
+.product_page_back_button
+{
+    text-decoration:none;
+}
+
+.product_page_back_button p
+{
+   color:#660066;
+    font-size:0.889em;
+    display:inline-block;
+      position: relative;
+    top: -5px;
+}
+
+.product_page_back_button:hover p
+{
+    text-decoration:underline;
+    color:black;
+}
+
+
+
+
+/*---------------------------------------------------------------------------------------------------------
+                                PRODUCT PAGE SIMILAR PRODUCTS GRID
+---------------------------------------------------------------------------------------------------------*/
+
+.similar_product_grid_description
+{
+    width:100%;
+    margin-top:40px;
+}
+
+
+
+
+
+
+
