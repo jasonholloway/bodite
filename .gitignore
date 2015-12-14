@@ -1,5 +1,6 @@
 .DS_Store
 
+
 build/
 release/
 *.suo
@@ -29,3 +30,5 @@ Bodite.Front/Content/*/*
 *.log
 bower_components
 node_modules
+
+temp/
