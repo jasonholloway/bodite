@@ -1,0 +1,9 @@
+function draugiemShare(){
+			var title = 'Overtime TV viesojas Ivo Lakučs...'; 								// Title of current video
+			var url = 'http://www.tvplay.lv/parraides/overtime-tv/509167?autostart=true'; 	// URL of current video
+			window.open('https://www.draugiem.lv/say/ext/add.php?' +
+				'title=' + encodeURIComponent(title) +
+				'&url=' + encodeURIComponent(url),
+				'_blank', 'width=530,height=400,resizable=1');
+		}
+	
