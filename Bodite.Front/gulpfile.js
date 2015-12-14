@@ -1,8 +1,19 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
+var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var debowerify = require('debowerify');
 var bulkify = require('bulkify');
+var exorcist = require('exorcist');
+var path = require('path');
+var through = require('through2');
+var gutil = require('gulp-util');
+var uglifyify = require('uglifyify');
+var babelify = require('babelify');
+
+var mold = require('mold-source-map');
+var sourcemapify = require('sourcemapify');
+
 
 
 var concat = require('gulp-concat');
@@ -38,13 +49,48 @@ var config = {
 };
 
 gulp.task('scripts', [], function () {
-    return browserify('./Scripts/bb-admin.js', { debug: true })
-            .transform(debowerify)
-            .transform(bulkify)
-            .bundle()
-            .pipe(source('bundle.js'))
-            .pipe(gulp.dest('./Content/js'))
-            .pipe(print());
+    var b = browserify({ entries: ['./Scripts/bb-admin.js'], cache: {}, packageCache: {}, debug: true })
+                .transform(debowerify)
+                .transform(bulkify)
+                //.transform(babelify)
+                .transform(uglifyify)
+                //.transform(function(f) {
+                //    return /^bb-/.test(f)    //NOT WORKING!!!!
+                //            ? babelify(f, { presets: ['es2015'] })
+                //            : new through(function() { });
+                //})
+                //.transform(function (f, o) {
+                //    return /^bb-/.test(f)
+                //            ? new through(function() { })
+                //            : uglifyify(f, o);
+                //})
+                .plugin(watchify)
+                .plugin(function (b) {                    
+                    b.on('reset', attach);
+                    attach();
+
+                    function attach() {
+                        b.pipeline.get('debug')
+                            .push(new through(function (data) {
+                                data.sourceFile = path.relative(process.cwd(), data.sourceFile);
+                                data.sourceFile = data.sourceFile.replace(/\\/g, '/');
+                                this.queue(data);
+                            }));
+                    }
+                });
+    
+    function rebundle() {
+        return b.bundle()
+                //.pipe(exorcist('./Content/js/bundle.js.map'))
+                .pipe(source('bundle.js'))
+                .pipe(gulp.dest('./Content/js'));
+    }
+
+    b.on('update', rebundle);
+
+    b.on('log', gutil.log);
+
+    return rebundle().pipe(print());
 });
 
 

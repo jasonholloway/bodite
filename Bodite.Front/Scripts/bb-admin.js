@@ -1,11 +1,10 @@
-﻿
-(function () {
+
+(function () {    
     var ng = require('angular');
     require('angular-route');
+    require('angular-dialog-service');
 
-
-    var app = ng.module('BoditeAdmin', ['ngRoute', 'dialogs.main']);
-
+    var app = angular.module('BoditeAdmin', ['ngRoute', 'dialogs.main']);
 
     app.config(['$routeProvider', function ($routeProvider) {
 

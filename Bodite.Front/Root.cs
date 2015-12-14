@@ -8,6 +8,7 @@ using Nancy.Owin;
 using Owin;
 using StructureMap;
 using System;
+using Nancy.Conventions;
 
 [assembly: OwinStartup(typeof(Bodite.Front.Root), "Init")]
 
@@ -21,7 +22,7 @@ namespace Bodite.Front
         public void Init(IAppBuilder app) {
             app.UseNancy(x => {
                 x.Bootstrapper = new BoditeNancyBootstrapper();
-            });            
+            });
         }
                 
     }
@@ -31,12 +32,25 @@ namespace Bodite.Front
 
     class BoditeNancyBootstrapper : StructureMapNancyBootstrapper, IRootPathProvider
     {
-        
         protected override void ApplicationStartup(IContainer container, IPipelines pipelines)
         {
             pipelines.OnError += (c, e) => { throw e; };
         }
-        
+
+        protected override void ConfigureConventions(NancyConventions nancyConventions) {
+            nancyConventions.StaticContentsConventions.Clear();
+
+            nancyConventions.MapStaticContent((_, dir) => {
+#if DEBUG
+                dir["/Scripts"] = @"C:\dev\csharp\bodite\Bodite.Front\Scripts";
+                dir["/node_modules"] = @"C:\dev\csharp\bodite\Bodite.Front\node_modules";
+                dir["/bower_modules"] = @"C:\dev\csharp\bodite\Bodite.Front\bower_modules";
+#endif
+
+                dir["/Content"] = @"C:\dev\csharp\bodite\Bodite.Front\Content";
+            });
+        }
+
 
         protected override void ConfigureApplicationContainer(IContainer existingContainer) 
         {
