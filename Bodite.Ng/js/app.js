@@ -6,23 +6,21 @@
 	angular.module('bb', ['ui.router'])
 	.config(function($stateProvider, $urlRouterProvider) {
 			
-		$urlRouterProvider.otherwise('/front');
-			
-			
+		$urlRouterProvider.otherwise('/');
+						
 		$stateProvider
 		.state('front', {
 			url: '/',
 			views: {
-				'content-top': {
-					templateUrl: 'templates/front-top.html',
+				'content': {
+					templateUrl: 'templates/front-content.html',
 					controller: function($scope) {
 						$scope.message = 'Yo, Jason!'
 					}
 				}
 			}
 		});
-		
-			
+					
 			
 	});
 	
