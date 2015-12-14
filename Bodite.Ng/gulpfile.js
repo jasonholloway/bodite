@@ -22,7 +22,7 @@ gulp.task('default', ['html', 'js', 'css', 'images'], function() {
 
 gulp.task('html', function() {
     var index = gulp.src('index.html')
-                .pipe(watch('index.html'))
+                .pipe(watch(path.join(__dirname, 'index.html')))
                 .pipe(gulp.dest('build/'))
                 .pipe(print());
     
