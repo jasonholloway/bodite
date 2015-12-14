@@ -832,6 +832,26 @@ background-image: -moz-linear-gradient(#CC6699, #E0A3C2);
     color:black;
 }
 
+/*--------------------------------------------------------------------------------------------------
+                                    CHECKOUT PROCESS STYLES
+--------------------------------------------------------------------------------------------------*/
+
+.basket_product_grid, .basket_product_total
+{
+    display:block;
+}
+.basket_product_grid div
+{
+  border:1px solid black;
+}
+
+.basket_product_total div
+{
+    border:1px solid black;
+}
+
+
+
 
 
 /*--------------------------------------------------------------------------------------------------
