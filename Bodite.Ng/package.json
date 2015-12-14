@@ -15,6 +15,7 @@
     "bulkify": "^1.1.1",
     "exorcist": "^0.4.0",
     "gulp": "^3.9.0",
+    "gulp-merge": "^0.1.1",
     "gulp-print": "^2.0.1",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
