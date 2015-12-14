@@ -364,6 +364,7 @@ background: url("../images/bb2menubutton3.png");
 background: url("../images/bb2menubutton3under.png");
 }
 
+
 /*--------------------------------------------------------------------------------------------------
 										SEARCH FORM STYLES
 --------------------------------------------------------------------------------------------------*/
@@ -723,6 +724,114 @@ p.product_window_price
     font-weight:600;
 }
 
+/*--------------------------------------------------------------------------------------------------
+                                    SHOPPING BASKET STYLES
+--------------------------------------------------------------------------------------------------*/
+
+.shopping_basket_placeholder
+{
+    height:36px;
+}
+
+.shopping_basket_sidebar
+{
+    margin-top:15px;
+    padding:8px;
+    border-radius: 15px 15px 15px 15px;
+background-image: linear-gradient(#CC6699, #E0A3C2);
+background-image: -webkit-linear-gradient(#CC6699, #E0A3C2);
+background-image: -o-linear-gradient(#CC6699, #E0A3C2);
+background-image: -moz-linear-gradient(#CC6699, #E0A3C2);
+    width:164px;
+}
+
+.shopping_basket_sidebar p
+{
+ margin:0;
+}
+
+.shopping_basket_sidebar_text_field
+{
+    border-radius:8px 8px 8px 8px;
+    padding:5px;
+    background:white;
+    width:154px;
+}
+
+.shopping_basket_sidebar_title
+{
+    color:#660066;
+    text-align:center;
+    margin-bottom:5px;
+    margin-top:0;
+}
+
+.shopping_basket_sidebar table
+{
+    font-size:0.889em;
+    font-weight:600;
+    width:100%;
+}
+
+.shopping_basket_sidebar td,tr
+{
+    padding-top:5px;
+    vertical-align:top;
+}
+
+.basket_sidebar_total td, tr
+{
+    padding-top:15px;
+}
+
+.shopping_basket_sidebar_product_variation
+{
+    font-size:0.79em;
+}
+
+.shopping_basket_sidebar_price
+{
+    text-align:right;
+}
+
+.shopping_basket_checkout_button_holder
+{
+    width:100%;
+}
+
+.shopping_basket_checkout_button
+{
+    height:auto;
+    max-width:110;
+    background: -moz-linear-gradient(#FFA319, #FFE271);
+	background: -webkit-linear-gradient(#FFA319, #FFE271);
+	background: -o-linear-gradient(#FFA319, #FFE271);
+	background: linear-gradient(#FFA319, #FFE271);
+    padding:5px 8px 5px 8px;
+    border-radius:7px;
+    border-bottom: 2px solid gray;
+    border-top: 2px solid #bababa;
+    border-left: 2px solid #a2a2a2;
+    border-right: 2px solid #a2a2a2;
+    margin-top:10px;
+    color:#660066;
+    font-weight:700;
+    display:block;
+    float:none;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+}
+
+.shopping_basket_checkout_button:hover
+{
+ background: -moz-linear-gradient(#ff6200, #ffba00);
+	background: -webkit-linear-gradient(#ff6200, #ffba00);
+	background: -o-linear-gradient(#ff6200, #ffba00);
+	background: linear-gradient(#ff6200, #ffba00);
+    color:black;
+}
+
 
 
 /*--------------------------------------------------------------------------------------------------
@@ -735,7 +844,7 @@ background:url("../images/boditebanner.jpg");
 width:180px;
 height:320px;
 border-radius: 15px 15px 15px 15px;
-    margin-top:52px;
+    margin-top:15px
 }
 
 /*--------------------------------------------------------------------------------------------------

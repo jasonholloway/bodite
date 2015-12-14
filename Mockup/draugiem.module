@@ -1,0 +1,181 @@
+<?php
+
+  function draugiem_block_info() {
+  
+    $blocks = array();
+	
+	$blocks['draugiem_fans'] = array(
+	  'info' => t('Draugiem.lv Fans'),
+	  'cache' => DRUPAL_NO_CACHE //DRUPAL_CACHE_GLOBAL
+	);
+	
+	$blocks['draugiem_news'] = array(
+	  'info' => t('Draugiem.lv News'),
+	  'cache' => DRUPAL_NO_CACHE
+	);
+	
+	return $blocks;
+  }
+  
+  
+  function draugiem_block_view($block_name = '') {
+  
+	switch($block_name) {
+	
+	  case 'draugiem_fans':
+		return _draugiem_fans_view();		
+		
+	  case 'draugiem_news':
+	    return _draugiem_news_view();
+		
+	}
+  }
+  
+  
+  
+  //----------------------------------------------------------------------------------------------
+  
+  function _draugiem_news_view() {
+	
+	////////////////////////////////////////////////////////
+	//return empty div, and set script to fill through AJAX
+		
+	global $base_url;		
+		
+	$url = $base_url . '/sites/brigita.localhost/draugiem_news?count=10'; //should get path to site folder from Drupal...
+		
+	$js = '	
+	(function($){
+		$(document).ready(function(){
+			$.ajax({url:"' . $url . '",success:function(result){
+				$("#draugiem-news").html(result);
+			}});
+		});
+	})(jQuery);
+	';
+	
+	drupal_add_js($js, array(
+	  'type' => 'inline',
+	  'scope' => 'header',
+	  'group' => JS_THEME,
+	  'weight' => 5,
+	));
+  
+  	$html = '<div id="draugiem-news"></div>';
+  	
+  	$html .= '<a href="http://www.draugiem.lv/brigita.lv/" target="blank" class=\'draugiem-follow-button-big\'><span>Sekot lapai</span></a>';
+  
+ 	return array(
+	  'subject' => t('Draugiem.lv News'),
+	  'content' => $html
+	);
+  }
+  
+  //----------------------------------------------------------------------------------------------
+  
+  function _draugiem_fans_view() {
+  
+	$faninfo = _draugiem_fans_get_faninfo();		
+	$html = _draugiem_fans_prep_html($faninfo);
+  
+	return array(
+	  'subject' => t('Draugiem.lv Fans'),
+	  'content' => $html
+	);
+  }
+  
+  
+  
+  function _draugiem_fans_prep_html($faninfo) {
+  
+	$html = '<div class=\'draugiem-fans\'>';
+	
+	$html .= '<div class=\'draugiem-page-logo\'>';
+	
+	$html .= '<a href="http://www.draugiem.lv/brigita.lv/" target="blank" class=\'draugiem-logo\'></a>';
+	
+	$html .= '<div class=\'draugiem-page-text\'>';
+	
+	$html .= '<a href="http://www.draugiem.lv/brigita.lv/" target="blank" class=\'draugiem-title\'><h6>Brigitas bodīte</h6></a><p>Brigitas bodīte - viss Jūsu ķipariem!</p>';
+	
+	$html .= '</div>';
+	
+	$html .= '<div class=\'clear-both\'>';
+	
+	$html .= '</div>';
+	
+	$html .= '</div>';
+		
+	$html .= '<div class=\'draugiem-fan-count\'>' . $faninfo->fancount . '</div>';
+	
+	$html .= '<a href="http://www.draugiem.lv/brigita.lv/" target="blank" class=\'draugiem-follow-button\'><span>Sekot lapai</span></a>';
+	
+	$html .= '<div class=\'draugiem-fan-photos\'>';
+	
+	foreach($faninfo->fans as $fan) {
+	  $html .= '<div class=\'draugiem-fan\' title=\'' . $fan['title'] . '\'>';
+		$html .= '<a href=\'' . $fan['link_url'] . '\'>';
+		  $html .= '<img src=\'' . $fan['image_url'] . '\' />';		  
+		$html .= '</a>';
+	  $html .= '</div>';
+	}
+	
+	$html .= '</div>';
+	 
+	$html .= '<a href="http://www.draugiem.lv/brigita.lv/" target="blank" class=\'draugiem-follow-button\'><span>Sekot lapai</span></a>';
+	
+	$html .= '</div>';
+	
+	return $html;
+  }
+  
+  
+  function _draugiem_fans_get_faninfo() {
+  
+	if($cache = cache_get('draugiem_faninfo')) {
+		$faninfo = $cache->data;
+	}
+	else {	
+		$faninfo->fans = array();
+	
+		$draugiemUrl = "https://www.draugiem.lv";
+		$bizName = "brigita.lv";
+		$count = 48;
+
+		$url = "http://www.draugiem.lv/business/ext/fans/?name=" . $bizName . "&inst=undefined&parent=undefined&showFans=1&count=" . $count;
+		
+		try {
+		  $fetchedHtml = file_get_contents($url);
+		}
+		catch(Exception $e) {
+			//...
+		}
+		
+		if(isset($fetchedHtml)) {
+			$matched = array();
+			$matchCount = preg_match('@<div class=\"fanCount\">\s*(.*?)\s*<\/div>@s', $fetchedHtml, $matched);
+			$faninfo->fancount = $matched[1]; // $matchCount > 0 ? $matched[1] : null;
+		
+			$matched = array();	
+			$pattern = "@<div title=\"(.*?)\" class=\"profileSmallIcon.?\" .*?url\('(.*?)'.*?><a href=\"(.*?)\"@";
+				
+			$matchCount = preg_match_all($pattern, $fetchedHtml, $matched);
+			
+			for($i = 0; $i < $matchCount; $i++) {	
+				$fan = array();
+				
+				$fan['title'] = $matched[1][$i];
+				$fan['image_url'] = $matched[2][$i];
+				$fan['link_url'] = $draugiemUrl . $matched[3][$i];
+				
+				$faninfo->fans[$i] = $fan;
+			}
+			
+			cache_set('draugiem_faninfo', $faninfo); //, 'cache', REQUEST_TIME + strtotime('3 days'));
+		}
+	}
+	
+	return $faninfo;
+  }
+	
+	

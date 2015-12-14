@@ -9,6 +9,8 @@
 		</link>
         <link media="all" href="css/ProductPage.css" rel="stylesheet" type="text/css">
 		</link>
+        <link href="lightbox2-master/src/css/lightbox.css" rel="stylesheet">
+        </link>
 		<link href='https://fonts.googleapis.com/css?family=Asap:700,400|Open+Sans:400,400italic,600,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 		</link>
 	</head>
@@ -99,6 +101,54 @@
 							</li>
 						</ul>
 					</div>
+                    <div class="shopping_basket_placeholder">
+                    </div>
+                    <div class="shopping_basket_sidebar">
+                        <h3 class="shopping_basket_sidebar_title">Grozs
+                        </h3>
+                        <div class="shopping_basket_sidebar_text_field">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <p class="shopping_basket_sidebar_product_title">T-krekls Sarkans
+                                        </p>
+                                        <p class="shopping_basket_sidebar_product_variation">(35cm-42cm)
+                                        </p>
+                                    </td>
+                                    <td class="shopping_basket_sidebar_price">
+                                        € 6,30
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="shopping_basket_sidebar_product_title">
+                                        T-krekls Zils 
+                                        </p>
+                                        <p class="shopping_basket_sidebar_product_variation">
+                                            (32cm-40cm)
+                                        </p>
+                                    </td>
+                                    <td class="shopping_basket_sidebar_price">
+                                        € 5,60
+                                    </td>
+                                </tr>
+                                <tr class="basket_sidebar_total">
+                                    <td>
+                                        Kopā:
+                                    </td>
+                                    <td class="shopping_basket_sidebar_price">
+                                        € 11,90
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <a href="">
+                            <div class="shopping_basket_checkout_button_holder">
+                                <div class="shopping_basket_checkout_button">Uz maksājumu
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                     <div id="shop_banner">
 					</div>
 					<div id="draugiem_follow">
@@ -150,7 +200,9 @@
 						<h1 class="content_top_title product_title">
 							Bikses Sarkanas
 						</h1>
-                        <img class="product_page_image" src="images/biksesmeitenu.jpg"/>
+                        <a href="images/biksesmeitenu.jpg" data-lightbox="product">
+                            <img class="product_page_image" src="images/biksesmeitenu.jpg"/>
+                        </a>
 						<p class="product_page_description">
 						Bikses, sarkanas. Ražotas Ķīnā. Piemērotas rudens un ziemas sezonai.
 						</p>
@@ -288,5 +340,8 @@
 	</div>
             
         </div>
-	</body>
+	
+    <script src="lightbox2-master/src/js/lightbox-plus-jquery.js">
+    </script>
+</body>
 </HTML>
