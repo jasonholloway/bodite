@@ -89,9 +89,9 @@ gulp.task('js', function() {
                 
     function rebundle() {
         return w.bundle()
-                .pipe(mold.transform(function(sourceMap, cb) {
-                    cb(null, sourceMap);
-                }))
+                //  .pipe(mold.transform(function(sourceMap, cb) {
+                //      cb(sourceMap);
+                //  }))
                 .pipe(exorcist('./build/js/bundle.js.map'))
                 .pipe(source('bundle.js'))
                 .pipe(gulp.dest('./build/js'))
