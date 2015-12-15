@@ -6,7 +6,7 @@
 		
 		var featuredProducts = null;
 				
-		this.getFeaturedProducts = function(){						
+		this.getFeaturedProducts = function(page){						
 			return new Promise(function(done, fail) {
 				if(!featuredProducts) {				
 					$http.get('http://jasonholloway.cloudant.com/bb/_design/bb/_view/featured-products')
