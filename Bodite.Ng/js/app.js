@@ -1,7 +1,7 @@
 (function() {		
 	require('angular');
 	require('angular-ui-router');
-	
+	require('es5-shim');
 		
 	angular.module('bb', ['ui.router'])
 	.config(function($stateProvider, $urlRouterProvider) {
@@ -14,16 +14,12 @@
 			views: {
 				'content': {
 					templateUrl: 'templates/front-content.html',
-					controller: function($scope) {
-						$scope.message = 'Yo, Jason!'
-					}
+					controller: 'globalController'
 				}
 			}
-		});
-					
-			
+		});								
 	});
-	
-	
+		
+    require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js']);
 	
 })();
