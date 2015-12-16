@@ -22,7 +22,7 @@ gulp.task('default', ['html', 'js', 'css', 'images'], function() {
 
 gulp.task('html', function() {
     var index = gulp.src('index.html')
-                .pipe(watch(path.join(__dirname, 'index.html')))
+                .pipe(watch('index.html'))
                 .pipe(gulp.dest('build/'))
                 .pipe(print());
     
@@ -65,13 +65,16 @@ gulp.task('js', function() {
                 
     function rebundle() {
         return w.bundle()
+                .on('error', function(err) {
+                    gutil.log(err.message);
+                })
+                .on('end', function() {
+                   w.write(); 
+                })
                 .pipe(exorcist('build/js/bundle.js.map', null, 'http://localhost:9967/'))
                 .pipe(source('bundle.js'))
                 .pipe(gulp.dest('build/js'))
-                .pipe(print())
-                .on('end', function() {
-                   w.write(); 
-                });
+                .pipe(print());
     }
 
     w.on('update', rebundle);

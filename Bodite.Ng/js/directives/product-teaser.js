@@ -9,7 +9,7 @@
 			controller: function($scope) {
 				
 			},
-			template: '<div>Y: {{item}}</div>'
+			template: '<div>Y: {{item.name}}</div>'
 			//templateUrl: 'templates/product-teaser.html'
 		}
 	});

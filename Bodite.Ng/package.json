@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "accounting": "^0.4.1",
     "angular": "^1.4.8",
     "angular-ui-router": "^0.2.15",
     "browserify": "^12.0.1",
@@ -21,6 +22,7 @@
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
     "mold-source-map": "^0.4.0",
+    "money": "^0.2.0",
     "path": "^0.12.7",
     "through2": "^2.0.0",
     "uber-watchify": "^3.5.0",
