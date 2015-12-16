@@ -1,5 +1,5 @@
 <div style="width: 100px; height: 100px; margin:5px; background-color: turquoise">
-	<h3>{{item.name.val}}</h3>
-	<span>{{item.price | currency}}</span>
-	<img ng-src="{{item.imageUrl}}" />
+	<h3>{{item.name | str}}</h3>
+	<span>{{item.price | str}}</span>
+	<img ng-src="{{item.imageUrl}}" style="width:50px;" />
 </div>

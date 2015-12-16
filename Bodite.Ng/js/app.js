@@ -5,7 +5,7 @@
 		
 	var bb = angular.module('bb', ['ui.router']);
 	
-	require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js', 'services/*.js']);
+	require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js', 'services/*.js', 'filters/*.js']);
 		
 	
 	bb.config(function($stateProvider, $urlRouterProvider) {
