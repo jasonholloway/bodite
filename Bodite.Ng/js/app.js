@@ -3,11 +3,17 @@
 	require('angular-ui-router');
 	require('es5-shim');
 		
-	angular.module('bb', ['ui.router'])
-	.config(function($stateProvider, $urlRouterProvider) {
+	var bb = angular.module('bb', ['ui.router']);
+	
+	require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js', 'services/*.js']);
 		
-		var globalController = function($scope, productService) {			
-			$scope.featuredProducts	= productService.getFeaturedProducts;
+	
+	bb.config(function($stateProvider, $urlRouterProvider) {
+		
+		var globalController = function($scope, productViewModelService) {			
+			$scope.viewModels = {
+				featuredProducts: productViewModelService.getFeaturedProducts
+			}			
 		}
 			
 			
@@ -28,7 +34,6 @@
 		
 				
 	});
-		
-    require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js']);
 	
+    
 })();
