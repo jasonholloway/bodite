@@ -39,11 +39,11 @@
 			},
 			template: function(elem, attr) {				
 				return [
-					'<table>',
-						'<tr ng-repeat="row in itemRows">',
-							'<td ng-repeat="item in row" ng-include="\'' + attr.templateUrl + '\'"></td>',
-						'</tr>',
-					'</table>'
+					'<div>',
+						'<div ng-repeat="row in itemRows">',
+							'<div ng-repeat="item in row" ng-include="\'' + attr.templateUrl + '\'"></div>',
+						'</div>',
+					'</div>'
 				].join('')
 			}
 		}
