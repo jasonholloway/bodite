@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Bodite.Front")]
+[assembly: AssemblyTitle("Bodite.Front.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Bodite.Front")]
+[assembly: AssemblyProduct("Bodite.Front.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("31e25391-0cd6-4b56-b953-5f395b832344")]
+[assembly: Guid("31dd4eb5-2515-43c4-b684-963fbad40a5b")]
 
 // Version information for an assembly consists of the following four values:
 //

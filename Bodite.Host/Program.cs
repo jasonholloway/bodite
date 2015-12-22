@@ -12,8 +12,8 @@ namespace Bodite.Host
         {
             var port = 12345;
             var url = $"http://localhost:{port}";
-            
-            using(WebApp.Start(url, x => new Root().Init(x))) 
+                        
+            using(var a = WebApp.Start(url, x => new Root().Init(x))) 
             {
                 Process.Start($"{url}/admin");
 

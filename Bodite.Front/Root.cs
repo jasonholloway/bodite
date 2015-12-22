@@ -9,6 +9,15 @@ using Owin;
 using StructureMap;
 using System;
 using Nancy.Conventions;
+using System.Collections.Generic;
+using System.Linq;
+using Nancy.TinyIoc;
+using Nancy.Authentication.Token;
+using Nancy.Routing;
+using Nancy.Authentication.Basic;
+using Bodite.Front.Modules;
+using Bodite.Front.Services;
+using System.IO;
 
 [assembly: OwinStartup(typeof(Bodite.Front.Root), "Init")]
 
@@ -21,20 +30,20 @@ namespace Bodite.Front
 
         public void Init(IAppBuilder app) {
             app.UseNancy(x => {
-                x.Bootstrapper = new BoditeNancyBootstrapper();
+                x.Bootstrapper = new BoditeNancyBootstrapper2();
             });
         }
                 
     }
+       
 
 
-
-
-    class BoditeNancyBootstrapper : StructureMapNancyBootstrapper, IRootPathProvider
+    internal class BoditeNancyBootstrapper : StructureMapNancyBootstrapper, IRootPathProvider, INancyBootstrapper
     {
         protected override void ApplicationStartup(IContainer container, IPipelines pipelines)
         {
             pipelines.OnError += (c, e) => { throw e; };
+            TokenAuthentication.Enable(pipelines, new TokenAuthenticationConfiguration(container.GetInstance<ITokenizer>()));
         }
 
         protected override void ConfigureConventions(NancyConventions nancyConventions) {
@@ -50,7 +59,7 @@ namespace Bodite.Front
                 dir["/Content"] = @"C:\dev\csharp\bodite\Bodite.Front\Content";
             });
         }
-
+        
 
         protected override void ConfigureApplicationContainer(IContainer existingContainer) 
         {
@@ -59,10 +68,16 @@ namespace Bodite.Front
                 x.For<Products>().Use<Products>();
                 x.For<CouchListener>().Use<CouchListener>();
                 x.For<ProductSearch>().Use<ProductSearch>().Singleton();
+                x.For<ITokenizer>().Use(_ => new Tokenizer());                
             });
         }
-        
-        
+
+
+
+        protected override void ConfigureRequestContainer(IContainer container, NancyContext context) {
+            //base.ConfigureRequestContainer(container, context);
+        }
+
 
         protected override IRootPathProvider RootPathProvider => this;
 
@@ -70,6 +85,61 @@ namespace Bodite.Front
             return Environment.CurrentDirectory;
         }
     }
+
+
+
+    internal class BoditeNancyBootstrapper2 : DefaultNancyBootstrapper, IRootPathProvider
+    {   
+        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines) 
+        {
+            pipelines.OnError += (c, e) => { throw e; };
+            TokenAuthentication.Enable(pipelines, new TokenAuthenticationConfiguration(container.Resolve<ITokenizer>()));
+        }
+                
+        protected override void ConfigureConventions(NancyConventions nancyConventions) {
+            nancyConventions.StaticContentsConventions.Clear();
+
+            nancyConventions.MapStaticContent((_, dir) => {
+#if DEBUG
+                dir["/Scripts"] = @"C:\dev\csharp\bodite\Bodite.Front\Scripts";
+                dir["/node_modules"] = @"C:\dev\csharp\bodite\Bodite.Front\node_modules";
+                dir["/bower_modules"] = @"C:\dev\csharp\bodite\Bodite.Front\bower_modules";
+#endif
+
+                dir["/Content"] = @"C:\dev\csharp\bodite\Bodite.Front\Content";
+            });
+        }
+                
+
+        protected override void ConfigureApplicationContainer(TinyIoCContainer x) {
+            x.Register<NancyEngine>();
+            x.Register<DefaultRouteResolver>();
+            x.Register<DefaultRequestDispatcher>();
+
+            x.Register<AuthModule>();
+            
+            x.Register<IUserValidator, UserValidator>();
+            x.Register<ITokenizer, Tokenizer>();
+            
+            x.Register<IMyCouchClient>((c, p) => new MyCouchClient("http://localhost.:5984", "bbapp", null));
+            x.Register<Products, Products>();
+            x.Register<CouchListener, CouchListener>();
+            x.Register<ProductSearch, ProductSearch>().AsSingleton();
+            x.Register<ITokenizer>((c, p) => new Tokenizer());
+        }
+               
+
+
+        protected override IRootPathProvider RootPathProvider => this;
+
+        public string GetRootPath() {
+            return Path.Combine(Environment.CurrentDirectory, "Views");
+        }
+               
+
+    }
+
+
 
 
 }

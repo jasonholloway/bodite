@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bodite.Test", "Bodite.Test\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bodite.Host", "Bodite.Host\Bodite.Host.csproj", "{BCB218A2-4C34-4EC1-B186-2E4ED3A08DF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bodite.Front.Test", "Bodite.Front.Test\Bodite.Front.Test.csproj", "{31DD4EB5-2515-43C4-B684-963FBAD40A5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{BCB218A2-4C34-4EC1-B186-2E4ED3A08DF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCB218A2-4C34-4EC1-B186-2E4ED3A08DF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCB218A2-4C34-4EC1-B186-2E4ED3A08DF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31DD4EB5-2515-43C4-B684-963FBAD40A5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31DD4EB5-2515-43C4-B684-963FBAD40A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31DD4EB5-2515-43C4-B684-963FBAD40A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31DD4EB5-2515-43C4-B684-963FBAD40A5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

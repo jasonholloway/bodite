@@ -71,6 +71,11 @@
   <ItemGroup>
     <None Include="..\Bodite.Front\app.config">
       <Link>app.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Bodite.Front\override.config">
+      <Link>override.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
