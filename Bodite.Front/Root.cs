@@ -89,7 +89,11 @@ namespace Bodite.Front
 
 
     internal class BoditeNancyBootstrapper2 : DefaultNancyBootstrapper, IRootPathProvider
-    {   
+    {
+        public BoditeNancyBootstrapper2() {
+            
+        }
+
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines) 
         {
             pipelines.OnError += (c, e) => { throw e; };
@@ -133,7 +137,7 @@ namespace Bodite.Front
         protected override IRootPathProvider RootPathProvider => this;
 
         public string GetRootPath() {
-            return Path.Combine(Environment.CurrentDirectory, "Views");
+            return Path.Combine(Environment.CurrentDirectory); //, "Views");
         }
                
 

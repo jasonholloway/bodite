@@ -1,9 +1,9 @@
 ﻿(function () {
 
-    var ng = require('angular');
+    require('angular');
     var AWS = require('aws-sdk');
 
-    var app = ng.module('BoditeAdmin');
+    var app = angular.module('BoditeAdmin');
 
 
 

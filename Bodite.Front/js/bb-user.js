@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    var angular = require('angular');
+    require('angular');
     require('angular-dialog-service');
 
 

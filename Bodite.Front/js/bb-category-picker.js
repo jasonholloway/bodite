@@ -1,9 +1,11 @@
 (function () {
-    var ng = require('angular');
+    require('angular');
     var $ = require('jquery');
     require('jquery-ui');
+    require('angular-ui-bootstrap');
+    require('angular-dialog-service');
 
-    var app = ng.module('BoditeAdmin');
+    var app = angular.module('BoditeAdmin');
 
     app.directive('categoryPicker', ['categoryRepo', function (catRepo) {
 

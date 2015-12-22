@@ -3,13 +3,16 @@
 
 (function () {
 
-    var ng = require('angular');
+    require('angular');
     var $ = require('jquery');
-    var Croppic = require('croppic');
+    var Croppic = require('./bodite_croppic');
     var pica = require('pica');
+    require('angular-ui-bootstrap');
+    require('angular-dialog-service');
+    require('blueimp-canvas-to-blob');
 
     
-    var app = ng.module('BoditeAdmin');
+    var app = angular.module('BoditeAdmin');
 
 
     app.directive('imagePicker', ['croppic', function (croppic) {

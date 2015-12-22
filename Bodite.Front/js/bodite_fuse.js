@@ -458,4 +458,9 @@
     global.Fuse = Fuse;
   }
 
+
+
+
+  module.exports = Fuse;
+
 })(this);

@@ -1,8 +1,11 @@
 ﻿(function () {
 
-    var angular = require('angular');
+    require('angular');
     var AWS = require('aws-sdk');
     require('./math.uuid');
+
+    var Fuse = require('./bodite_fuse');
+
 
     var app = angular.module('BoditeAdmin');
 

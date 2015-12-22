@@ -21,7 +21,6 @@
     "jquery-contextmenu": "*",
     "bootstrap": "*",
     "fuse": "*",
-    "blueimp-canvas-to-blob": "*",
     "smap": "*",
     "fancytree": "*",
     "croppic": "*",

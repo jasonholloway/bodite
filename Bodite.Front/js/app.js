@@ -1,6 +1,12 @@
+require('angular');
+require('angular-sanitize');
 
-(function () {    
-    var ng = require('angular');
+//require('angular-ui-bootstrap');
+
+
+(function () {
+    global.jQuery = global.$ = require('jquery');
+    require('angular');
     require('angular-route');
     require('angular-dialog-service');
 

@@ -1,10 +1,10 @@
 ﻿(function () {
     require('./math.uuid');
-    var ng = require('angular');
+    require('angular');
     var $ = require('jquery');
     
 
-    var app = ng.module('BoditeAdmin');
+    var app = angular.module('BoditeAdmin');
 
 
     app.directive('productSearchbox', function () {
