@@ -1,7 +1,5 @@
 ﻿(function () {
-
-    require('angular');
-
+    
     var app = angular.module('BoditeAdmin');
 
     // Get map of access keys from server

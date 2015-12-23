@@ -1,6 +1,4 @@
 (function () {
-    require('angular');
-    var $ = require('jquery');
     require('jquery-ui');
     require('angular-ui-bootstrap');
     require('angular-dialog-service');
@@ -20,6 +18,8 @@
                 .then(function (cats) {
                     $scope.categories = cats;
                     $scope.$applyAsync();
+                }, function(err) {
+                    throw err;
                 });
 
 

@@ -12,7 +12,7 @@ var gutil = require('gulp-util');
 var fs = require('fs');
 var shim = require('browserify-shim');
 
-//var mold = require('mold-source-map');
+var mold = require('mold-source-map');
 //var sourcemapify = require('sourcemapify');
 
 
@@ -57,13 +57,13 @@ gulp.task('js', [], function () {
     var cacheFilePath = 'temp/watchify.cache.json';
 
     var b = browserify({
-                entries: ['js/app.js'],
-                cache: watchify.getCache(cacheFilePath),
-                packageCache: {},
-                debug: true
-            })
-            .transform(debowerify)
-            .transform(bulkify);
+        entries: ['js/app.js'],
+        cache: watchify.getCache(cacheFilePath),
+        packageCache: {},
+        debug: true
+    })
+    .transform(debowerify)
+    .transform(bulkify);
 
     var w = watchify(b, { cacheFile: cacheFilePath });
 
@@ -75,7 +75,14 @@ gulp.task('js', [], function () {
                 .on('end', function () {
                     w.write();
                 })
-                .pipe(exorcist('content/js/bundle.js.map', null, 'http://localhost:8080/'))
+                .pipe(mold.transform(function (src, write) {
+                    delete src.sourcemap.sourcemap.sourcesContent;
+                    src.sourcemap.sourcemap.sourceRoot = 'http://localhost:8080/';
+                    src.sourcemap.sourcemap.file = 'bundle.js';
+                    
+                    write(src.toComment());
+                }))
+                //.pipe(exorcist('content/js/bundle.js.map'))
                 .pipe(source('bundle.js'))
                 .pipe(gulp.dest('content/js'))
                 .pipe(print());

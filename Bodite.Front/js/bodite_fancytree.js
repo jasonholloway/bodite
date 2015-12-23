@@ -1,5 +1,4 @@
 ﻿(function () {
-    var $ = require('jquery');
     require('jquery-ui');
     require('fancytree');
     

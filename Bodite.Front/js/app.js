@@ -1,12 +1,9 @@
+global.jQuery = global.$ = require('jquery');
 require('angular');
 require('angular-sanitize');
-
 //require('angular-ui-bootstrap');
 
-
 (function () {
-    global.jQuery = global.$ = require('jquery');
-    require('angular');
     require('angular-route');
     require('angular-dialog-service');
 

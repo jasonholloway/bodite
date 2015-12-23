@@ -10,7 +10,7 @@
     "angular-ui-bootstrap": "^0.14.3",
     "blueimp-canvas-to-blob": "^2.2.4",
     "browserify": "^12.0.1",
-    "exorcist": "^0.4.0",
+    "exorcist": "https://github.com/jasonholloway/exorcist/archive/master.tar.gz",
     "jquery": "^2.1.4",
     "jquery-ui": "^1.10.5",
     "mold-source-map": "^0.4.0",

@@ -1,8 +1,5 @@
 ﻿(function () {
-    require('./math.uuid');
-    require('angular');
-    var $ = require('jquery');
-    
+    require('./math.uuid');    
 
     var app = angular.module('BoditeAdmin');
 

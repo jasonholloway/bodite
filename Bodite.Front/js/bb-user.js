@@ -1,12 +1,10 @@
 ﻿(function () {
 
-    require('angular');
     require('angular-dialog-service');
-
+    
 
     var app = angular.module('BoditeAdmin');
-
-
+    
 
     app.service('user', ['$http', 'dialogs', function ($http, dialogs) {
         var self = this;

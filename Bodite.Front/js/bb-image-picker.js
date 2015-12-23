@@ -3,8 +3,6 @@
 
 (function () {
 
-    require('angular');
-    var $ = require('jquery');
     var Croppic = require('./bodite_croppic');
     var pica = require('pica');
     require('angular-ui-bootstrap');

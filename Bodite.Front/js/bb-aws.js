@@ -1,6 +1,5 @@
 ﻿(function () {
 
-    require('angular');
     var AWS = require('aws-sdk');
 
     var app = angular.module('BoditeAdmin');

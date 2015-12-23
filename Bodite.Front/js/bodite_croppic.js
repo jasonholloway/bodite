@@ -5,10 +5,7 @@
  */
 
 (function (window, document) {
-
-    var $ = require('jquery');
-
-    
+        
 	Croppic = function (options) {
 
 		var that = this;

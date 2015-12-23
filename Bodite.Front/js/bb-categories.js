@@ -1,6 +1,4 @@
 (function () {
-    require('angular');
-    var $ = require('jquery');
 
     var app = angular.module('BoditeAdmin');
 
