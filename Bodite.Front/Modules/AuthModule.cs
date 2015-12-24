@@ -25,7 +25,16 @@ namespace Bodite.Front.Modules
                 }
                 
                 return HttpStatusCode.Forbidden;                
-            }; 
+            };
+
+
+
+            Get[@"/apikeys"] = _ => {
+                this.RequiresAuthentication();
+                
+                return HttpStatusCode.OK;
+            };
+
                         
         }
     }

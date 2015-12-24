@@ -93,6 +93,24 @@ namespace Bodite.Front.Test
 
 
 
+        [Test]
+        public void ApiKeysNotServedWithoutToken() {
+            var r = _browser.Get(
+                                "/auth/apikeys",
+                                c => {
+                                    c.HttpRequest();
+                                });
+
+            Assert.That(r.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        }
+
+
+        [Test]
+        public void ApiKeysServedWithToken() {
+            throw new NotImplementedException();
+        }
+
+
         //...
 
 

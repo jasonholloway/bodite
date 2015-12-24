@@ -1,7 +1,6 @@
 global.jQuery = global.$ = require('jquery');
 require('angular');
 require('angular-sanitize');
-//require('angular-ui-bootstrap');
 
 (function () {
     require('angular-route');
