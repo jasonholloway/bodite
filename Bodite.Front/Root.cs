@@ -18,20 +18,36 @@ using Nancy.Authentication.Basic;
 using Bodite.Front.Modules;
 using Bodite.Front.Services;
 using System.IO;
+using IdentityServer3.Core.Configuration;
+using IdentityServer3.Core.Models;
+using IdentityServer3.Core.Services.InMemory;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 [assembly: OwinStartup(typeof(Bodite.Front.Root), "Init")]
 
 namespace Bodite.Front
-{
+{   
+
     public class Root
     {
-        Nancy.ViewEngines.Razor.IRazorConfiguration c = null; //just here to pull in asm to downstream projects...
+        Nancy.ViewEngines.Razor.IRazorConfiguration c = null; //here to pull asm into downstream projects...
+        
+        public void Init(IAppBuilder app) 
+        {
+            app.UseIdentityServer(new IdentityServerOptions() {
+                Factory = new IdentityServerServiceFactory()                                
+                                .UseInMemoryClients(Auth.Clients)
+                                .UseInMemoryUsers(new List<InMemoryUser>())
+                                .UseInMemoryScopes(Auth.Scopes),
 
-
-        public void Init(IAppBuilder app) {
+                EnableWelcomePage = true
+            });
+            
             app.UseNancy(x => {
                 x.Bootstrapper = new BoditeNancyBootstrapper2();
             });
+
         }
                 
     }

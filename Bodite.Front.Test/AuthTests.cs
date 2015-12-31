@@ -20,28 +20,29 @@ namespace Bodite.Front.Test
 
         public AuthTests() {
             var userValidator = Substitute.For<IUserValidator>();
-            userValidator.Validate(Arg.Any<string>(), Arg.Any<string>())
-                            .Returns(call => {
-                                var name = call.ArgAt<string>(0);
-
-                                if(name == "Jason") {
-                                    var identity = Substitute.For<IUserIdentity>();
-                                    identity.UserName.Returns(call.ArgAt<string>(0));
-                                    return identity;
-                                }
-                                else {
-                                    return null;
-                                }
+            userValidator.Validate(Arg.Is("Jason"), Arg.Any<string>())
+                            .Returns(_ => {
+                                var identity = Substitute.For<IUserIdentity>();
+                                identity.UserName.Returns("Jason");
+                                return identity;
                             });
 
             var tokenizer = Substitute.For<ITokenizer>();
+
             tokenizer.Tokenize(Arg.Any<IUserIdentity>(), Arg.Any<NancyContext>())
                             .Returns("12345");
+            
+            tokenizer.Detokenize(Arg.Is("12345"), Arg.Any<NancyContext>(), Arg.Any<IUserIdentityResolver>())
+                        .Returns(_ => {
+                            var identity = Substitute.For<IUserIdentity>();
+                            identity.UserName.Returns("Jason");
+                            return identity;
+                        });
 
 
             _browser = new Browser(b => {
                 b.Module<AuthModule>();
-
+                
                 b.ApplicationStartup((c, p) => {
                     c.Register(tokenizer);
                     c.Register(userValidator);
@@ -107,12 +108,22 @@ namespace Bodite.Front.Test
 
         [Test]
         public void ApiKeysServedWithToken() {
-            throw new NotImplementedException();
+            var r = _browser.Get(
+                                "/auth/apikeys",
+                                c => {
+                                    c.HttpRequest();
+                                    c.Header("Authorization", $"Token 12345");
+                                });
+
+            Assert.That(r.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+            //also test returned key values
+            //...
+
+            //NEED TO ENABLE TOKEN AUTH ON TEST BROWSER!!!
+
         }
-
-
-        //...
-
+        
 
     }
 }

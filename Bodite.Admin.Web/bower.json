@@ -1,0 +1,35 @@
+{
+  "name": "bodite.admin.web",
+  "version": "0.1",
+  "authors": [
+    "Jason Holloway <miceeatnicerice@hotmail.com>"
+  ],
+  "description": "Brigitas Bodite Admin WebApp",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#~1.4.8",
+    "angular-route": "*",
+    "angular-bootstrap": "~0.14.3",
+    "angular-sanitize": "*",
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
+    "jquery-validation": "*",
+    "jquery-contextmenu": "*",
+    "bootstrap": "*",
+    "fuse": "*",
+    "smap": "*",
+    "fancytree": "*",
+    "croppic": "*",
+    "angular-dialog-service": "~5.2.9"
+  },
+  "resolutions": {
+    "angular": "~1.4.7"
+  }
+}

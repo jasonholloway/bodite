@@ -30,6 +30,9 @@ namespace Bodite.Front.Modules
 
 
             Get[@"/apikeys"] = _ => {
+
+                var r = Request;
+
                 this.RequiresAuthentication();
                 
                 return HttpStatusCode.OK;
