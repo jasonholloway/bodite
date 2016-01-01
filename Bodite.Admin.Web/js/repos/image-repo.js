@@ -5,7 +5,8 @@
 
 
     app.service('imageRepo', ['aws', function (aws) {
-        var createKey = function () {
+        
+        function createKey() {
             return 'prodimg/' + Math.uuidFast();
         }
 

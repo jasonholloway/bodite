@@ -8,6 +8,8 @@ require('angular-sanitize');
 
     var app = angular.module('BoditeAdmin', ['ngRoute', 'dialogs.main']);
 
+    app.constant('DB_LOCATION', 'https://jasonholloway.cloudant.com/bb/');
+
     app.config(['$routeProvider', function ($routeProvider) {
 
         $routeProvider
