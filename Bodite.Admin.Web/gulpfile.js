@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var watch = require('gulp-watch');
+var merge = require('merge2');
 var browserify = require('browserify');
 var watchify = require('uber-watchify');
 var source = require('vinyl-source-stream');
@@ -12,7 +13,14 @@ var shim = require('browserify-shim');
 var mold = require('mold-source-map');
 var concat = require('gulp-concat');
 var print = require('gulp-print');
-var webserver = require('gulp-webserver');
+var connect = require('gulp-connect');
+var through = require('through2');
+var del = require('del');
+var runSequence = require('run-sequence');
+
+
+var devMode = true;
+
 
 var config = {
     
@@ -30,12 +38,30 @@ var config = {
         './bower_components/fancytree/dist/skin-xp/*.gif'
     ],
 
-
-    otherPaths: [
-    ]
-
 };
 
+
+
+
+gulp.task('clean', function(cb) {
+   del.sync('build');
+   cb();
+});
+
+
+
+gulp.task('bits', function () {
+    return merge(
+        gulp.src([
+            './bower_components/bootstrap/dist/css/bootstrap.css',
+            './bower_components/fancytree/dist/skin-xp/*.gif',
+            './bower_components/fancytree/dist/skin-xp/ui.fancytree.css',
+            './bower_components/fancytree/dist/skin-xp/*.gif',
+            './bower_components/croppic/assets/css/croppics.css'
+        ])
+        .pipe(gulp.dest('build/css/'))
+    );
+})
 
 
 
@@ -44,7 +70,7 @@ gulp.task('js', [], function () {
     var cacheFilePath = 'tmp/watchify.cache.json';
 
     var b = browserify({
-        entries: ['js/app.js'],
+        entries: ['js/app.js'].concat(devMode ? ['js_dev/dev.js'] : []),
         cache: watchify.getCache(cacheFilePath),
         packageCache: {},
         debug: true
@@ -85,22 +111,20 @@ gulp.task('js', [], function () {
 
 
 
-gulp.task('webserver', function() {
-    return gulp.src('build')
-                .pipe(webserver({
-                    livereload: false,
-                    //open: 'http://localhost:999/',
-                    port: 999,
-                    https: false
-                }));
+gulp.task('server', function() {    
+    connect.server({
+        root: 'build',
+        port: 999,
+        debug: true
+    });
 });
 
 
-gulp.task('webserver-sourcemaps', function() {
-    return gulp.src('')
-                .pipe(webserver({
-                    port: 9991                   
-                }));
+gulp.task('server-sourcemaps', function() {
+    connect.server({
+        root: '',
+        port: 9991
+    });
 })
 
 
@@ -130,28 +154,23 @@ gulp.task('img', ['jquery-ui-img'], function () {
 });
 
 
-gulp.task('other', [], function () {
-    return gulp.src(config.otherPaths)
-                .pipe(gulp.dest('build/misc'))
-                .pipe(print());
-});
 
 
 gulp.task('html', [], function() {
    return gulp.src('./html/**/*.html')
                 .pipe(watch('./html/**/*.html'))
                 .pipe(gulp.dest('./build'))
-                .pipe(print()); 
+                .pipe(print());
 });
-// 
-// gulp.task('html-templates', [], function() {
-//    return gulp.src('./html/templates/**/*.html')
-//                 .pipe(gulp.dest('build/templates'))
-//                 .pipe(print()); 
-// });
 
 
 
-gulp.task('default', ['html', /*'html-templates',*/ 'js', 'css', 'img', 'other', 'webserver', 'webserver-sourcemaps'], function () {
-    //...
+gulp.task('build', function(cb) {
+    return runSequence('clean', ['html', 'bits', 'js', 'css', 'img'], cb);
+});
+
+
+gulp.task('dev', function(cb) {    
+    devMode = true;    
+    return runSequence(['build', 'server', 'server-sourcemaps']);
 });

@@ -24,7 +24,7 @@ require('angular-sanitize');
     }]);
 
 
-    require('bulk-require')(__dirname, ['*.js']);
+    require('bulk-require')(__dirname, ['**/*.js']);   
 
 })();
 

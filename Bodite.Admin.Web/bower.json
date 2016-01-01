@@ -27,7 +27,8 @@
     "smap": "*",
     "fancytree": "*",
     "croppic": "*",
-    "angular-dialog-service": "~5.2.9"
+    "angular-dialog-service": "~5.2.9",
+    "url-join": "*"
   },
   "resolutions": {
     "angular": "~1.4.7"

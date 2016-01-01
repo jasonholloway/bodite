@@ -3,9 +3,9 @@
 
 (function () {
 
-    var Croppic = require('./bodite_croppic');
+    var Croppic = require('../bodite_croppic');
     var pica = require('pica');
-    require('angular-ui-bootstrap');
+    require('angular-bootstrap');
     require('angular-dialog-service');
     require('blueimp-canvas-to-blob');
 

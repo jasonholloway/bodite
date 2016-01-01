@@ -1,6 +1,6 @@
 (function () {
     require('jquery-ui');
-    require('angular-ui-bootstrap');
+    require('angular-bootstrap');
     require('angular-dialog-service');
 
     var app = angular.module('BoditeAdmin');

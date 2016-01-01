@@ -1,5 +1,5 @@
 ﻿(function () {
-    require('./math.uuid');    
+    require('../math.uuid');    
 
     var app = angular.module('BoditeAdmin');
 
