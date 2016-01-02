@@ -8,22 +8,31 @@
     <product ng-repeat="p in products.filteredItems track by p._id" ng-init="product.init(p)">
         <form>
             <div class="names">
+                <label>Name</label>
                 <input ng-model="product.working.name.LV" class="latvian-input" />
                 <input ng-model="product.working.name.RU" class="russian-input" />
             </div>
 
             <div class="description">
+                <label>Description</label>
                 <textarea class="latvian-input"></textarea>
                 <textarea class="russian-input"></textarea>
             </div>
             
             <div class="price">
+                <label>Price</label>
                 <input ng-model="product.working.price" currency-mask />
             </div>            
 
-            <category-picker category-keys="product.working.categoryKeys"></category-picker>
+            <div class="categories">
+                <label>Categories</label>
+                <category-picker category-keys="product.working.categoryKeys"></category-picker>
+            </div>
 
-            <image-picker images="product.working.images"></image-picker>
+            <div class="images">
+                <label>Images</label>
+                <image-picker images="product.working.images"></image-picker>
+            </div>
 
             <input type="button" ng-click="product.save()" value="Save" />
             <input type="button" ng-click="product.revert()" value="Revert" />

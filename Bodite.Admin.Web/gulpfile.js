@@ -20,7 +20,7 @@ var runSequence = require('run-sequence');
 gulp.if = require('gulp-if'); 
 
 
-var devMode = true;
+var devMode = false;
 
 
 var config = {
@@ -89,7 +89,7 @@ gulp.task('js', [], function () {
                     gutil.log(err.message);
                 })
                 .on('end', function () {
-                    w.write();
+                    if(devMode) w.write();
                 })
                 .pipe(mold.transform(function (src, write) {
                     delete src.sourcemap.sourcemap.sourcesContent;
@@ -175,5 +175,5 @@ gulp.task('build', function(cb) {
 
 gulp.task('dev', function(cb) {    
     devMode = true;    
-    return runSequence(['build', 'server', 'server-sourcemaps']);
+    return runSequence(['build', 'server', 'server-sourcemaps'], cb);
 });
