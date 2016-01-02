@@ -5,8 +5,6 @@
 
     var app = angular.module('BoditeAdmin');
 
-    app.constant('DB_LOCATION', 'https://jasonholloway.cloudant.com/bb/');
-
 
     app.service('productRepo', ['$http', 'DB_LOCATION', function ($http, DB_LOCATION) {
         var items = new Map();

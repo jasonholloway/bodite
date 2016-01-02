@@ -17,6 +17,7 @@ var connect = require('gulp-connect');
 var through = require('through2');
 var del = require('del');
 var runSequence = require('run-sequence');
+gulp.if = require('gulp-if'); 
 
 
 var devMode = true;
@@ -78,7 +79,9 @@ gulp.task('js', [], function () {
     .transform(debowerify)
     .transform(bulkify);
 
-    var w = watchify(b, { cacheFile: cacheFilePath });
+    var w = devMode 
+            ? watchify(b, { cacheFile: cacheFilePath }) 
+            : b;
 
     function rebundle() {
         return w.bundle()
@@ -134,7 +137,7 @@ gulp.task('server-sourcemaps', function() {
 
 gulp.task('css', [], function () {
     return gulp.src('./css/**/*.css')
-                .pipe(watch('./css/**/*.css'))
+                .pipe(gulp.if(devMode, watch('./css/**/*.css')))
                 .pipe(gulp.dest('./build/css'))
                 .pipe(print());
 });
@@ -148,7 +151,7 @@ gulp.task('jquery-ui-img', [], function () {
 
 gulp.task('img', ['jquery-ui-img'], function () {
     return gulp.src('./img/**/*')
-                .pipe(watch('./img/**/*'))
+                .pipe(gulp.if(devMode, watch('./img/**/*')))
                 .pipe(gulp.dest('./build/img'))
                 .pipe(print());
 });
@@ -158,7 +161,7 @@ gulp.task('img', ['jquery-ui-img'], function () {
 
 gulp.task('html', [], function() {
    return gulp.src('./html/**/*.html')
-                .pipe(watch('./html/**/*.html'))
+                .pipe(gulp.if(devMode, watch('./html/**/*.html')))
                 .pipe(gulp.dest('./build'))
                 .pipe(print());
 });

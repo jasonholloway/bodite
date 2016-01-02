@@ -16,6 +16,10 @@
                 <textarea class="latvian-input"></textarea>
                 <textarea class="russian-input"></textarea>
             </div>
+            
+            <div class="price">
+                <input ng-model="product.working.price" currency-mask />
+            </div>            
 
             <category-picker category-keys="product.working.categoryKeys"></category-picker>
 
