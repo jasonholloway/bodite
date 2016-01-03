@@ -10,10 +10,19 @@
         var items = new Map();
         var fuse;
 
+        function complete(p) {            
+            p.name = p.name || {};
+            p.description = p.description || {};
+            p.images = p.images || [];
+            return p;
+        }
+
+
+
         $http.get(urlJoin(DB_LOCATION, '_design/bbapp/_view/all_products'))
         .then(function (resp) {
             for(var row of resp.data.rows) {
-                items.set(row.id, row.value);
+                items.set(row.id, complete(row.value));
             }
 
             fuse = new Fuse({
@@ -32,14 +41,9 @@
             },
 
             create: function () {
-                var prod = {
-                    _id: 'product/' + Math.uuidFast(),
-                    name: {
-                        LV: '',
-                        RU: ''
-                    },
-                    images: []
-                }
+                var prod = complete({
+                    _id: 'product/' + Math.uuidFast()
+                })
 
                 items.set(prod._id, prod);
 

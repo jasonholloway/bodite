@@ -6,21 +6,26 @@
     </div>
 
     <product ng-repeat="p in products.filteredItems track by p._id" ng-init="product.init(p)">
-        <form>
+        <form>            
+            <div class="languages">
+                <input type="button" value="Latvian" class="LV" ng-click="product.switchLanguage('LV')" />
+                <input type="button" value="Russian" class="RU" ng-click="product.switchLanguage('RU')" />
+            </div>
+            
             <div class="names">
-                <label>Name</label>
-                <input ng-model="product.working.name.LV" class="latvian-input" />
-                <input ng-model="product.working.name.RU" class="russian-input" />
+                <label>{{ product.labels.name }}</label>
+                <input ng-model="product.working.name.LV" class="lang-switchable LV" />
+                <input ng-model="product.working.name.RU" class="lang-switchable RU" />
             </div>
 
             <div class="description">
-                <label>Description</label>
-                <textarea class="latvian-input"></textarea>
-                <textarea class="russian-input"></textarea>
+                <label>{{ product.labels.description }}</label>
+                <textarea ng-model="product.working.description.LV" class="lang-switchable LV"></textarea>
+                <textarea ng-model="product.working.description.RU" class="lang-switchable RU"></textarea>
             </div>
             
             <div class="price">
-                <label>Price</label>
+                <label>{{ product.labels.price }}</label>
                 <input ng-model="product.working.price" currency-mask />
             </div>            
 

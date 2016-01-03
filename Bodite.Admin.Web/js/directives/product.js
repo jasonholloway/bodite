@@ -1,58 +1,8 @@
-﻿(function () {
-    require('../math.uuid');    
-
-    var app = angular.module('BoditeAdmin');
-
-
-    app.directive('productSearchbox', function () {
-        return {
-            restrict: 'E',
-            scope: true,
-            template: '<input type="search" placeholder="Meklēt..." >',
-            link: function (scope, elem) {
-                var lastVal;
-
-                $(elem).on("input", function (e) {
-                    var val = e.target.value;
-
-                    if (lastVal != val) {
-                        lastVal = val;
-
-                        if (scope.products) {
-                            scope.$applyAsync(function () {
-                                scope.products.filter(val);
-                            }
-                            )
-                        }
-                    }
-                    ;
-                });
-            }
-        }
-    })
-    
-
-    app.directive('products', function () {
-        return {
-            restrict: 'E',
-            scope: true,
-            controller: ['productRepo', function (repo) {
-                this.filteredItems = [];
-
-                this.create = function () {
-                    this.filter('');
-                    this.filteredItems = [repo.create()];
-                }
-
-                this.filter = function (term) {
-                    this.filteredItems = repo.filter(term);
-                }
-            }],
-            controllerAs: 'products'
-        }
-    })
-    
-
+(function() {
+    var angular = window.angular;
+    var Translator = require('../Translator');
+	var app = angular.module('BoditeAdmin');
+	
     app.directive('product', function () {
         return {
             restrict: 'E',
@@ -65,7 +15,22 @@
                 vm.pristine = {};
                 vm.working = {};
 
-                var refresh = function () {
+                $scope.lang = 'LV';
+                var translator = new Translator($scope);
+                
+                translator.add('Name', { LV: 'Vards', RU: 'Imya' });
+
+
+                vm.labels = {
+                    description: 'Description',
+                    name: 'Name',
+                    price: 'Price'
+                }
+
+
+
+
+                function refresh() {
                     var isPristine = angular.equals(vm.working, vm.pristine);
 
                     if (isPristine) {
@@ -74,6 +39,10 @@
                     else {
                         elem.addClass('dirty');
                     }
+                                        
+                    var switchables = elem.find('.lang-switchable');                                        
+                    switchables.not('.' + $scope.lang).hide();
+                    switchables.filter('.' + $scope.lang).show();                    
                 }
 
 
@@ -107,17 +76,17 @@
                     vm.working = angular.copy(vm.pristine);
                 }
 
+
+                vm.switchLanguage = function(code) {             
+                    $scope.lang = code.toUpperCase();                    
+                    refresh();                                        
+                }
+
+
             }]
 
         }
     })
-    
-
+	
+	
 })();
-
-
-
-
-
-
-

@@ -18,6 +18,7 @@ var through = require('through2');
 var del = require('del');
 var runSequence = require('run-sequence');
 gulp.if = require('gulp-if'); 
+var karma = require('karma');
 
 
 var devMode = false;
@@ -128,6 +129,14 @@ gulp.task('server-sourcemaps', function() {
         root: '',
         port: 9991
     });
+})
+
+
+gulp.task('test', function(cb) {
+    new karma.Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, cb).start();
 })
 
 
