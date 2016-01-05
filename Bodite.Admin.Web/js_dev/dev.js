@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     require('angular');
     require('../js/math.uuid');
 
@@ -7,7 +7,7 @@
 
     app.config(function($provide) {       
        $provide.service('imageRepo', imageRepo);        
-       $provide.constant('DB_LOCATION', 'http://localhost:5984/bbapp');                
+       $provide.constant('DB_LOCATION', 'http://localhost:5984/bb');                
     });
 
 
