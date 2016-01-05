@@ -43,14 +43,14 @@
             controllerAs: '$ctrl',
 
             template: [
-                '<image-set-record ng-repeat="image in $ctrl.images" image="image" images="$ctrl.images"></image-set-record>' +
+                '<image-instance ng-repeat="image in $ctrl.images" image="image" images="$ctrl.images"></image-instance>' +
                 '<input type="button" value="Add..." ng-click="$ctrl.add()" />'
             ].join()
         }
     }])
 
 
-    app.directive('imageSetRecord', ['imageRepo', function (imageRepo) {
+    app.directive('imageInstance', ['imageRepo', function (imageRepo) {
         return {
             restrict: 'E',
             scope: {

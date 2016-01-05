@@ -13,7 +13,7 @@
 		if(this.parent) { setPrototypeOf(this.current, this.parent.current) }		
 		
 		$scope.translator = this;
-		$scope.t = this.translate.bind(this);	
+		//$scope.t = this.translate.bind(this);	
 	}	
 	
 	Translator.prototype.add = function(key, tran) {

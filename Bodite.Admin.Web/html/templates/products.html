@@ -13,34 +13,35 @@
             </div>
             
             <div class="names">
-                <label>{{ product.labels.name }}</label>
-                <input ng-model="product.working.name.LV" class="lang-switchable LV" />
-                <input ng-model="product.working.name.RU" class="lang-switchable RU" />
-            </div>
-
-            <div class="description">
-                <label>{{ product.labels.description }}</label>
-                <textarea ng-model="product.working.description.LV" class="lang-switchable LV"></textarea>
-                <textarea ng-model="product.working.description.RU" class="lang-switchable RU"></textarea>
+                <input ng-model="product.working.name.LV" class="lang-switchable LV" placeholder="Nosaukums" />
+                <input ng-model="product.working.name.RU" class="lang-switchable RU" placeholder="Hазвание"/>
             </div>
             
             <div class="price">
-                <label>{{ product.labels.price }}</label>
+                <label>Cena (EUR)</label>
                 <input ng-model="product.working.price" currency-mask />
-            </div>            
+            </div>   
+
+            <div class="description">
+                <textarea ng-model="product.working.description.LV" class="lang-switchable LV" placeholder="Apraksts..."></textarea>
+                <textarea ng-model="product.working.description.RU" class="lang-switchable RU" placeholder="Oписание..."></textarea>
+            </div>         
 
             <div class="categories">
-                <label>Categories</label>
+                <label>Produkta kategorija</label>
                 <category-picker category-keys="product.working.categoryKeys"></category-picker>
             </div>
 
             <div class="images">
-                <label>Images</label>
+                <label>Foto</label>
                 <image-picker images="product.working.images"></image-picker>
             </div>
 
-            <input type="button" ng-click="product.save()" value="Save" />
-            <input type="button" ng-click="product.revert()" value="Revert" />
+            <div class="product-edit-buttons">    
+                <input type="button" ng-click="product.save()" value="Save" />
+                <input type="button" ng-click="product.revert()" value="Revert" />
+                <input type="button" value="Delete" />
+            </div>
         </form>
     </product>
 

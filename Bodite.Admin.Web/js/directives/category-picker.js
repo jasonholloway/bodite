@@ -104,7 +104,7 @@
             }],
             template: [
                 '{{category.$$pathString}}',
-                '<input type="button" value="delete" ng-click="delete()" />'
+                '<input type="button" class="delete-product-category" ng-click="delete()" />'
             ].join('')
         }
     }])

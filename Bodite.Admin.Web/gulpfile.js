@@ -132,6 +132,7 @@ gulp.task('server-sourcemaps', function() {
 })
 
 
+
 gulp.task('test', function(cb) {
     new karma.Server({
         configFile: __dirname + '/karma.conf.js',
@@ -139,6 +140,12 @@ gulp.task('test', function(cb) {
     }, cb).start();
 })
 
+
+gulp.task('tdd', function(cb) {
+    new karma.Server({
+        configFile: __dirname + '/karma.conf.js',
+    }, cb).start();
+})
 
 
 
