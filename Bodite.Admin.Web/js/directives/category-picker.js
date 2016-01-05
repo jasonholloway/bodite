@@ -28,8 +28,7 @@
                     var dialScope = $scope.$new();
 
                     var dialLinker = $compile([
-                        '<form>',
-                            '<label>Category:</label>',
+                        '<form id="category-picker-popup">',
                             '<select>',
                                 '<option ng-repeat="cat in categories" value="{{cat._id}}">{{cat.$$pathString}}</option>',
                             '</select>',
@@ -40,8 +39,9 @@
 
                     dialDiv.dialog({
                         resizable: false,
-                        height: 140,
+                        //height: 140,
                         modal: true,
+                        title: "Izvēlēties kategoriju:",
                         buttons: {
                             OK: function () {
                                 var sel = $(this).find('select');
@@ -61,7 +61,7 @@
                                 $(this).dialog("close");
                                 dialScope.$destroy();
                             },
-                            Cancel: function () {
+                            Atcelt: function () {
                                 $(this).dialog("close");
                                 dialScope.$destroy();
                             }

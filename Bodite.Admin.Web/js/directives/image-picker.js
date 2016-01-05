@@ -1,4 +1,4 @@
-﻿/// <reference path="angular.js" />
+/// <reference path="angular.js" />
 /// <reference path="bodite_admin.js" />
 
 (function () {
@@ -35,7 +35,7 @@
                         $scope.$apply();
                     }.bind(this),
                     function () {
-                        alert('Failed to save image!');
+                        alert('Attēls netika saglabāts!');
                     })
 
                 }.bind(this);
@@ -71,7 +71,7 @@
             controllerAs: '$c',
 
             template: [
-                '<input type="button" value="Remove" ng-click="$c.remove()" />',
+                '<input type="button" class="remove-image" ng-click="$c.remove()" />',
                 '<img src="{{$c.url}}" crossOrigin="anonymous" />',
             ].join('')
         }
