@@ -19,7 +19,7 @@
 
 
 
-        $http.get(urlJoin(DB_LOCATION, '_design/bbapp/_view/all_products'))
+        $http.get(urlJoin(DB_LOCATION, '_design/bb/_view/all_products'))
         .then(function (resp) {
             for(var row of resp.data.rows) {
                 items.set(row.id, complete(row.value));

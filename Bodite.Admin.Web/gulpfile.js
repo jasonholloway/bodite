@@ -24,6 +24,7 @@ var karma = require('karma');
 var devMode = false;
 
 
+
 var config = {
     
     cssPaths: [
@@ -119,16 +120,17 @@ gulp.task('server', function() {
     connect.server({
         root: 'build',
         port: 999,
-        debug: true
+        debug: true,
+        livereload: true
     });
 });
 
 
 gulp.task('server-sourcemaps', function() {
-    connect.server({
-        root: '',
-        port: 9991
-    });
+//    connect.server({
+//        root: '',
+//        port: 9991
+//    });
 })
 
 
@@ -148,6 +150,7 @@ gulp.task('css', [], function () {
     return gulp.src('./css/**/*.css')
                 .pipe(gulp.if(devMode, watch('./css/**/*.css')))
                 .pipe(gulp.dest('./build/css'))
+                .pipe(connect.reload())
                 .pipe(print());
 });
 
@@ -162,6 +165,7 @@ gulp.task('img', ['jquery-ui-img'], function () {
     return gulp.src('./img/**/*')
                 .pipe(gulp.if(devMode, watch('./img/**/*')))
                 .pipe(gulp.dest('./build/img'))
+                .pipe(connect.reload())
                 .pipe(print());
 });
 
@@ -172,6 +176,7 @@ gulp.task('html', [], function() {
    return gulp.src('./html/**/*.html')
                 .pipe(gulp.if(devMode, watch('./html/**/*.html')))
                 .pipe(gulp.dest('./build'))
+                .pipe(connect.reload())
                 .pipe(print());
 });
 
