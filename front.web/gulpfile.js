@@ -14,6 +14,8 @@ var exorcist = require('exorcist');
 var uglifyify = require('uglifyify');
 var mold = require('mold-source-map');
 var connect = require('gulp-connect');
+var nodeStatic = require('node-static');
+var http = require('http');
 var runSequence = require('run-sequence');
 var gulpIf = require('gulp-if');
 
@@ -24,7 +26,7 @@ var devMode = false;
 
 gulp.task('dev', function(cb) {
    devMode = true;
-   runSequence(['build', 'devServer'], cb);
+   runSequence(['build', 'devServer', 'mapServer'], cb);
 });
 
 
@@ -43,24 +45,24 @@ gulp.task('devServer', function() {
 });
 
 
-gulp.task('mapServer', function() {
-    //....
+gulp.task('mapServer', function() {    
+    var mapServer = new nodeStatic.Server({ cache: false });
+    
+    http.createServer(function (request, response) {
+        request.addListener('end', function () {            
+            mapServer.serve(request, response);
+        }).resume();
+    }).listen(9991);
 });
 
 
 
-gulp.task('html', function() {
-    var index = gulp.src('index.html')
-                .pipe(gulpIf(devMode, watch('index.html')))
-                .pipe(gulp.dest('build/'));
-    
-    var templates = gulp.src('templates/**/*.html')
-                    .pipe(gulpIf(devMode, watch('templates/**/*.html')))
-                    .pipe(gulp.dest('build/templates/'));
-                     
-    return merge(index, templates)
-            .pipe(print())
-            .pipe(connect.reload());   
+gulp.task('html', function() {    
+    return gulp.src('html/**/*.html')
+            .pipe(gulpIf(devMode, watch('html/**/*.html')))
+            .pipe(gulp.dest('build/'))
+            .pipe(connect.reload()) 
+            .pipe(print());
 })
 
 
@@ -98,13 +100,20 @@ gulp.task('js', function() {
                 
     function rebundle() {
         return w.bundle()
-                .on('error', function(err) {
+                .on('error', function (err) {
                     gutil.log(err.message);
                 })
-                .on('end', function() {
-                   w.write(); 
+                .on('end', function () {
+                    if(devMode) w.write();
                 })
-                .pipe(exorcist('build/js/bundle.js.map', null, 'http://localhost:9967/'))
+                .pipe(mold.transform(function (src, write) {
+                    delete src.sourcemap.sourcemap.sourcesContent;
+                    src.sourcemap.sourcemap.sourceRoot = 'http://localhost:9991/';
+                    src.sourcemap.sourcemap.file = 'bundle.js';
+                    
+                    write(src.toComment());
+                }))
+                //.pipe(exorcist('build/js/bundle.js.map'))
                 .pipe(source('bundle.js'))
                 .pipe(gulp.dest('build/js'))
                 .pipe(connect.reload())
