@@ -44,7 +44,7 @@
 
             template: [
                 '<image-instance ng-repeat="image in $ctrl.images" image="image" images="$ctrl.images"></image-instance>' +
-                '<input type="button" value="Add..." ng-click="$ctrl.add()" />'
+                '<input type="button" class="add-image-button" value="Pievienot" ng-click="$ctrl.add()" />'
             ].join()
         }
     }])

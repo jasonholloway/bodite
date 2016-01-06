@@ -74,7 +74,7 @@
             controllerAs: '$c',
             template: [
                 '<category-chip ng-repeat="categoryKey in product.working.categoryKeys"></category-chip>',
-                '<input type="button" value="add" class="addCategoryButton" ng-click="promptForCategory()" />',
+                '<input type="button" value="Pievienot" class="addCategoryButton" ng-click="promptForCategory()" />',
             ].join('')
         }
 

@@ -52,6 +52,34 @@ product.dirty {
     background-color: #FF6D62;
 }
 
+.languages {
+    width:100%;
+}
+
+.languages .LV {
+    background-image:url('../img/latvian_flag.png');
+    background-size:16px 16px;
+    background-repeat:no-repeat;
+    background-position:8% 50%;
+    padding-left:22px;
+}
+
+.languages .LV:hover {
+    background-color:rgb(255,255,255);
+}
+
+.languages .RU {
+    background-image:url('../img/russian_flag.png');
+    background-size:16px 16px;
+    background-repeat:no-repeat;
+    background-position:8% 50%;
+    padding-left:22px;
+}
+
+.languages .RU:hover {
+    background-color:rgb(255,255,255);
+}
+
 product .names {
     display: inline-block;
     vertical-align: top;
@@ -64,7 +92,9 @@ product .names input {
     margin-top: 4px;
     margin-bottom:4px;
     padding: 4px;
+    font-size:16px;
     font-weight: bold;
+    width:300px;
 }
 
 input[type="button"] {
@@ -129,6 +159,17 @@ category-chip {
    background-image:url('../img/delete_button_hover.png');
 }
 
+.addCategoryButton {
+    background-image:url('../img/add_button.png');
+    background-size:21px 21px;
+    background-repeat:no-repeat;
+    padding-left:20px;
+}
+
+.addCategoryButton:hover {
+    background-image:url('../img/add_button_hover.png');
+}
+
 image-picker {
   display:block;
   margin-bottom:10px;  
@@ -173,9 +214,20 @@ image-instance input[type="button"]:hover {
     margin-top:10px;
 }
 
+.add-image-button {
+     background-image:url('../img/add_button.png');
+    background-size:21px 21px;
+    background-repeat:no-repeat;
+    padding-left:20px;
+}
+
+.add-image-button:hover {
+    background-image:url('../img/add_button_hover.png');
+}
+
 .product-edit-buttons {
     display:block;
-    width:190px;
+    width:200px;
     margin: 0 auto;
 }
 
