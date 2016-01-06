@@ -64,20 +64,12 @@ product.dirty {
     padding-left:22px;
 }
 
-.languages .LV:hover {
-    background-color:rgb(255,255,255);
-}
-
 .languages .RU {
     background-image:url('../img/russian_flag.png');
     background-size:16px 16px;
     background-repeat:no-repeat;
     background-position:8% 50%;
     padding-left:22px;
-}
-
-.languages .RU:hover {
-    background-color:rgb(255,255,255);
 }
 
 product .names {
@@ -99,6 +91,10 @@ product .names input {
 
 input[type="button"] {
     border-radius:5px;
+}
+
+input[type="button"]:hover {
+    background-color:rgb(240,240,240);
 }
 
 input[type="search"] {
