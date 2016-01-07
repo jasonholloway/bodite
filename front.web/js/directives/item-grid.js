@@ -13,7 +13,8 @@
 				'cols': '=',
 				'rows': '=',
                 'numPageLinks': '=?',
-                'pageIndex': '=?'
+                'pageIndex': '=?',
+                'pageLinkUrlProvider': '&'
 			},
 			controller: function($scope) {                
                 $scope.pageIndex = $scope.pageIndex || 0;
@@ -21,7 +22,9 @@
                 
 				var pageSize = ($scope.rows || 6) * ($scope.cols || 3);
 				                                
-				$scope.source()({ index: 0, size: pageSize })                
+                var pageLinkUrlProvider = $scope.pageLinkUrlProvider();
+                                                
+				$scope.source()({ index: $scope.pageIndex, size: pageSize })                
                 .then(function(result) {
 					$scope.items = result.items;
 					
@@ -35,7 +38,8 @@
                     for(var i = minPage; i < maxPage; i++) {
                         $scope.pageLinks.push({
                             pageIndex: i,
-                            isCurrent: i == $scope.pageIndex
+                            isCurrent: i == $scope.pageIndex,
+                            url: pageLinkUrlProvider(i + 1) //not zero-based!
                         });
                     }
                     
@@ -67,9 +71,9 @@
                         '<div class="pageLinks">',
                             '<span class="pageLink" ng-repeat="link in pageLinks" ng-class="{currPageLink: link.isCurrent}">',
                                 '<a ng-if="!link.isCurrent" href="{{link.url}}">',
-                                    '{{link.pageIndex}}',
+                                    '{{link.pageIndex + 1}}',
                                 '</a>',
-                                '{{link.isCurrent ? link.pageIndex : ""}}',
+                                '{{link.isCurrent ? link.pageIndex + 1 : ""}}',
                             '</span>',
                         '</div>',
 					'</div>'

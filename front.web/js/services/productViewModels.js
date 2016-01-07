@@ -28,15 +28,7 @@
                                 size: 16
                             }
                         }
-                    });                
-                                       
-			// return new Promise(function(done, err) {				
-			// 	productService
-            //         .getFeaturedProducts(page)
-            //         .then(function(products) {					
-            //             done(products.map(makeViewModel));
-            //         }).catch(err);				
-			// });
+                    });                                                       
 		}
 				
 	})		

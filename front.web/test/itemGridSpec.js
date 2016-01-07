@@ -21,15 +21,19 @@ describe('itemGrid', function() {
         spec.pageIndex = spec.pageIndex || 0;
         spec.template = spec.template || '';        
         spec.numPageLinks = spec.numPageLinks || 8;
+        spec.pageLinkUrlProvider = spec.pageLinkUrlProvider || function(i) { return i.toString(); };
         
         return new Promise(function(done, err) {                    
             angular.mock.inject(function($rootScope, $compile, $templateCache) {    
                 scope = $rootScope.$new();
-                scope.itemSource = spec.source;
+                scope.itemSource = spec.source;        
+                scope.pageLinkUrlProv = spec.pageLinkUrlProvider;
         
                 $templateCache.put('template.html', spec.template);
         
-                var elemHTML = '<item-grid rows=' + spec.rows + ' cols=' + spec.cols + ' source="itemSource" page-index=' + spec.pageIndex + ' num-page-links=' + spec.numPageLinks + ' template-url="template.html"></item-grid>';
+            
+        
+                var elemHTML = '<item-grid rows=' + spec.rows + ' cols=' + spec.cols + ' source="itemSource" page-index=' + spec.pageIndex + ' num-page-links=' + spec.numPageLinks + ' page-link-url-provider="pageLinkUrlProv" template-url="template.html"></item-grid>';
                 elem = $compile(elemHTML)(scope);
                 
                 scope.$digest();
@@ -166,7 +170,7 @@ describe('itemGrid', function() {
            
            expect(currPageLinks.length).to.equal(1);
            expect(currPageLinks.has('a').length).to.equal(0);
-           expect(currPageLinks.text()).to.equal('3');
+           expect(currPageLinks.text()).to.equal('4'); //not zero-based!
            
            cb();
        }).catch(cb);
@@ -183,6 +187,22 @@ describe('itemGrid', function() {
        }).catch(cb);
     });
 
+    it('should use pageLinkUrlProvider function to render pageLink URLs', function(cb) {
+        renderGrid({
+            pageLinkUrlProvider: function(index) {
+                return 'http://j.com/' + index;
+            }
+        })
+        .then(function(grid) {            
+            var anchors = grid.find('.pageLink').has('a').find('a');
+            
+            anchors.each(function(i, a) {                
+                expect($(a).attr('href')).to.equal('http://j.com/' + $(a).text());
+            })            
+            
+            cb();
+        }).catch(cb);
+    });
     
     
 });
