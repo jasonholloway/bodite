@@ -16,7 +16,7 @@
 				var pageSize = ($scope.rows || 6) * ($scope.cols || 3);
 				                                
 				$scope.source()({ index: 0, size: pageSize })                
-                .then(function(items) {                     //source should return not just items, but page specs...
+                .then(function(items) {                     //source should return not just items, but page specs...                
 					$scope.items = items;
 					
 					$scope.itemRows = [];
@@ -36,7 +36,7 @@
 					
 					$scope.$applyAsync();
                     
-				}, function(e) {
+				}, function(e) {                    
 					throw Error(e);
 				})				
 			},
