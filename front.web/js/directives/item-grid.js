@@ -14,7 +14,7 @@
 				'rows': '=',
                 'numPageLinks': '=?',
                 'pageIndex': '=?',
-                'pageLinkUrlProvider': '&'
+                'pageLinkUrlProvider': '&?'
 			},
 			controller: function($scope) {                
                 $scope.pageIndex = $scope.pageIndex || 0;
@@ -22,7 +22,9 @@
                 
 				var pageSize = ($scope.rows || 6) * ($scope.cols || 3);
 				                                
-                var pageLinkUrlProvider = $scope.pageLinkUrlProvider();
+                var pageLinkUrlProvider = $scope.pageLinkUrlProvider
+                                            ? $scope.pageLinkUrlProvider()
+                                            : function(i) { return i; };
                                                 
 				$scope.source()({ index: $scope.pageIndex, size: pageSize })                
                 .then(function(result) {

@@ -22,7 +22,7 @@
                     .then(function(items) {
                         return {
                             items: items.map(makeViewModel),
-                            pageCount: 10,
+                            pageCount: 2,
                             page: {
                                 index: 0,
                                 size: 16
