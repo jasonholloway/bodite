@@ -90,7 +90,7 @@ gulp.task('js', function() {
                     entries: ['js/app.js'], 
                     cache: watchify.getCache(cacheFilePath), 
                     packageCache: {}, 
-                    debug: true 
+                    debug: devMode 
                 })
                 .transform(bulkify);
                 

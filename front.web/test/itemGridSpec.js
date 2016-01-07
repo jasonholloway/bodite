@@ -53,7 +53,8 @@ describe('itemGrid', function() {
                                     
             var res = {
               items: items,
-              pageCount: _.ceil((max - min) / page.size)  
+              page: page,
+              pageCount: _.ceil((max - min) / page.size)
             };
                                                                                            
             return Promise.resolve(res);

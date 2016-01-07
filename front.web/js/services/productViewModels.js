@@ -16,13 +16,27 @@
 			};				
 		}
 				
-		this.getFeaturedProducts = function(page){						
-			return new Promise(function(done, fail) {				
-				productService.getFeaturedProducts(page)
-				.then(function(products) {					
-					done(products.map(makeViewModel));
-				}, fail);				
-			});
+		this.getFeaturedProducts = function(page) {               						
+            return productService
+                    .getFeaturedProducts({})
+                    .then(function(items) {
+                        return {
+                            items: items.map(makeViewModel),
+                            pageCount: 10,
+                            page: {
+                                index: 0,
+                                size: 16
+                            }
+                        }
+                    });                
+                                       
+			// return new Promise(function(done, err) {				
+			// 	productService
+            //         .getFeaturedProducts(page)
+            //         .then(function(products) {					
+            //             done(products.map(makeViewModel));
+            //         }).catch(err);				
+			// });
 		}
 				
 	})		
