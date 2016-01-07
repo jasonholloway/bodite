@@ -1,12 +1,15 @@
 (function() {		
 	require('angular');
 	require('angular-ui-router');
+    require('angular-mocks/ngMock');
 	require('es5-shim');
-		
-	var bb = angular.module('bb', ['ui.router']);
-	
-	require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js', 'services/*.js', 'filters/*.js']);
-		
+			
+    
+	var bb = angular.module('bb', ['ui.router', 'itemGrid']);
+            
+	require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js', 'services/*.js', 'filters/*.js']);	
+      
+        
 	
 	bb.config(function($stateProvider, $urlRouterProvider) {
 		

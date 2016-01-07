@@ -17,12 +17,17 @@
             return p;
         }
 
+        function addProdToFuse(prod) {
+            //normalize title here...
+            //...
+            items.set(prod._id, prod);
+        }
 
 
         $http.get(urlJoin(DB_LOCATION, '_design/bb/_view/all_products'))
         .then(function (resp) {
             for(var row of resp.data.rows) {
-                items.set(row.id, complete(row.value));
+                addProdToFuse(complete(row.value));
             }
 
             fuse = new Fuse({
@@ -45,7 +50,7 @@
                     _id: 'product/' + Math.uuidFast()
                 })
 
-                items.set(prod._id, prod);
+                addProdToFuse(prod);
 
                 return prod;
             },
