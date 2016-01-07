@@ -6,12 +6,12 @@
 	var LocalString = require('./../LocalString');
 	
 	angular.module('bb')
-	.service('productViewModelService', function(productService, imageService, localeService) {
+	.service('productViewModelService', function(productService, imageRepo, localeService) {
 				
 		function makeViewModel(p) {
 			return {
 				name: new LocalString(localeService, p.name),
-				imageUrl: p.images && p.images.length ? imageService.getUrl(p.images[0].key): 'images\default.jpg',
+				imageUrl: p.images && p.images.length ? imageRepo.getUrl(p.images[0].key) : 'img/empty-image.png',
 				price: new Price(null, 'EU', 1355)
 			};				
 		}

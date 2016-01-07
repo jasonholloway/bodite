@@ -75,9 +75,9 @@ gulp.task('css', function() {
 })
 
 gulp.task('images', function() {
-    return gulp.src('images/**/*.*')
-            .pipe(gulpIf(devMode, watch('images/**/*.*')))
-            .pipe(gulp.dest('build/images/'))
+    return gulp.src('img/**/*.*')
+            .pipe(gulpIf(devMode, watch('img/**/*.*')))
+            .pipe(gulp.dest('build/img/'))
             .pipe(connect.reload())
             .pipe(print());
 })
@@ -87,7 +87,7 @@ gulp.task('js', function() {
     var cacheFilePath = 'temp/watchify.cache.json';
         
     var b = browserify({ 
-                    entries: ['js/app.js'], 
+                    entries: ['js/app.js'].concat(devMode ? ['js_dummy/dummy.js'] : []), 
                     cache: watchify.getCache(cacheFilePath), 
                     packageCache: {}, 
                     debug: devMode 
