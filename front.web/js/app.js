@@ -10,6 +10,8 @@
 	require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js', 'services/*.js', 'filters/*.js']);	
       
         
+    bb.constant('DB_LOCATION', 'https://jasonholloway.cloudant.com/bb');
+        
 	
 	bb.config(function($stateProvider, $urlRouterProvider) {
 		

@@ -30,6 +30,7 @@
     "through2": "^2.0.0",
     "uber-watchify": "^3.5.0",
     "uglifyify": "^3.0.1",
+    "url-join": "0.0.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
   },

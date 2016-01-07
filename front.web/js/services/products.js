@@ -1,15 +1,16 @@
 (function() {
 	require('angular');
+    var urlJoin = require('url-join');
 	
 	angular.module('bb')
-	.service('productService', function($http) {
+	.service('productService', function($http, DB_LOCATION) {
 		
 		var featuredProducts = null;
 				
 		this.getFeaturedProducts = function(page){						
 			return new Promise(function(done, fail) {
 				if(!featuredProducts) {				
-					$http.get('http://jasonholloway.cloudant.com/bb/_design/bb/_view/featured-products')
+					$http.get(urlJoin(DB_LOCATION, '_design/bb/_view/featured-products'))
 					.then(function (r) {					
 						featuredProducts = [];
 						
