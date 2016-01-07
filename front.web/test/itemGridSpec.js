@@ -12,20 +12,18 @@ describe('itemGrid', function() {
         angular.mock.module('itemGrid');
     })
                 
-    it('itemGridDirective should be available', function() {
-        angular.mock.inject(function($injector) {
-            expect($injector.has('itemGridDirective')).to.be.true;            
-        });
-    });               
-                
-                
-                
-                
-    function renderGrid(source, spec) {
+    function renderGrid(spec) {        
+        spec = spec || {};
+        spec.source = spec.source || numSource(0, 1000);
+        spec.rows = spec.rows || 6;
+        spec.cols = spec.cols || 4;
+        spec.pageIndex = spec.pageIndex || 0;
+        spec.template = spec.template || '';        
+        
         return new Promise(function(done, err) {                    
             angular.mock.inject(function($rootScope, $compile, $templateCache) {    
                 scope = $rootScope.$new();
-                scope.itemSource = source;
+                scope.itemSource = spec.source;
         
                 $templateCache.put('template.html', spec.template);
         
@@ -42,30 +40,32 @@ describe('itemGrid', function() {
         });
     }
                 
-                
-         
     
-    
-    var simpleSource = function(page) {        
-        var items = [];
-        
-        for(var i = 0; i < page.size; i++) {
-            items.push(i + (page.index * page.size));
+    var numSource = function(min, max) {
+        return function(page) {        
+            var items = [];
+            
+            for(var i = min; i < min + page.size && i <= max; i++) {
+                items.push(i + (page.index * page.size));
+            }
+                                            
+            return Promise.resolve(items);
         }
-                                        
-        return Promise.resolve(items);
     }
     
-    
+              
+    it('itemGridDirective should be available', function() {
+        angular.mock.inject(function($injector) {
+            expect($injector.has('itemGridDirective')).to.be.true;            
+        });
+    });               
+      
+      
     it('should render bare cells in correct dimensions', function(cb) {
-        renderGrid(
-            simpleSource,
-            { 
-                template: 'hello!',
-                rows: 3,
-                cols: 2,
-                pageIndex: 0
-            })
+        renderGrid({
+            rows: 3,
+            cols: 2
+        })
         .then(function(grid) {
             expect(grid.find('.itemGridRow').length).to.equal(3);
             expect(grid.find('.itemGridCell').length).to.equal(3 * 2);                                    
@@ -75,14 +75,11 @@ describe('itemGrid', function() {
     
     
     it('should render templates within cells, bound to correct items', function(cb) {
-        renderGrid(
-            simpleSource, 
-            {
-                template: '<p id="{{item}}"></p>',
-                rows: 4,
-                cols: 4,
-                pageIndex: 0
-            })
+        renderGrid({
+            template: '<p id="{{item}}"></p>',
+            rows: 4,
+            cols: 4
+        })
        .then(function(grid) {           
             var paras = grid.find('p');
                 
@@ -97,13 +94,34 @@ describe('itemGrid', function() {
     });
     
     
-    //test paging capabilities...
+    it('should respect page index', function(cb) {
+        renderGrid({            
+            template: '<p id="{{item}}"></p>',
+            rows: 4,
+            cols: 4,
+            pageIndex: 7
+        })
+       .then(function(grid) {           
+            var paras = grid.find('p');
+                
+            expect(paras.length).to.equal(16);
+
+            paras.each(function(i, el) {
+                    expect($(el).attr('id') == (i + (7 * 16)).toString());
+            });      
+                       
+           cb();
+       }).catch(cb);
+    });
     
     
-    
-    
-    
-    
-    
+    it('should show some page links', function(cb) {
+       renderGrid()
+       .then(function(grid) {           
+           expect(grid.find('.pageLinks')[0])
+           
+           cb();
+       }).catch(cb);
+    });
     
 });
