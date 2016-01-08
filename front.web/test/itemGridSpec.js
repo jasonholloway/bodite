@@ -5,10 +5,7 @@ var _ = require('lodash');
 
 
 describe('itemGrid', function() {
-        
-    var elem;
-    var scope;
-                
+            
     beforeEach(function() {
         angular.mock.module('itemGrid');
     })
@@ -25,7 +22,7 @@ describe('itemGrid', function() {
         
         return new Promise(function(done, err) {                    
             angular.mock.inject(function($rootScope, $compile, $templateCache) {    
-                scope = $rootScope.$new();
+                var scope = $rootScope.$new();
                 scope.itemSource = spec.source;        
                 scope.pageLinkUrlProv = spec.pageLinkUrlProvider;
         
@@ -127,12 +124,11 @@ describe('itemGrid', function() {
     });
     
     
-    it('should show some page links', function(cb) {
-       renderGrid()
-       .then(function(grid) {          
-           expect(grid.find('.pageLinks').length).to.be.above(0);           
-           cb();
-       }).catch(cb);
+    it('should show some page links', function() {
+       return renderGrid()
+                .then(function(grid) {          
+                    expect(grid.find('.pageLinks').length).to.be.above(0);
+                })
     });
     
     
