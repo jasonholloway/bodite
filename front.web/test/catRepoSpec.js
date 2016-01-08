@@ -11,16 +11,13 @@ var _ = require('lodash');
 describe('catRepo', function() {
         
     angular.module('bb', []);
+
     require('../js/services/catRepo');
+   
     
-    
-    beforeEach(function() {
-        module(function($provide) {
-            $provide.constant('CATEGORY_TREE_URL', 'http://tree');
-        });
-       
-        module('bb');
-    });
+    beforeEach(module('bb', function($provide) {
+                                    $provide.constant('CATEGORY_TREE_URL', 'http://tree');
+                                }));
 
     afterEach(inject(function($httpBackend, $rootScope) {
         $httpBackend.verifyNoOutstandingRequest();

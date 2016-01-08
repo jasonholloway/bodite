@@ -1,5 +1,5 @@
 require('./_global');
-require('../js/directives/item-grid');             
+require('../js/itemGrid/itemGrid');             
 var expect = require('chai').expect;
 var _ = require('lodash');
 
@@ -27,8 +27,6 @@ describe('itemGrid', function() {
                 scope.pageLinkUrlProv = spec.pageLinkUrlProvider;
         
                 $templateCache.put('template.html', spec.template);
-        
-            
         
                 var elemHTML = '<item-grid rows=' + spec.rows + ' cols=' + spec.cols + ' source="itemSource" page-index=' + spec.pageIndex + ' num-page-links=' + spec.numPageLinks + ' page-link-url-provider="pageLinkUrlProv" template-url="template.html"></item-grid>';
                 elem = $compile(elemHTML)(scope);
@@ -63,7 +61,7 @@ describe('itemGrid', function() {
     }
     
               
-    it('itemGridDirective should be available', function() {
+    it('should be available', function() {
         angular.mock.inject(function($injector) {
             expect($injector.has('itemGridDirective')).to.be.true;            
         });

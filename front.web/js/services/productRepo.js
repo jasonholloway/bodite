@@ -8,9 +8,7 @@
 		var featuredProducts = null;
 				
 		this.getFeaturedProducts = function(page) {
-            if(featuredProducts) {
-                return Promise.resolve(featuredProducts);
-            }
+            if(featuredProducts) return Promise.resolve(featuredProducts);
             
             return $http
                     .get(urlJoin(DB_LOCATION, '_design/bb/_view/featured-products'))
