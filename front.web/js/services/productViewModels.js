@@ -6,7 +6,7 @@
 	var LocalString = require('./../LocalString');
 	
 	angular.module('bb')
-	.service('productViewModelService', function(productService, imageRepo, localeService) {
+	.service('productViewModelService', function(productRepo, imageRepo, localeService) {
 				
 		function makeViewModel(p) {
 			return {
@@ -17,7 +17,7 @@
 		}
 				
 		this.getFeaturedProducts = function(page) {               						
-            return productService
+            return productRepo
                     .getFeaturedProducts({})
                     .then(function(items) {
                         return {

@@ -4,8 +4,10 @@
     require('angular-mocks/ngMock');
 	require('es5-shim');
 			
+    require('./itemGrid/itemGrid');
+    require('./menuHier/menuHier');
     
-	var bb = angular.module('bb', ['ui.router', 'itemGrid']);
+	var bb = angular.module('bb', ['ui.router', 'itemGrid', 'menuHier']);
             
 	require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js', 'services/*.js', 'filters/*.js']);	
       
