@@ -30,10 +30,19 @@
 		.state('front', {
 			url: '/',
 			views: {
-				'content': {
-					templateUrl: 'templates/front-content.html',
+//				'content': {
+//					//templateUrl: 'templates/front-content.html',
+//				},
+                'content-middle': {
+                    templateUrl: 'templates/front-content.html',
 					controller: globalController
-				}
+                },
+
+                'content-bottom': {
+                    templateUrl: 'templates/front-news.html'
+                }
+
+
 			}
 		});						
 		
