@@ -1,5 +1,7 @@
-<div style="width: 100px; height: 100px; margin:5px; background-color: turquoise">
-	<h3>{{item.name | str}}</h3>
-	<span>{{item.price | str}}</span>
-	<img ng-src="{{item.imageUrl}}" style="width:50px;" />
+<div class="product_window">
+    <a href="">
+        <img ng-src="{{item.imageUrl}}"/>
+        <span class="product_window_title">{{item.name | str}}</span>
+        <span class="product_window_price">{{item.price | str}}</span>
+    </a>
 </div>
