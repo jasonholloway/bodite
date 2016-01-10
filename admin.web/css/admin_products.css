@@ -232,6 +232,10 @@ image-instance input[type="button"]:hover {
     background-color:rgb(240,240,240);
 }
 
+#productFilterBar input[type="button"]:hover {
+    background-color:rgb(240,240,240);
+}
+
 
 
 /***************************************************************************************/
