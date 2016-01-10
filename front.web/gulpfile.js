@@ -107,11 +107,12 @@ gulp.task('js', function() {
                     if(devMode) w.write();
                 })
                 .pipe(mold.transform(function (src, write) {
-                    delete src.sourcemap.sourcemap.sourcesContent;
-                    src.sourcemap.sourcemap.sourceRoot = 'http://localhost:9991/';
-                    src.sourcemap.sourcemap.file = 'bundle.js';
-                    
-                    write(src.toComment());
+                    if(src.sourcemap) {
+                        delete src.sourcemap.sourcemap.sourcesContent;
+                        src.sourcemap.sourcemap.sourceRoot = 'http://localhost:9991/';
+                        src.sourcemap.sourcemap.file = 'bundle.js';
+                        write(src.toComment());
+                    }             
                 }))
                 //.pipe(exorcist('build/js/bundle.js.map'))
                 .pipe(source('bundle.js'))
