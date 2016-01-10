@@ -73,6 +73,12 @@ p
 font-size: 1em;
 }
 
+span
+{
+font-size: 1em;
+display:block;
+}
+
 
 h1
 {
@@ -233,7 +239,7 @@ border-radius: 10px 10px 0 0;
 {
 width: 180px;
     display:inline-block;
-    
+
 }
 
 #header_middle
@@ -601,7 +607,20 @@ text-align:center;
 /*--------------------------------------------------------------------------------------------------
 									PRODUCT GRID STYLES
 --------------------------------------------------------------------------------------------------*/
+.itemGrid
+{
+    width:100%;
+}
 
+.row
+{
+    width:100%;
+}
+
+.cell
+{
+    width:33.3%;
+}
 
 .product_grid_description
 {
@@ -632,7 +651,7 @@ background: -moz-linear-gradient(#FFCC00, #FFFFF6);
 	background: -webkit-linear-gradient(#FFCC00, #FFFFF6);
 	background: -o-linear-gradient(#FFCC00, #FFFFF6);
 	background: linear-gradient(#FFCC00, #FFFFF6);
-	margin: 1.5%;
+	margin: 5%;
     float:left;
 padding-bottom:3px;
 }
@@ -647,11 +666,15 @@ padding-bottom:3px;
     margin-bottom:5px;
 }
 
-.product_window p
+.product_window span
 {
     margin:0;
     text-align:center;
-    font-weight:600;
+}
+
+.product_window_title
+{
+    font-weight:700;
 }
 
 
@@ -713,14 +736,13 @@ padding-bottom:3px;
     color:orangered;
 }
 
-p.special_offer_new_price
+.special_offer_new_price
 {
     font-weight:700;
 }
 
-p.product_window_price
+.product_window_price
 {
-   font-size: 1.125em;
     font-weight:600;
 }
 
