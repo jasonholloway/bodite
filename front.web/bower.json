@@ -1,0 +1,26 @@
+{
+  "name": "bb.front.web",
+  "description": "Brigitas Bodite Front-End Website",
+  "main": "js/app.js",
+  "authors": [
+    "Jason Holloway <miceeatnicerice@hotmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/jasonholloway/bodite",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "linqjs": "~3.0.5"
+  }
+}

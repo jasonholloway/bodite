@@ -2,4 +2,5 @@ tmp/
 temp/
 build/
 .vscode/
+images/*
 *.log
