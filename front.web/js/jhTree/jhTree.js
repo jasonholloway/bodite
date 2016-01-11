@@ -7,22 +7,12 @@
        
     
     mod.directive('jhTreeNode', function($compile) {
-        var elem;
-        
         return {
             restrict: 'A',
             scope: true,      
-            link: function(el, att) {
-                elem = el;
-            },            
-            controller: function($scope) {
-                var inner = $compile($scope.nodeTemplateHtml)($scope);
-                               
-                console.log($scope.nodeTemplateHtml);
-                               
-                console.log(inner);
-                                
-                // inner.appendTo(elem);                
+            controller: function($scope, $element) {
+                var inner = $compile($scope.nodeTemplateHtml)($scope);                
+                $($element).append(inner);                                
             }
         }
     })

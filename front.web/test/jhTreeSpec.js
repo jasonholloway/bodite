@@ -28,7 +28,7 @@ describe('jhTree', function() {
             name: Math.random().toString(),
             isRoot: isRoot,
             children: depth > 0
-                        ? _.times(3)
+                        ? _.times(branches)
                                 .map(function(i) {
                                     return createNode(depth - 1, branches);
                                 })
@@ -37,7 +37,7 @@ describe('jhTree', function() {
     }
    
     function createTree(depth, branches) {
-        return createNode(depth, branches || 3, true);        
+        return createNode(depth, branches === undefined ? 3 : branches, true);        
     }
     
             
@@ -45,7 +45,7 @@ describe('jhTree', function() {
         spec = spec || {};
         spec.tree = spec.tree || createTree(4, 2);
         spec.template = spec.template || '';
-        
+                
         return new Promise(function(done, err) {                        
             inject(function($rootScope, $compile, $templateCache) {
                 var scope = $rootScope.$new();
@@ -109,15 +109,22 @@ describe('jhTree', function() {
    
    
    
-    it('should render full depth of tree', function(done) {
+    it('should render full depth of tree', function(done) {        
+        var depth = 4;
+        var branching = 4;
+        
         renderMenu({
-            tree: createTree(4, 2),
+            tree: createTree(depth, branching),
             template: '<ul><li ng-repeat="node in node.children" jh-tree-node></li></ul>'
         })
-        .then(function(menu) {                        
-            // console.log(menu[0]);
+        .then(function(menu) {    
+            var idealItemCount = branching;
+            
+            for(var d = 1; d < depth; d++) {
+                idealItemCount += Math.pow(branching, d + 1);
+            }
                         
-            expect(menu.find('li').length).to.equal(Math.pow(2, 4));
+            expect(menu.find('li').length).to.equal(idealItemCount);
                         
             done();
         }).catch(done);
