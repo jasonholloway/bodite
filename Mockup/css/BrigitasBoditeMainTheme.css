@@ -737,12 +737,14 @@ p.product_window_price
 {
     margin-top:15px;
     padding:8px;
+    padding-bottom:0;
     border-radius: 15px 15px 15px 15px;
 background-image: linear-gradient(#CC6699, #E0A3C2);
 background-image: -webkit-linear-gradient(#CC6699, #E0A3C2);
 background-image: -o-linear-gradient(#CC6699, #E0A3C2);
 background-image: -moz-linear-gradient(#CC6699, #E0A3C2);
     width:164px;
+    border-bottom-right-radius: 40px;
 }
 
 .shopping_basket_sidebar p
@@ -754,6 +756,7 @@ background-image: -moz-linear-gradient(#CC6699, #E0A3C2);
 {
     border-radius:8px 8px 8px 8px;
     padding:5px;
+    padding-bottom:40px;
     background:white;
     width:154px;
 }
@@ -797,6 +800,16 @@ background-image: -moz-linear-gradient(#CC6699, #E0A3C2);
 .shopping_basket_checkout_button_holder
 {
     width:100%;
+    background-image:url('../images/basket_button7.png');
+    margin:0;
+    height:111px;
+    padding:8px;
+    margin:-8px;
+    margin-bottom:0;
+    padding-bottom:0;
+    background-repeat:no-repeat;
+    overflow:visible;
+    margin-top:-40px;
 }
 
 .shopping_basket_checkout_button
@@ -813,14 +826,11 @@ background-image: -moz-linear-gradient(#CC6699, #E0A3C2);
     border-top: 2px solid #bababa;
     border-left: 2px solid #a2a2a2;
     border-right: 2px solid #a2a2a2;
-    margin-top:10px;
     color:#660066;
     font-weight:700;
-    display:block;
-    float:none;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left:10px;
     text-align:center;
+    margin-top:64px;
 }
 
 .shopping_basket_checkout_button:hover

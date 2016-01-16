@@ -26,7 +26,7 @@
             return {
                 _id: 'category/' + Math.uuidFast(),
                 name: {
-                    LV: 'New Category',
+                    LV: 'Jauna kategorija',
                     RU: undefined
                 },
                 children: []
@@ -131,13 +131,13 @@
     
                     $(node.divBefore)
                         .addClass('extrasRight')
-                        .append('<input ng-model="category.name.LV">')
-                        .append('<input ng-model="category.name.RU">')
+                        .append('<input ng-model="category.name.LV" placeholder="Nosaukums">')
+                        .append('<input ng-model="category.name.RU" placeholder="Hазвание">')
                         .append('<span class="key">{{category._id}}</span>')
                         .append(
-                            $('<input type="button" value="delete" />')
+                            $('<input type="button" value="Dzēst" />')
                                 .click(function () {
-                                    if (!confirm('Are you sure you want to delete category ' + node.data.name.LV + ' and all of its children?')) {
+                                    if (!confirm('Vai tiešām vēlaties dzēst kategoriju ' + node.data.name.LV + ' un tai piederošās apakškategorijas?')) {
                                         return;
                                     }
     
@@ -152,7 +152,7 @@
                 var renderExtrasBelow = function (node) {
                     $(node.divAfter).addClass('extrasBelow');
     
-                    $('<input type="button" value="add" />')
+                    $('<input type="button" value="Pievienot" />')
                         .click(function () {
                             var n = node.addNode(scope.categories.createCategory(), 'over');
     
@@ -167,21 +167,25 @@
     
     
     
+                var treeDiv = $('<div />')
+                                .appendTo(elem);
+
     
-                var saveButton = $('<input type="button" value="Save" />')
+                var saveButton = $('<input type="button" value="Saglabāt" />')
                                     .click(function () {
                                         scope.categories.save();
                                         scope.$apply();
                                     })
                                     .appendTo(elem);
     
-                var revertButton = $('<input type="button" value="Revert" />')
+                var revertButton = $('<input type="button" value="Atcelt" />')
                                     .click(function () {
                                         scope.categories.revert();
                                         scope.$apply();
                                     })
                                     .appendTo(elem);
     
+
     
                 scope.$watch(
                         function () {
@@ -209,7 +213,7 @@
                         });
     
     
-                tree = elem.fancytree({
+                tree = treeDiv.fancytree({
                     source: scope.categories.workingTree.roots,
                     extensions: ["dnd", "bodite_fancytree"],
                     keyboard: false,
