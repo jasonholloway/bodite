@@ -5,25 +5,26 @@
 	require('es5-shim');
 			
     require('./itemGrid/itemGrid');
-    require('./menuHier/menuHier');
+    require('./jhTree/jhTree');
     
-	var bb = angular.module('bb', ['ui.router', 'itemGrid', 'menuHier']);
+	var bb = angular.module('bb', ['ui.router', 'itemGrid', 'jhTree']);
             
 	require('bulk-require')(__dirname, ['*.js', 'directives/*.js', 'controllers/*.js', 'services/*.js', 'filters/*.js']);	
       
         
     bb.constant('DB_LOCATION', 'https://jasonholloway.cloudant.com/bb');
-        
-	
-	bb.config(function($stateProvider, $urlRouterProvider) {
-		
-		var globalController = function($scope, productViewModelService) {			
-			$scope.viewModels = {
-				featuredProducts: productViewModelService.getFeaturedProducts
-			}			
-		}
+    bb.constant('CATEGORY_TREE_URL', 'https://jasonholloway.cloudant.com/bb/categorytree');
+      
+      
+    bb.run(function($templateCache, $templateRequest) {
+                
+        // $templateCache.put('catMenuNode', )
+    });
+      
+	bb.config(function($stateProvider, $urlRouterProvider, $locationProvider) {		
 			
-			
+        $locationProvider.html5Mode(true);
+            
 		$urlRouterProvider.otherwise('/');
 						
 		$stateProvider
@@ -34,8 +35,7 @@
 //					//templateUrl: 'templates/front-content.html',
 //				},
                 'content-middle': {
-                    templateUrl: 'templates/front-content.html',
-					controller: globalController
+                    templateUrl: 'templates/front-content.html'
                 },
 
                 'content-bottom': {

@@ -1,4 +1,4 @@
-<a href="">A Menu Item!</a>
+<a ng-if="!node.isRoot" href="{{node.url}}">{{node.name.LV}}</a>
 <ul>
-    <li ng-repeat="node in node.children" menu-hier-node></li>
+    <li ng-repeat="node in node.children" jh-tree-node></li>
 </ul>

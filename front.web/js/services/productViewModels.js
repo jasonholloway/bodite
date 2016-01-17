@@ -2,8 +2,8 @@
 	require('angular');
 	require('es5-shim');
 	
-	var Price = require('./../Price');
-	var LocalString = require('./../LocalString');
+	var Price = require('../Price');
+	var LocalString = require('../LocalString');
 	
 	angular.module('bb')
 	.service('productViewModelService', function(productRepo, imageRepo, localeService) {

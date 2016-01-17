@@ -32,7 +32,6 @@
 		this.toString = function() {
 			return this.getValue();
 		}		
-
 	}
 			
 	module.exports = LocalString; 	

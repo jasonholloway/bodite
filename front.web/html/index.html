@@ -11,10 +11,13 @@
 		</link>
         <link media="all" href="css/CategoryPage.css" rel="stylesheet" type="text/css">
 		</link>
-		<link href='https://fonts.googleapis.com/css?family=Asap:700,400|Open+Sans:400,400italic,600,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-		</link>
+		<!--<link href='https://fonts.googleapis.com/css?family=Asap:700,400|Open+Sans:400,400italic,600,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+		</link>-->
+        
+        <base href="/">
+        
 	</head>
-	<body ng-app="bb">
+	<body ng-app="bb" ng-controller="globalController">
 		<div id="user_bar">
         </div>
 		<div id="wrapper" class="twenty_four_column">
@@ -28,8 +31,7 @@
 						<input type="button" id="search_form_button" />
 					</form>
 				</div>
-                	<div id="taxonomy_menu">
-					</div>
+                	<jh-tree id="taxonomy_menu" source="getCategoryMenu" template="templates/menuNode.html"></jh-tree>
 					<div id="our_partners"><h5 class="block_title">Mūsu Partneri</h5>
 						<div id="our_partners_partner1"> <a target="_blank" href="http://www.draugiem.lv/lacenumiga/"></a>
 						</div>
@@ -65,7 +67,7 @@
                     <div id="shop_banner">
 					</div>
 					<div id="draugiem_follow">
-							<div id="draugiem_page_logo">
+							<!--<div id="draugiem_page_logo">
 								<a target="blank" id="draugiem_page_image" href="http://www.draugiem.lv/brigita.lv/"></a>
 									<div id="draugiem_page_text">
 									<a target="blank" href="http://www.draugiem.lv/brigita.lv/"><h5 class="draugiem_page_title">Brigitas Bodīte</h5></a>
@@ -81,7 +83,7 @@
 							</div>
 							<div id="draugiem_follow_button">
 								<a target="blank" id="follow_button" href="http://www.draugiem.lv/brigita.lv/"><span>Sekot lapai</span></a>
-							</div>
+							</div>-->
 					</div>
             </aside>
             

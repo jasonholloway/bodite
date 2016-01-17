@@ -34,8 +34,7 @@
                     $scope.nodeTemplateHtml = r[0];
                     $scope.node = r[1];
                                         
-                    $element.html($scope.nodeTemplateHtml);
-                    
+                    $element.html($scope.nodeTemplateHtml);                    
                     $compile($element.contents())($scope);                    
                 });
             }

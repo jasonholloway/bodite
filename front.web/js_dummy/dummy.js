@@ -5,7 +5,8 @@
 
     app.config(function($provide) {       
        $provide.service('imageRepo', imageRepo);        
-       $provide.constant('DB_LOCATION', 'http://localhost:5984/bb');                
+       $provide.constant('DB_LOCATION', 'http://localhost:5984/bb');      
+       $provide.constant('CATEGORY_TREE_URL', 'http://localhost:5984/bb/categorytree');                
     });
 
 
