@@ -36,7 +36,7 @@
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
     "jquery": "^2.1.4",
-    "karma": "^0.13.19",
+    "karma": "https://github.com/karma-runner/karma/archive/master.tar.gz",
     "karma-browserify": "^4.4.2",
     "karma-mocha": "^0.2.1",
     "karma-phantomjs-launcher": "^0.2.3",
