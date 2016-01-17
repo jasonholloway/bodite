@@ -8,7 +8,7 @@ script: cd $TEST_DIR && npm install && bower install && npm test
 deploy:
   provider: s3
   bucket: "bodite-html"
-  local_dir: build
+  local_dir: "$TEST_DIR/build"
   skip-cleanup: true
   #acl: public_read
   region: eu-west-1
