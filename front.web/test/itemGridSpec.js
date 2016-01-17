@@ -68,57 +68,52 @@ describe('itemGrid', function() {
     });               
       
       
-    it('should render bare cells in correct dimensions', function(cb) {
-        renderGrid({
-            rows: 3,
-            cols: 2
-        })
-        .then(function(grid) {
-            expect(grid.find('.row').length).to.equal(3);
-            expect(grid.find('.cell').length).to.equal(3 * 2);                                    
-            cb();
-        }).catch(cb);
+    it('should render bare cells in correct dimensions', function() {
+        return renderGrid({
+                    rows: 3,
+                    cols: 2
+                })
+                .then(function(grid) {
+                    expect(grid.find('.row').length).to.equal(3);
+                    expect(grid.find('.cell').length).to.equal(3 * 2);
+                });
     });
     
     
-    it('should render templates within cells, bound to correct items', function(cb) {
-        renderGrid({
-            template: '<p id="{{item}}"></p>',
-            rows: 4,
-            cols: 4
-        })
-       .then(function(grid) {           
-            var paras = grid.find('p');
-                
-            expect(paras.length).to.equal(16);
+    it('should render templates within cells, bound to correct items', function() {
+        return renderGrid({
+                        template: '<p id="{{item}}"></p>',
+                        rows: 4,
+                        cols: 4
+                    })
+                .then(function(grid) {           
+                        var paras = grid.find('p');
+                            
+                        expect(paras.length).to.equal(16);
 
-            paras.each(function(i, el) {
-                    expect($(el).attr('id') == i.toString());
-            });      
-                       
-           cb();
-       }).catch(cb);
+                        paras.each(function(i, el) {
+                                expect($(el).attr('id') == i.toString());
+                        });
+                });
     });
     
     
-    it('should respect page index', function(cb) {
-        renderGrid({            
-            template: '<p id="{{item}}"></p>',
-            rows: 4,
-            cols: 4,
-            pageIndex: 7
-        })
-       .then(function(grid) {           
-            var paras = grid.find('p');
-                
-            expect(paras.length).to.equal(16);
+    it('should respect page index', function() {
+        return renderGrid({            
+                        template: '<p id="{{item}}"></p>',
+                        rows: 4,
+                        cols: 4,
+                        pageIndex: 7
+                    })
+                .then(function(grid) {           
+                        var paras = grid.find('p');
+                            
+                        expect(paras.length).to.equal(16);
 
-            paras.each(function(i, el) {
-                    expect($(el).attr('id') == (i + (7 * 16)).toString());
-            });      
-                       
-           cb();
-       }).catch(cb);
+                        paras.each(function(i, el) {
+                                expect($(el).attr('id') == (i + (7 * 16)).toString());
+                        });      
+                });
     });
     
     
@@ -130,72 +125,65 @@ describe('itemGrid', function() {
     });
     
     
-    it('should show up to max number of page links', function(cb) {
-       renderGrid({
-           numPageLinks: 10
-       })
-       .then(function(grid) {
-           expect(grid.find('.pageLink').length).to.equal(10);           
-           cb();
-       }).catch(cb);        
+    it('should show up to max number of page links', function() {
+       return renderGrid({
+                    numPageLinks: 10
+                })
+                .then(function(grid) {
+                    expect(grid.find('.pageLink').length).to.equal(10);
+                });        
     });
     
     
-    it('should show up to available number of page links', function(cb) {
-       renderGrid({
-           rows: 5,
-           cols: 2,
-           source: numSource(0, 35),
-           numPageLinks: 10 //will be overriden by dearth of source items (hopefully)
-       })
-       .then(function(grid) {
-           expect(grid.find('.pageLink').length).to.equal(4);           
-           cb();
-       }).catch(cb);        
+    it('should show up to available number of page links', function() {
+       return renderGrid({
+                    rows: 5,
+                    cols: 2,
+                    source: numSource(0, 35),
+                    numPageLinks: 10 //will be overriden by dearth of source items (hopefully)
+                })
+                .then(function(grid) {
+                    expect(grid.find('.pageLink').length).to.equal(4);
+                });        
     });
 
-    it('should show non-clickable link for current page, with correct page number displayed', function(cb) {
-       renderGrid({
-           pageIndex: 3
-       })
-       .then(function(grid) {           
-           var pageLinks = grid.find('.pageLink');                      
-           var currPageLinks = pageLinks.filter('.currPageLink');
-           
-           expect(currPageLinks.length).to.equal(1);
-           expect(currPageLinks.has('a').length).to.equal(0);
-           expect(currPageLinks.text()).to.equal('4'); //not zero-based!
-           
-           cb();
-       }).catch(cb);
+    it('should show non-clickable link for current page, with correct page number displayed', function() {
+       return renderGrid({
+                    pageIndex: 3
+                })
+                .then(function(grid) {           
+                    var pageLinks = grid.find('.pageLink');                      
+                    var currPageLinks = pageLinks.filter('.currPageLink');
+                    
+                    expect(currPageLinks.length).to.equal(1);
+                    expect(currPageLinks.has('a').length).to.equal(0);
+                    expect(currPageLinks.text()).to.equal('4'); //not zero-based!
+                });
     });
     
-    it('should show non-current page links with anchors', function(cb) {
-       renderGrid()
-       .then(function(grid) {           
-           var pageLinks = grid.find('.pageLink').filter(':not(.currPageLink)');
-                      
-           expect(pageLinks.has('a').length).to.equal(pageLinks.length);
-                      
-           cb();
-       }).catch(cb);
+    it('should show non-current page links with anchors', function() {
+       return renderGrid()
+                .then(function(grid) {           
+                    var pageLinks = grid.find('.pageLink').filter(':not(.currPageLink)');
+                                
+                    expect(pageLinks.has('a').length).to.equal(pageLinks.length);
+                });
     });
 
-    it('should use pageLinkUrlProvider function to render pageLink URLs', function(cb) {
-        renderGrid({
-            pageLinkUrlProvider: function(index) {
-                return 'http://j.com/' + index;
-            }
-        })
-        .then(function(grid) {            
-            var anchors = grid.find('.pageLink').has('a').find('a');
-            
-            anchors.each(function(i, a) {                
-                expect($(a).attr('href')).to.equal('http://j.com/' + $(a).text());
-            })            
-            
-            cb();
-        }).catch(cb);
+
+    it('should use pageLinkUrlProvider function to render pageLink URLs', function() {
+        return renderGrid({
+                    pageLinkUrlProvider: function(index) {
+                        return 'http://j.com/' + index;
+                    }
+                })
+                .then(function(grid) {            
+                    var anchors = grid.find('.pageLink').has('a').find('a');
+                    
+                    anchors.each(function(i, a) {                
+                        expect($(a).attr('href')).to.equal('http://j.com/' + $(a).text());
+                    })   
+                });
     });
     
     
