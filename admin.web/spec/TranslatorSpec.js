@@ -31,7 +31,7 @@ describe('Translator', function() {
 	})
 	
 	
-	it('current inherited from parent', function() {
+	xit('current inherited from parent', function() {
 		fail('unimplemented');
 	})
 	

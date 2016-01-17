@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "stable"
+env:
+  - TEST_DIR=front.web
+  - TEST_DIR=admin.web
+script: cd $TEST_DIR && npm install && bower install && npm test 

@@ -1,10 +1,10 @@
 {
-  "name": "bodite.ng",
+  "name": "bodite.front.web",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "js/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start --single-run"
   },
   "author": "",
   "license": "ISC",
@@ -14,27 +14,20 @@
     "angular-mocks": "^1.4.8",
     "angular-ui-router": "^0.2.15",
     "babel-polyfill": "^6.3.14",
-    "browserify": "^12.0.1",
-    "bulkify": "^1.1.1",
     "es5-shim": "^4.4.0",
-    "exorcist": "^0.4.0",
     "gulp": "^3.9.0",
     "gulp-merge": "^0.1.1",
     "gulp-print": "^2.0.1",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
     "lodash": "^3.10.1",
-    "mold-source-map": "^0.4.0",
     "money": "^0.2.0",
-    "path": "^0.12.7",
-    "through2": "^2.0.0",
-    "uber-watchify": "^3.5.0",
-    "uglifyify": "^3.0.1",
     "url-join": "0.0.1",
-    "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
   },
   "devDependencies": {
+    "browserify": "^12.0.1",
+    "bulkify": "^1.1.1",
     "chai-as-promised": "^5.2.0",
     "debowerify": "^1.3.1",
     "exorcist": "https://github.com/jasonholloway/exorcist/archive/master.tar.gz",
@@ -44,7 +37,13 @@
     "karma": "^0.13.19",
     "karma-browserify": "^4.4.2",
     "karma-mocha": "^0.2.1",
+    "mold-source-map": "^0.4.0",
+    "path": "^0.12.7",
+    "through2": "^2.0.0",
+    "uber-watchify": "^3.5.0",
+    "uglifyify": "^3.0.1",
     "node-static": "^0.7.7",
-    "run-sequence": "^1.1.5"
+    "run-sequence": "^1.1.5",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
