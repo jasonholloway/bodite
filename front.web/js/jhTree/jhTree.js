@@ -18,34 +18,25 @@
     })
     
     
-    mod.directive('jhTree', function($templateCache, $compile) {    
-        var elem;
-        var nodeTemplateHtml;
-            
+    mod.directive('jhTree', function($compile, $templateRequest) {
         return {
             restrict: 'E',
             scope: {
                 source: '&',
                 template: '@'
             },
-            link: function($scope, el, att) {                                                
-                elem = el;                
-            },
-            template: function(tEl, tAtt) {
-                nodeTemplateHtml = $templateCache.get(tAtt.nodeTemplate);
-                return nodeTemplateHtml;                
-            },
-            controller: function($scope) {                
-                $scope.nodeTemplateHtml = nodeTemplateHtml;                
-                
-                $scope.node = {
-                    children: []
-                };
-                
-                $scope.source()()                
-                .then(function(root) {
-                   $scope.node = root;                    
-                   $scope.$applyAsync(); //should trigger watching child controllers...
+            controller: function($scope, $element) {
+                Promise.all([
+                    $templateRequest($scope.template),
+                    $scope.source()()
+                ])
+                .then(function(r) {
+                    $scope.nodeTemplateHtml = r[0];
+                    $scope.node = r[1];
+                    
+                    var inner = $compile($scope.nodeTemplateHtml)($scope);
+                                        
+                    $($element).append(inner);
                 });
             }
         }

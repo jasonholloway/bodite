@@ -33,7 +33,7 @@ describe('jhTree', function() {
                                     return createNode(depth - 1, branches);
                                 })
                         : []
-        };
+        };        
     }
    
     function createTree(depth, branches) {
@@ -53,21 +53,26 @@ describe('jhTree', function() {
                 scope.treeSource = function() {
                     return Promise.resolve(spec.tree);
                 }
+                                
+                $templateCache.put('treeNodeTemplateKey', spec.template);
                 
-                $templateCache.put('treeNodeTemplate', spec.template);
-                
-                var html = '<jh-tree source="treeSource" node-template="treeNodeTemplate"></jh-tree>';
+                var html = '<jh-tree source="treeSource" template="treeNodeTemplateKey"></jh-tree>';
                 
                 var elem = $compile(html)(scope);
                 
                 scope.$digest();
                 
                 process.nextTick(function() {
-                    scope.$digest();
-                    done($(elem));    
+                    scope.$digest();                    
+                    
+                    setTimeout(function() {
+                        scope.$digest();         
+                        done($(elem));                        
+                    }, 100);                             
                 });            
             });
-        });        
+        });    
+            
     }
     
     
@@ -76,58 +81,52 @@ describe('jhTree', function() {
     }));
           
    
-    it('should render ul with roots', function(cb) {
-        renderMenu({
-            tree: createTree(1, 3),
-            template: '<ul><li ng-repeat="node in node.children" jh-tree-node></li></ul>'
-        })
-        .then(function(menu) {            
-            var uls = menu.find('> ul');    
-            expect(uls.length).to.be.greaterThan(0);
-            
-            var lis = $(uls[0]).find('> li')            
-            expect(lis.length).to.equal(3);
-           
-            cb();
-        })
-        .catch(cb);
+    it('should render ul with roots', function() {
+        return renderMenu({
+                    tree: createTree(1, 3),
+                    template: '<ul><li ng-repeat="node in node.children" jh-tree-node></li></ul>'
+                })
+                .then(function(menu) {  
+                    var uls = menu.find('> ul');    
+                    expect(uls.length).to.be.greaterThan(0);
+                    
+                    var lis = $(uls[0]).find('> li')            
+                    expect(lis.length).to.equal(3);
+                });
     });
    
    
-    it('should use template on top level', function(cb) {
-        renderMenu({
-            tree: createTree(1, 3),
-            template: 'YO!'
-        })
-        .then(function(menu) {            
-            expect(menu.html()).to.contain('YO!');
-            cb();
-        }).catch(cb);
+    it('should use template on top level', function() {
+        return renderMenu({
+                    tree: createTree(1, 3),
+                    template: '<span>YO!</span>'
+                })
+                .then(function(menu) {
+                    expect(menu.html()).to.contain('YO!');
+                });
     })
    
    
    
    
    
-    it('should render full depth of tree', function(done) {        
+    it('should render full depth of tree', function() {        
         var depth = 4;
         var branching = 4;
         
-        renderMenu({
-            tree: createTree(depth, branching),
-            template: '<ul><li ng-repeat="node in node.children" jh-tree-node></li></ul>'
-        })
-        .then(function(menu) {    
-            var idealItemCount = branching;
-            
-            for(var d = 1; d < depth; d++) {
-                idealItemCount += Math.pow(branching, d + 1);
-            }
-                        
-            expect(menu.find('li').length).to.equal(idealItemCount);
-                        
-            done();
-        }).catch(done);
+        return renderMenu({
+                    tree: createTree(depth, branching),
+                    template: '<ul><li ng-repeat="node in node.children" jh-tree-node></li></ul>'
+                })
+                .then(function(menu) {    
+                    var idealItemCount = branching;
+                    
+                    for(var d = 1; d < depth; d++) {
+                        idealItemCount += Math.pow(branching, d + 1);
+                    }
+                                
+                    expect(menu.find('li').length).to.equal(idealItemCount);
+                });
     });
    
    
