@@ -10,7 +10,7 @@ module.exports = function(config) {
     ],
     
     preprocessors: {
-      '**/*.js' : ['browserify'] // [Ss]pec.js': ['browserify']
+      'test/*.js' : ['browserify'],      
     },
         
     browserify: {
@@ -20,7 +20,7 @@ module.exports = function(config) {
     
     reporters: ['dots'], //progress'], //or 'dots'
     
-    //port: 9876,
+    port: 18767,
 
     autoWatch: true,
     
