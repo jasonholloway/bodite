@@ -10,9 +10,9 @@
         return {
             restrict: 'A',
             scope: true,      
-            controller: function($scope, $element) {
-                var inner = $compile($scope.nodeTemplateHtml)($scope);                
-                $($element).append(inner);                                
+            controller: function($scope, $element) {                
+                $element.html($scope.nodeTemplateHtml);                
+                $compile($element.contents())($scope);                      
             }
         }
     })
@@ -33,10 +33,10 @@
                 .then(function(r) {
                     $scope.nodeTemplateHtml = r[0];
                     $scope.node = r[1];
-                    
-                    var inner = $compile($scope.nodeTemplateHtml)($scope);
                                         
-                    $($element).append(inner);
+                    $element.html($scope.nodeTemplateHtml);
+                    
+                    $compile($element.contents())($scope);                    
                 });
             }
         }

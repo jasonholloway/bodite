@@ -130,5 +130,15 @@ describe('jhTree', function() {
     });
    
    
+   
+    it('should render template without needing enclosing tags', function() {
+        return renderMenu({
+                    tree: createTree(1, 3),
+                    template: 'Cowabunga'
+                })
+                .then(function(menu) {
+                    expect(menu.html()).to.contain('Cowabunga');
+                });
+    })
     
 });
