@@ -15,12 +15,12 @@ before_deploy:
 - gulp build
 deploy:
   provider: s3
-  bucket: "bodite-html"
+  bucket: bodite-html
   local_dir: build
   upload-dir: $TEST_DIR
   skip-cleanup: true
   #acl: public_read
-  region: "eu-west-1"
+  region: eu-central-1
   detect_encoding: true
   secret_access_key:
     secure: U5KfiRR1Bis0P013hDNSZE1MVPIaTqOQTzcL7CTi0Xg94QlBQVSepj/mwue4zye2Y+PNF4BDeVNGfFh0q+r3WdqxfD4apUD80KZg2yQCF8/GbC8iG4nLPVlCZGatq14AXn2+L4Xq6bN4vfKh8vUnn0qO5X6UsrwhHPqAbHL4kJURHlc/iWQl9VUaTPsoPdMyiG5J9mKrnvuKSwVE5EwZGDWbXPA2drEEiaoOd02FfkGuUhtqbBqwSuGGLxEa3rILFZ2mWhKVCkylwfdk9LYeWFws0bukMpVqN57bs9hVxVhL/h6mlVxCaxt/Aa2DmhzJUJBeD2cpmfc/5myYIaoV8IUJhb8oNct+VZLtqIfS1rVZZxS0sjjyMboe/997psqPO5FM4on6vXEw0hHmKAwF4ipAIqkQqt4eNY0GFvuyd5Zxkn37UJRtnAVa03KppF1ulVb015Uh8H7XZgDzZlTouRtgp3TnFHtBARE0Zx9qay/Cu13Z0H9+qKX+9JiRMHNDv9ADx+M5vMBifhokiz8hRlT1gK61CyXAcK+WUAj/AVbmJ4iXZyZet9r/8dlW8oH5L49Jph/EPW7CqzleHj5LrwaTW9x7tTsPBOg18rg7+AebHlY9P7CDMhS2LYl+HdhOYJfNgQ27WGs9aJKNKQTTEJYhEQ2ubRkNGO0vFQhypJg=
