@@ -11,12 +11,12 @@ install:
 - bower install
 script: 
 - npm test
-after_success:
+before_deploy:
 - gulp build
 deploy:
   provider: s3
   bucket: "bodite-html"
-  local_dir: build
+  local_dir: "$TEST_DIR/build"
   upload-dir: $TEST_DIR
   skip-cleanup: true
   #acl: public_read
