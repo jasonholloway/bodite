@@ -16,7 +16,7 @@ before_deploy:
 deploy:
   provider: s3
   bucket: "bodite-html"
-  local_dir: "$TEST_DIR/build"
+  local_dir: build
   upload-dir: $TEST_DIR
   skip-cleanup: true
   #acl: public_read
