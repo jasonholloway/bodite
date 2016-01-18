@@ -17,19 +17,26 @@ var connect = require('gulp-connect');
 var nodeStatic = require('node-static');
 var http = require('http');
 var runSequence = require('run-sequence');
+var del = require('del');
 
 
 var devMode = false;
 
 
-gulp.task('dev', function() {
-   devMode = true;
-   return runSequence(['build', 'devServer', 'mapServer']);
+gulp.task('clean', function(cb) {
+   del.sync('build');
+   cb();
 });
 
 
-gulp.task('build', function() {
-    return runSequence(['html', 'js', 'css', 'images']);
+gulp.task('dev', function(cb) {
+   devMode = true;
+   return runSequence(['build', 'devServer', 'mapServer'], cb);
+});
+
+
+gulp.task('build', function(cb) {
+    return runSequence('clean', ['html', 'js', 'css', 'images'], cb);
 });
 
 
@@ -110,7 +117,10 @@ gulp.task('js', function() {
                         src.sourcemap.sourcemap.sourceRoot = 'http://localhost:9991/';
                         src.sourcemap.sourcemap.file = 'bundle.js';
                         write(src.toComment());
-                    }             
+                    }
+                    else {
+                        write(null);
+                    }
                 }))
                 //.pipe(exorcist('build/js/bundle.js.map'))
                 .pipe(source('bundle.js'))
@@ -122,6 +132,11 @@ gulp.task('js', function() {
     w.on('update', rebundle);
 
     w.on('log', gutil.log);
-
-    return rebundle().pipe(print());	
+    
+    if(devMode) {
+        rebundle();
+    }
+    else {    
+        return rebundle();
+    }
 })

@@ -91,11 +91,15 @@ gulp.task('js', [], function () {
                     if(devMode) w.write();
                 })
                 .pipe(mold.transform(function (src, write) {
-                    delete src.sourcemap.sourcemap.sourcesContent;
-                    src.sourcemap.sourcemap.sourceRoot = 'http://localhost:9991/';
-                    src.sourcemap.sourcemap.file = 'bundle.js';
-                    
-                    write(src.toComment());
+                    if(src.sourcemap) {
+                        delete src.sourcemap.sourcemap.sourcesContent;
+                        src.sourcemap.sourcemap.sourceRoot = 'http://localhost:9991/';
+                        src.sourcemap.sourcemap.file = 'bundle.js';                        
+                        write(src.toComment());
+                    }
+                    else {
+                        write(null);
+                    }
                 }))
                 //.pipe(exorcist('content/js/bundle.js.map'))
                 .pipe(source('bundle.js'))
@@ -186,12 +190,12 @@ gulp.task('html', [], function() {
 
 
 
-gulp.task('build', function() {
-    return runSequence('clean', ['html', 'js', 'bits', 'css', 'img']);
+gulp.task('build', function(cb) {
+    return runSequence('clean', ['html', 'js', 'bits', 'css', 'img'], cb);
 });
 
 
-gulp.task('dev', function() {    
+gulp.task('dev', function(cb) {    
     devMode = true;    
-    return runSequence(['build', 'server', 'server-sourcemaps']);
+    return runSequence(['build', 'server', 'server-sourcemaps'], cb);
 });

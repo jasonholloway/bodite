@@ -6,7 +6,7 @@
 
 body
 {
-	background: url("../images/bbbackground.jpg") repeat scroll left top #FFFFFF;
+	background: url("../img/bbbackground.jpg") repeat scroll left top #FFFFFF;
 	margin: 0;
 	padding: 0;
 	font-size: 14px;
@@ -245,7 +245,7 @@ width: 180px;
 #header_middle
 {
 height: 193px;
-background: url("../images/bblogo-nobackground.png");
+background: url("../img/bblogo-nobackground.png");
     display:inline-block;
 }
 
@@ -342,32 +342,32 @@ float:left;
 
 #info_menu_par_mums a
 {
-background: url("../images/bb2menubutton1.png");
+background: url("../img/bb2menubutton1.png");
 }
 
 #info_menu_par_mums a:hover
 {
-background: url("../images/bb2menubutton1under.png");
+background: url("../img/bb2menubutton1under.png");
 }
 
 #info_menu_ka_pasutit a
 {
-background: url("../images/bb2menubutton2.png");
+background: url("../img/bb2menubutton2.png");
 }
 
 #info_menu_ka_pasutit a:hover
 {
-background: url("../images/bb2menubutton2under.png");
+background: url("../img/bb2menubutton2under.png");
 }
 
 #info_menu_kontakti a
 {
-background: url("../images/bb2menubutton3.png");
+background: url("../img/bb2menubutton3.png");
 }
 
 #info_menu_kontakti a:hover
 {
-background: url("../images/bb2menubutton3under.png");
+background: url("../img/bb2menubutton3under.png");
 }
 
 
@@ -402,7 +402,7 @@ border-radius:3px 3px 3px 3px;
 
 #search_form_button
 {
-background: url("../images/gray-classic-search-icon.png");
+background: url("../img/gray-classic-search-icon.png");
 border:none;
 height:18px;
 width:18px;
@@ -450,37 +450,37 @@ float:left;
 
 #main_menu_meitenem a
 {
-background:url("../images/bbmainmenu.png");
+background:url("../img/bbmainmenu.png");
 background-position:0px 0px;
 }
 
 #main_menu_meitenem a:hover
 {
-background:url("../images/bbmainmenuunder.png");
+background:url("../img/bbmainmenuunder.png");
 background-position:0px 0px;
 }
 
 #main_menu_puisiem a
 {
-background:url("../images/bbmainmenu.png");
+background:url("../img/bbmainmenu.png");
 background-position:360px 0px;
 }
 
 #main_menu_puisiem a:hover
 {
-background:url("../images/bbmainmenuunder.png");
+background:url("../img/bbmainmenuunder.png");
 background-position:360px 0px;
 }
 
 #main_menu_sievietem a
 {
-background:url("../images/bbmainmenu.png");
+background:url("../img/bbmainmenu.png");
 background-position:182px 0px;
 }
 
 #main_menu_sievietem a:hover
 {
-background:url("../images/bbmainmenuunder.png");
+background:url("../img/bbmainmenuunder.png");
 background-position:182px 0px;
 }
 
@@ -1026,7 +1026,7 @@ input[type="submit"]
 
 #shop_banner
 {
-background:url("../images/boditebanner.jpg");
+background:url("../img/boditebanner.jpg");
 width:180px;
 height:320px;
 border-radius: 15px 15px 15px 15px;
@@ -1047,7 +1047,7 @@ margin-bottom:5px;
 
 #our_partners_partner1
 {
-background:url("../images/lacenumiga.jpg");
+background:url("../img/lacenumiga.jpg");
 width:180px;
 height:62px;
 border-radius: 15px 15px 15px 15px;
@@ -1064,7 +1064,7 @@ float:left;
 
 #our_partners_partner2
 {
-background:url("../images/abcd.jpg");
+background:url("../img/abcd.jpg");
 width:180px;
 height:180px;
 border-radius: 15px 15px 15px 15px;
@@ -1109,7 +1109,7 @@ height:73px;
 {
 width: 60px;
 height: 60px;
-background-image:url("../images/bbdraugiemlogo.jpg");
+background-image:url("../img/bbdraugiemlogo.jpg");
 float:left;
 border:1px solid #FFA319;
 border-radius: 10px 10px 10px 10px;
