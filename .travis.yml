@@ -19,7 +19,7 @@ deploy:
   local_dir: build
   upload-dir: $TEST_DIR
   skip-cleanup: true
-  #acl: public_read
+  acl: public_read
   region: eu-central-1
   detect_encoding: true
   secret_access_key:
