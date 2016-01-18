@@ -30,6 +30,7 @@
     "exorcist": "https://github.com/jasonholloway/exorcist/archive/master.tar.gz",
     "gulp": "^3.9.0",
     "gulp-connect": "^2.3.1",
+    "gulp-empty": "^0.1.1",
     "gulp-if": "^2.0.0",
     "gulp-merge": "^0.1.1",
     "gulp-print": "^2.0.1",

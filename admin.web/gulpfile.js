@@ -17,13 +17,10 @@ var connect = require('gulp-connect');
 var through = require('through2');
 var del = require('del');
 var runSequence = require('run-sequence');
-gulp.if = require('gulp-if'); 
 var karma = require('karma');
 
 
 var devMode = false;
-
-
 
 var config = {
     
@@ -155,7 +152,7 @@ gulp.task('tdd', function(cb) {
 
 gulp.task('css', [], function () {
     return gulp.src('./css/**/*.css')
-                .pipe(gulp.if(devMode, watch('./css/**/*.css')))
+                .pipe(devMode ? watch('./css/**/*.css') : through.obj())
                 .pipe(gulp.dest('./build/css'))
                 .pipe(connect.reload())
                 .pipe(print());
@@ -169,9 +166,9 @@ gulp.task('jquery-ui-img', [], function () {
 });
 
 gulp.task('img', ['jquery-ui-img'], function () {
-    return gulp.src('./img/**/*')
-                .pipe(gulp.if(devMode, watch('./img/**/*')))
-                .pipe(gulp.dest('./build/img'))
+    return gulp.src('img/**/*')
+                .pipe(devMode ? watch('img/**/*') : through.obj())
+                .pipe(gulp.dest('build/img'))
                 .pipe(connect.reload())
                 .pipe(print());
 });
@@ -180,21 +177,21 @@ gulp.task('img', ['jquery-ui-img'], function () {
 
 
 gulp.task('html', [], function() {
-   return gulp.src('./html/**/*.html')
-                .pipe(gulp.if(devMode, watch('./html/**/*.html')))
-                .pipe(gulp.dest('./build'))
+   return gulp.src('html/**/*')
+                .pipe(devMode ? watch('html/**/*') : through.obj())
+                .pipe(gulp.dest('build'))
                 .pipe(connect.reload())
                 .pipe(print());
 });
 
 
 
-gulp.task('build', function(cb) {
-    return runSequence('clean', ['html', 'bits', 'js', 'css', 'img'], cb);
+gulp.task('build', function() {
+    return runSequence('clean', ['html', 'js', 'bits', 'css', 'img']);
 });
 
 
-gulp.task('dev', function(cb) {    
+gulp.task('dev', function() {    
     devMode = true;    
-    return runSequence(['build', 'server', 'server-sourcemaps'], cb);
+    return runSequence(['build', 'server', 'server-sourcemaps']);
 });

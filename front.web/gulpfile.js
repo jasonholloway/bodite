@@ -17,21 +17,19 @@ var connect = require('gulp-connect');
 var nodeStatic = require('node-static');
 var http = require('http');
 var runSequence = require('run-sequence');
-var gulpIf = require('gulp-if');
 
 
 var devMode = false;
 
 
-
-gulp.task('dev', function(cb) {
+gulp.task('dev', function() {
    devMode = true;
-   runSequence(['build', 'devServer', 'mapServer'], cb);
+   return runSequence(['build', 'devServer', 'mapServer']);
 });
 
 
-gulp.task('build', ['html', 'js', 'css', 'images'], function() {
-    //...
+gulp.task('build', function() {
+    return runSequence(['html', 'js', 'css', 'images']);
 });
 
 
@@ -59,7 +57,7 @@ gulp.task('mapServer', function() {
 
 gulp.task('html', function() {    
     return gulp.src('html/**/*.html')
-            .pipe(gulpIf(devMode, watch('html/**/*.html')))
+            .pipe(devMode ? watch('html/**/*.html') : through.obj())
             .pipe(gulp.dest('build/'))
             .pipe(connect.reload()) 
             .pipe(print());
@@ -68,15 +66,15 @@ gulp.task('html', function() {
 
 gulp.task('css', function() {
     return gulp.src('css/**/*.css')
-            .pipe(gulpIf(devMode, watch('css/**/*.css')))
+            .pipe(devMode ? watch('css/**/*.css') : through.obj())
             .pipe(gulp.dest('build/css/'))
             .pipe(connect.reload())
             .pipe(print());
 })
 
-gulp.task('images', function() {
+gulp.task('images', function() {    
     return gulp.src('img/**/*.*')
-            .pipe(gulpIf(devMode, watch('img/**/*.*')))
+            .pipe(devMode ? watch('img/**/*.*') : through.obj())
             .pipe(gulp.dest('build/img/'))
             .pipe(connect.reload())
             .pipe(print());
