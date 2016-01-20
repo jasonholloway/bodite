@@ -1,5 +1,8 @@
+const expect = require('chai').expect,
+      Translator = require('../js/Translator');
+
+
 describe('Translator', function() {
-	var Translator = require('../js/Translator');
 		
 	it('finds parent translator', function() {		
 		var parentScope = {};
@@ -10,10 +13,9 @@ describe('Translator', function() {
 		var childScope = Object.create(intermediateScope);		
 		childScope.translator = new Translator(childScope);
 				
-		console.log(childScope);
-				
-				
-		expect(childScope.translator.parent).toBe(parentTranslator);
+		// console.log(childScope);
+								
+		expect(childScope.translator.parent).to.equal(parentTranslator);
 	})
 	
 	
@@ -27,12 +29,12 @@ describe('Translator', function() {
 		parentScope.translator.add('name', { EN: 'Jason' })
 								
 		expect(childScope.translator.get('name'))
-				.toBe(parentScope.translator.get('name'));
+				.to.equal(parentScope.translator.get('name'));
 	})
 	
 	
-	xit('current inherited from parent', function() {
-		fail('unimplemented');
+	it.skip('current inherited from parent', function() {
+		throw new Error('unimplemented');
 	})
 	
 	

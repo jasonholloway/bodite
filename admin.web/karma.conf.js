@@ -1,12 +1,12 @@
 module.exports = function(config) {
   config.set({
     browsers: ['PhantomJS'], //['Chrome'],
-    frameworks: ['browserify', 'jasmine'],
+    frameworks: ['browserify', 'mocha'],
     preprocessors: {
-      'spec/**/*.js': [ 'browserify' ]
+      'test/**/*.js': [ 'browserify' ]
     },
     files: [
-      'spec/**/*.js'
+      'test/**/*.js'
     ],
     browserify: {
       debug: true,

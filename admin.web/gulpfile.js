@@ -18,6 +18,8 @@ var through = require('through2');
 var del = require('del');
 var runSequence = require('run-sequence');
 var karma = require('karma');
+var exec = require('child_process').exec;
+var crypto = require('crypto-js');
 
 
 var devMode = false;
@@ -135,6 +137,31 @@ gulp.task('server-sourcemaps', function() {
 })
 
 
+gulp.task('run-api', function(cb) {
+    var env = {
+        'API_KEYS': JSON.stringify({ S3: 'asadsad' }),
+        'API_USERS': JSON.stringify([{ name: 'Jason', passwordHash: crypto.SHA256('dandelion').toString(), passwordSalt: '' }]),
+        'JWT_SECRET': 'adfafa',
+        'JWT_LIFETIME': 10000000000,
+        'PORT': 666,
+        'APPDATA': process.env.APPDATA
+    };
+       
+    var child = exec('node run.js --dumpUsers', { env: env, cwd: '../bodite-api' }, function(err, stdout, stderr) {
+        if(err) console.log('error: ' + err.message);
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        cb();
+    });
+    
+    merge([
+        child.stdout,
+        child.stderr
+    ])    
+    .pipe(process.stdout);
+})
+
+
 
 gulp.task('test', function(cb) {
     new karma.Server({
@@ -197,5 +224,5 @@ gulp.task('build', function(cb) {
 
 gulp.task('dev', function(cb) {    
     devMode = true;    
-    return runSequence(['build', 'server', 'server-sourcemaps'], cb);
+    return runSequence(['build', 'server', 'server-sourcemaps', 'run-api'], cb);
 });
