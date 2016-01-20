@@ -1,3 +1,6 @@
 [submodule "bodite-api"]
 	path = bodite-api
 	url = https://github.com/jasonholloway/bodite-api.git
+[submodule "api"]
+	path = api
+	url = https://github.com/jasonholloway/bodite-api.git
