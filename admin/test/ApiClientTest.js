@@ -132,7 +132,7 @@ describe('ApiClient', function() {
             serverReturnsToken('sprout');
            
             var getCredsSlowly = sinon.stub().returns(new Promise(function(done, fail) {
-                                                                    setTimeout(done, 1000);
+                                                                    setTimeout(function() { done(exampleUser) }, 1000);
                                                                 }));                      
             api.authorize(getCredsSlowly)
                 .catch(cb);
