@@ -14,6 +14,8 @@ script:
 before_deploy:
 - gulp build
 deploy:
+  on:
+    branch: master
   provider: s3
   bucket: bodite-html
   local_dir: build
