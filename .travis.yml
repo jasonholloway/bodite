@@ -2,8 +2,8 @@ language: node_js
 node_js:
 - '4.1'
 env:
-- TEST_DIR=front.web
-- TEST_DIR=admin.web
+- TEST_DIR=front
+- TEST_DIR=admin
 before_install:
 - cd $TEST_DIR
 install:
