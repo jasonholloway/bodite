@@ -4,3 +4,6 @@
 [submodule "api"]
 	path = api
 	url = https://github.com/jasonholloway/bodite-api.git
+[submodule "render"]
+	path = render
+	url = https://github.com/jasonholloway/bodite-render.git
