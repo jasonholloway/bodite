@@ -6,44 +6,57 @@ var urlJoin = require('url-join');
 
 function ApiRequest(baseUrl) {   
     this.baseUrl = baseUrl || '';
-    this.token = undefined;    
-    this.inProgress = undefined;
+    this.retryAuth = false;
+    
+    this._token = undefined;    
+    this._current = undefined;
 }
 
 
 ApiRequest.prototype.authorize = function(getCreds) {
     var self = this;
     
-    if(self.inProgress) return self.inProgress;
+    if(self._current) return self._current;
+        
+    var loginUrl = urlJoin(self.baseUrl, 'login');
     
     function clearInProgress(x) {
-        self.inProgress = undefined;
+        self._current = undefined;
         return x;
     }
-    
-    return self.inProgress = 
-        new Promise(function(done, fail) {
-                if(self.token) return done(true);
-            
-                getCreds()
-                    .then(function(creds) {                
-                        if(!creds) return done(false);
-                        
-                        var loginUrl = urlJoin(self.baseUrl, 'login');
-                                        
-                        request.post(loginUrl)
-                                .send(creds)
-                                .set('Accept', 'application/json')
-                                .set('Content-Type', 'application/json')
-                                .end(function(err, res) {                            
-                                    if(res.status === 401) return done(false);                            
-                                    if(err) return fail(err);
+        
+    function attemptAuth(done, fail, count) {               
+        count = count || 0;
+             
+        getCreds(count)
+            .then(function(creds) {
+                if(!creds) return done(false);
+                
+                request.post(loginUrl)
+                        .send(creds)
+                        .set('Accept', 'application/json')
+                        .set('Content-Type', 'application/json')
+                        .end(function(err, res) {                            
+                            if(res.status === 401) { //FORBIDDEN!
+                                return self.retryAuth
+                                        ? attemptAuth(done, fail, count + 1)
+                                        : done(false)                                            
+                            } 
+                                                        
+                            if(err) return fail(err);
+                            
+                            self._token = res.body._token;                                                        
+                            done(true);                            
+                        });
+            })
+            .catch(fail);
+    } 
+        
+    return self._current = 
+        new Promise(function(done, fail) {            
+                if(self._token) return done(true);
                                     
-                                    self.token = res.body.token;                                                        
-                                    done(true);                            
-                                });                       
-                    })
-                    .catch(fail);        
+                attemptAuth(done, fail);
             })
             .then(clearInProgress, clearInProgress);
 }

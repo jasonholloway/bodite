@@ -7,11 +7,6 @@ var ApiClient = require('../js/ApiClient');
 
 
 
-function throwIfCalled() {
-    throw new Error('Unintended function call!');
-}
-
-
 describe('ApiClient', function() {
     
     var api;
@@ -44,9 +39,9 @@ describe('ApiClient', function() {
         
     
         it('returns true via promise if any token in place', function(cb) {           
-            api.token = 'asdasdsadsad';
+            api._token = 'asdasdsadsad';
                                         
-            api.authorize(throwIfCalled)
+            api.authorize(sinon.stub().throws())
                 .then(function(result) {
                     expect(result).to.be.true;                   
                     cb(); 
@@ -106,7 +101,7 @@ describe('ApiClient', function() {
             
             api.authorize(sinon.stub().returns(Promise.resolve(exampleUser)))
                 .then(function(res) {
-                    expect(api.token).to.equal('hello');                    
+                    expect(api._token).to.equal('hello');                    
                     cb();                    
                 }) 
                 .catch(cb);
@@ -114,12 +109,14 @@ describe('ApiClient', function() {
         
         
         it('returns false via promise if not authorised', function(cb) {
-            server.respondWith([401, {}, '']);
+            server.respondWith([401, {}, '']);           
             
-            api.authorize(sinon.stub().returns(Promise.resolve(exampleUser)))
+            var getCreds = sinon.stub().returns(Promise.resolve(exampleUser));
+            
+            api.authorize(getCreds)
                 .then(function(res) {
                     expect(res).to.be.false;          
-                    expect(api.token).to.be.undefined;          
+                    expect(api._token).to.be.undefined;          
                     cb();                    
                 }) 
                 .catch(cb);
@@ -130,15 +127,15 @@ describe('ApiClient', function() {
             serverReturnsToken('sprout');
            
             var getCredsSlowly = sinon.stub().returns(new Promise(function(done, fail) {
-                                                                    setTimeout(function() { done(exampleUser) }, 1000);
+                                                                    setTimeout(function() { done(exampleUser) }, 50);
                                                                 }));                      
             api.authorize(getCredsSlowly)
                 .catch(cb);
             
-            api.authorize(throwIfCalled)
+            api.authorize(sinon.stub.throws())
                 .then(function(r) {
                     expect(r).to.be.true;
-                    expect(api.token).to.equal('sprout');
+                    expect(api._token).to.equal('sprout');
                     
                     expect(getCredsSlowly.calledOnce).to.be.true;                    
                     expect(server.requests.length).to.equal(1);
@@ -146,6 +143,32 @@ describe('ApiClient', function() {
                     cb();                    
                 })
                 .catch(cb);
+        });
+    
+    
+        it('on auth failure, retries getCreds (passing retry number) till it returns false', function(cb) {            
+            api.retryAuth = true;
+            
+            server.respondWith([401, {}, '']);
+            
+            var getCreds = sinon.stub();
+            
+            getCreds.onCall(0).returns(Promise.resolve(exampleUser))
+                    .onCall(1).returns(Promise.resolve(exampleUser))
+                    .onCall(2).returns(Promise.resolve(false));
+                                
+            api.authorize(getCreds)
+                .then(function(creds) {
+                    expect(creds).to.be.false;                
+                    expect(getCreds.callCount).to.equal(3);
+                    
+                    expect(getCreds.getCall(0).args[0]).to.equal(0);
+                    expect(getCreds.getCall(1).args[0]).to.equal(1);
+                    expect(getCreds.getCall(2).args[0]).to.equal(2);
+                    
+                    cb(); 
+                })
+                .catch(cb);         
         });
     
     
