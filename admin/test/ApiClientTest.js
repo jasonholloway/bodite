@@ -33,8 +33,6 @@ describe('ApiClient', function() {
     })
     
     
-    
-    
     describe('authorize', function() {
     
         function serverReturnsToken(tok) {            
