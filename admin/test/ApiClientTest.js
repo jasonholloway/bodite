@@ -100,7 +100,7 @@ describe('ApiClient', function() {
             serverReturnsToken('hello');
             
             api.authorize(sinon.stub().returns(Promise.resolve(exampleUser)))
-                .then(function(res) {
+                .then(function(res) {                    
                     expect(api._token).to.equal('hello');                    
                     cb();                    
                 }) 

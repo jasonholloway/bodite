@@ -44,8 +44,8 @@ ApiRequest.prototype.authorize = function(getCreds) {
                             } 
                                                         
                             if(err) return fail(err);
-                            
-                            self._token = res.body._token;                                                        
+                                                        
+                            self._token = res.body.token;                                                        
                             done(true);                            
                         });
             })
