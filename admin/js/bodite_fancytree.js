@@ -120,10 +120,10 @@
                         node.divMain.appendChild(node.ul);
                     }
 
-                    for (var child of children) {
+                    children.forEach(function(child) {
                         subCtx = $.extend({}, ctx, { node: child });
-                        this.nodeRender(subCtx, force, deep, false, true);
-                    }
+                        this.nodeRender(subCtx, force, deep, false, true);                        
+                    });
 
                     // Remove <li> if nodes have moved to another parent - so it renders then removes??? ARGH.
                     childLI = node.ul.firstChild;
