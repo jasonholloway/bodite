@@ -23,32 +23,27 @@ describe('MachineNameProvider', function() {
    
    
    it('get() returns string', function() {
-       var result = newProv().get('Jason');
-       
+       var result = newProv().get('Jason');       
        expect(typeof result).to.equal('string');
    })
    
    it('Decapitalizes', function() {
-       var result = newProv().get('WeaSeL');
-       
+       var result = newProv().get('WeaSeL');       
        expect(result).to.equal('weasel');
    })
       
    it('Replaces spaces with hyphens', function() {
-       var result = newProv().get('edward the extremely weighty aardvark');
-       
+       var result = newProv().get('edward the extremely weighty aardvark');       
        expect(result).to.equal('edward-the-extremely-weighty-aardvark');        
    })
    
    it('Strips diacritics', function() {
-       var result = newProv().get('mīļšvārdijūtas'); //should maybe test on more! TO DO...
-       
+       var result = newProv().get('mīļšvārdijūtas'); //should maybe test on more! TO DO...       
        expect(result).to.equal('milsvardijutas');
    })
    
-   it('Normalizes', function() {
-       var result = newProv().get('.h]}e@l^l#o?!<£"\/\\');
-       
+   it('Simplifies characters', function() {
+       var result = newProv().get('.h`]}e@l^l#=o?!<£"\/\\');       
        expect(result).to.equal('hello');
    })
    
