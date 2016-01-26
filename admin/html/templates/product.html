@@ -1,0 +1,41 @@
+<form>            
+    <div class="languages">
+        <input type="button" value="LV" class="LV" ng-click="product.switchLanguage('LV')" />
+        <input type="button" value="RU" class="RU" ng-click="product.switchLanguage('RU')" />
+    </div>
+    
+    <div class="names">
+        <input ng-model="product.working.name.LV" class="lang-switchable LV" placeholder="Nosaukums" />
+        <input ng-model="product.working.name.RU" class="lang-switchable RU" placeholder="Hазвание"/>
+    </div>
+    
+    <div class="machine-name">
+        <input ng-model="product.working.machineName" placeholder="Machine name" />
+    </div>
+    
+    <div class="price">
+        <label>Cena (EUR)</label>
+        <input ng-model="product.working.price" currency-mask />
+    </div>   
+
+    <div class="description">
+        <textarea ng-model="product.working.description.LV" class="lang-switchable LV" placeholder="Apraksts..."></textarea>
+        <textarea ng-model="product.working.description.RU" class="lang-switchable RU" placeholder="Oписание..."></textarea>
+    </div>         
+
+    <div class="categories">
+        <label>Produkta kategorija</label>
+        <category-picker category-keys="product.working.categoryKeys"></category-picker>
+    </div>
+
+    <div class="images">
+        <label>Foto</label>
+        <image-picker images="product.working.images"></image-picker>
+    </div>
+
+    <div class="product-edit-buttons">    
+        <input type="button" ng-click="product.save()" value="Saglabāt" />
+        <input type="button" ng-click="product.revert()" value="Atcelt" />
+        <input type="button" value="Dzēst" />
+    </div>
+</form>

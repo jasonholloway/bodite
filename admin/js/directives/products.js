@@ -20,7 +20,8 @@
                     this.filteredItems = repo.filter(term);
                 }
             }],
-            controllerAs: 'products'
+            controllerAs: 'products',
+            templateUrl: 'templates/products.html'
         }
     })
     

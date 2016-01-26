@@ -7,7 +7,7 @@
 
 
     app.service('productRepo', ['$http', 'DB_LOCATION', function ($http, DB_LOCATION) {
-        var items = new Map();
+        var items = {};
         var fuse;
 
         function complete(p) {            
@@ -20,7 +20,7 @@
         function addProdToFuse(prod) {
             //normalize title here...
             //...
-            items.set(prod._id, prod);
+            items[prod._id] = prod;
         }
 
 

@@ -1,15 +1,17 @@
 (function() {
-    var angular = window.angular;
+    require('angular');
+    require('jquery');
     var Translator = require('../Translator');
 	var app = angular.module('BoditeAdmin');
 	
-    app.directive('product', function () {
+    app.directive('product', function ($templateCache) {
         return {
             restrict: 'E',
             scope: true,
+            templateUrl: '../templates/product.html',
             bindToController: true,
             controllerAs: 'product',
-            controller: ['$http', '$scope', '$element', 'productRepo', function ($http, $scope, elem, repo) {
+            controller: ['$http', '$scope', '$element', 'productRepo', function ($http, $scope, elem, repo) {                
                 var vm = this;
 
                 vm.pristine = {};
@@ -28,8 +30,6 @@
                 }
 
 
-
-
                 function refresh() {
                     var isPristine = angular.equals(vm.working, vm.pristine);
 
@@ -40,7 +40,7 @@
                         elem.addClass('dirty');
                     }
                                         
-                    var switchables = elem.find('.lang-switchable');                                        
+                    var switchables = $(elem).find('.lang-switchable');                                        
                     switchables.not('.' + $scope.lang).hide();
                     switchables.filter('.' + $scope.lang).show();                    
                 }
