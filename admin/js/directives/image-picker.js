@@ -1,6 +1,3 @@
-/// <reference path="angular.js" />
-/// <reference path="bodite_admin.js" />
-
 (function () {
 
     var Croppic = require('../bodite_croppic');
@@ -13,9 +10,7 @@
     var app = angular.module('BoditeAdmin');
 
 
-    app.directive('imagePicker', ['croppic', function (croppic) {
-        var elem;
-
+    app.directive('imagePicker', ['croppic', function (croppic) {        
         return {
             restrict: 'E',
             scope: {
@@ -24,21 +19,22 @@
             bindToController: true,
 
             controller: function ($scope) {
-                this.add = function () {
+                var self = this;
+                                
+                self.add = function () {
                     croppic.loadAndCrop('')
-                    .then(function (key) {
-                        if (!this.images) {
-                            this.images = [];
-                        }
+                        .then(function (key) {
+                            if (!self.images) {
+                                self.images = [];
+                            }
 
-                        this.images.push({ key: key });
-                        $scope.$apply();
-                    }.bind(this),
-                    function () {
-                        alert('Attēls netika saglabāts!');
-                    })
-
-                }.bind(this);
+                            self.images.push({ key: key });
+                            $scope.$apply();
+                        })
+                        .catch(function () {
+                            alert('Attēls netika saglabāts!');
+                        });
+                };
             },
             controllerAs: '$ctrl',
 

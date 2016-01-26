@@ -7,18 +7,33 @@ module.exports = function(config) {
       'karma-chrome-launcher',
       'karma-phantomjs-launcher',
       'karma-browserify',
-      'karma-mocha'
+      'karma-mocha',
+      'karma-ng-html2js-preprocessor'
     ],
-    reporters: ['mocha'],
+    reporters: ['dots'], //mocha'],
     preprocessors: {
-      'test/**/*.js': [ 'browserify' ]
+      'test/**/*.js': [ 'browserify' ],
+      'html/templates/**/*.html': [ 'ng-html2js' ]
     },
     files: [
-      'test/**/*.js'
+      'test/**/*.js',
+      'html/templates/**/*.html'
     ],
     browserify: {
       debug: true,
       transform: [ 'debowerify', 'bulkify' ]
+    },
+    ngHtml2JsPreprocessor: {
+        moduleName: 'BoditeAdmin',
+        stripPrefix: 'html/templates/',
+        prependPrefix: '../templates/',
+        
+        // cacheIdFromPath: function(f) {
+            
+        //     console.log(f);
+            
+        //     return f;
+        // }
     }
   });
 };

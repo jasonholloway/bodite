@@ -1,8 +1,10 @@
 (function() {
     require('angular');
-    require('jquery');
+    var $ = require('jquery');
     var Translator = require('../Translator');
 	var app = angular.module('BoditeAdmin');
+    var MachineNameProvider = require('../services/MachineNameProvider');
+    
 	
     app.directive('product', function ($templateCache) {
         return {
@@ -11,7 +13,8 @@
             templateUrl: '../templates/product.html',
             bindToController: true,
             controllerAs: 'product',
-            controller: ['$http', '$scope', '$element', 'productRepo', function ($http, $scope, elem, repo) {                
+            controller: function ($http, $scope, $element, productRepo, machineNames) {
+                
                 var vm = this;
 
                 vm.pristine = {};
@@ -30,17 +33,29 @@
                 }
 
 
+                $scope.$watch(function() {
+                    return vm.working && vm.working.name ? vm.working.name.LV : '';
+                },
+                function(v) {
+                    if(vm.working) {
+                        vm.working.machineName = v.length > 0
+                                                    ? machineNames.get(vm.working.name.LV)
+                                                    : '';
+                    }
+                })
+
+
                 function refresh() {
                     var isPristine = angular.equals(vm.working, vm.pristine);
 
                     if (isPristine) {
-                        elem.removeClass('dirty');
+                        $element.removeClass('dirty');
                     }
                     else {
-                        elem.addClass('dirty');
+                        $element.addClass('dirty');
                     }
                                         
-                    var switchables = $(elem).find('.lang-switchable');                                        
+                    var switchables = $($element).find('.lang-switchable');                                        
                     switchables.not('.' + $scope.lang).hide();
                     switchables.filter('.' + $scope.lang).show();                    
                 }
@@ -63,7 +78,7 @@
                 vm.save = function () {
                     if (angular.equals(vm.working, vm.pristine)) return;
 
-                    repo.save(vm.working)
+                    productRepo.save(vm.working)
                     .then(function (p) {
                         vm.pristine = p;
                         vm.working = angular.copy(vm.pristine);
@@ -83,7 +98,7 @@
                 }
 
 
-            }]
+            }
 
         }
     })

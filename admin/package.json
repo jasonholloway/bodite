@@ -5,6 +5,7 @@
   "dependencies": {
     "aws-sdk": "^2.2.26",
     "blueimp-canvas-to-blob": "^2.2.4",
+    "latinize": "^0.2.0",
     "pica": "^1.1.1",
     "promise": "^7.1.1",
     "setprototypeof": "^1.0.0",
@@ -43,6 +44,7 @@
     "karma-chrome-launcher": "^0.2.2",
     "karma-mocha": "^0.2.1",
     "karma-mocha-reporter": "^1.1.5",
+    "karma-ng-html2js-preprocessor": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.2",
     "merge2": "^0.3.6",
     "mocha": "^2.3.4",
