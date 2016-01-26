@@ -98,14 +98,14 @@
                                                             .concat(treeNodes
                                                                         ? $.map(treeNodes, function (tn) { return tn.data; })
                                                                         : []));
-                    if (treeNodes) {
-                        for(var tn of treeNodes) {
+                    if (treeNodes) {                        
+                        treeNodes.forEach(function(tn) {
                             if (!tn.data.children) {
                                 tn.data.children = [];
                             }
     
-                            fixCatNodes(tn.children, tn.data.children);
-                        }
+                            fixCatNodes(tn.children, tn.data.children);                            
+                        });
                     }
                 }
     
@@ -283,15 +283,15 @@
                         renderExtrasBelow(nRoot);
     
                         var deselect = function (nodes) {
-                            for(var n of nodes) {
+                            nodes.forEach(function(n) {
                                 $(n.divAfter).addClass('hidden');
     
                                 if (n.divBefore) {
                                     $(n.divBefore).addClass('hidden');
                                 }
     
-                                if (n.children) deselect(n.children);
-                            }
+                                if (n.children) deselect(n.children);                                
+                            });
                         }
     
                         deselect(nRoot.children);

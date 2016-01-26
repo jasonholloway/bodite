@@ -14,15 +14,15 @@
             var c = function (nodes, path) {
                 if (!path) path = [];
 
-                for(var n of nodes) {
+                nodes.forEach(function(n) {
                     fn(n, path);
 
                     if (n.children) {
                         path.push(n);
                         c(n.children, path);
                         path.pop();
-                    }
-                }
+                    }                    
+                });
             }
             
             return c;
@@ -30,7 +30,7 @@
 
 
         this.getCategoryMap = function () {
-            if (catMap) return new Promise(function (success) { success(catMap); });
+            if (catMap) return Promise.resolve(catMap);
 
             return this.loadCategoryTree()
             .then(function (tree) {
@@ -46,7 +46,7 @@
 
 
         this.loadCategoryTree = function () {
-            if (catTree) return new Promise(function (success) { return success(catTree); });
+            if (catTree) return Promise.resolve(catTree);
 
             return $http.get(urlJoin(DB_LOCATION, 'categorytree'))
             .then(function (resp) {
@@ -82,10 +82,10 @@
             return this.getCategoryMap()
             .then(function (map) {
                 var r = [];
-
-                for(var v of map.values()) {
-                    r.push(v);
-                }
+                
+                map.values().forEach(function(v) {                    
+                    r.push(v);                    
+                });
 
                 return r;
             });

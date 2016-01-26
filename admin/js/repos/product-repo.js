@@ -25,11 +25,11 @@
 
 
         $http.get(urlJoin(DB_LOCATION, '_design/bb/_view/all_products'))
-        .then(function (resp) {
-            for(var row of resp.data.rows) {
+        .then(function (resp) {            
+            resp.data.rows.forEach(function(row) {
                 addProdToFuse(complete(row.value));
-            }
-
+            });
+            
             fuse = new Fuse({
                 keys: ['name.LV', 'name.RU'],
                 threshold: 0.45
