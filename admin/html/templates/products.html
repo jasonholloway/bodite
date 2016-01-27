@@ -3,5 +3,5 @@
     <input type="button" ng-click="products.create()" value="Pievienot jaunu" />
 </div>
 
-<product ng-repeat="p in products.filteredItems track by p._id" ng-init="product.init(p)">
-</product>
+<product-editor ng-repeat="p in products.filteredItems track by p._id" ng-init="product.init(p)">
+</product-editor>

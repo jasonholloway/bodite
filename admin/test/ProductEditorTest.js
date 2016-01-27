@@ -11,7 +11,7 @@ var urlJoin = require('url-join');
 
 angular.module('BoditeAdmin', []);
 require('../js/services/machineNames');
-require('../js/directives/product');
+require('../js/directives/productEditor');
 
 
 describe('ProductEditor', function() {
@@ -32,19 +32,7 @@ describe('ProductEditor', function() {
         $templateCache = _$templateCache_;        
     }));
    
-   
-    it('uses template', function() {       
-        $templateCache.put('../templates/product.html', '<h1>HELLO</h1>');
-                            
-        var scope = $rootScope.$new();
-       
-        var elem = $compile('<product ng-init="product.init(prod)"></product>')(scope);        
-        scope.$digest();              
-                
-        expect($(elem).html()).to.contain('HELLO');        
-    });
-        
-        
+          
         
     function compileProduct(prod) {
         prod = prod || { name: { LV: '', RU: '' }, machineName: '' };
@@ -52,22 +40,32 @@ describe('ProductEditor', function() {
         var scope = $rootScope.$new();        
         scope.prod = prod;
         
-        var elem = $compile('<product ng-init="product.init(prod)"></product>')(scope);
+        var elem = $compile('<product-editor ng-init="product.init(prod)"></product-editor>')(scope);
         scope.$digest();
         
         return {
             scope: scope,
-            elem: elem
+            elem: $(elem)
         };
     }
-        
+   
+   
+   
+    it('uses template', function() {       
+        $templateCache.put('../templates/productEditor.html', '<h1>HELLO</h1>');
+                            
+        var x = compileProduct();
+                            
+        expect(x.elem.html()).to.contain('HELLO');        
+    });
+             
         
    
     it('fills machine name on leaving name field', function() {
         var x = compileProduct();   
         
-        var elName = $(x.elem).find('div.names input.LV');        
-        var elMachName = $(x.elem).find('div.machine-name input');
+        var elName = x.elem.find('div.names input.LV');        
+        var elMachName = x.elem.find('div.machine-name input');
         
         elName.val('jason').trigger('input');
         x.scope.$apply();

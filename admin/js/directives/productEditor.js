@@ -4,11 +4,11 @@ var Translator = require('../Translator');
 var app = angular.module('BoditeAdmin');
     
     
-app.directive('product', function ($templateCache) {
+app.directive('productEditor', function ($templateCache) {
     return {
         restrict: 'E',
         scope: true,
-        templateUrl: '../templates/product.html',
+        templateUrl: '../templates/productEditor.html',
         bindToController: true,
         controllerAs: 'product',
         controller: function ($http, $scope, $element, productRepo, machineNames) {                

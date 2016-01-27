@@ -38,7 +38,7 @@ product-searchbox input {
 
 
 
-product {
+product-editor {
     display: inline-block;
     margin: 3px 7px 7px 7px;
     padding: 10px;
@@ -48,7 +48,7 @@ product {
     vertical-align:top;
 }
 
-product.dirty {
+product-editor.dirty {
     background-color: #FF6D62;
 }
 
@@ -76,12 +76,12 @@ product.dirty {
     background-color:rgb(240,240,240);
 }
 
-product .names {
+product-editor .names {
     display: inline-block;
     vertical-align: top;
 }
 
-product .names input {
+product-editor .names input {
     display: block;
     background-color: rgba(255, 255, 255, 0.7);
     border: 0;
