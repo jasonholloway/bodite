@@ -147,7 +147,7 @@ gulp.task('run-api', function(cb) {
         'APPDATA': process.env.APPDATA
     };
        
-    var child = exec('node run.js --dumpUsers', { env: env, cwd: '../bodite-api' }, function(err, stdout, stderr) {
+    var child = exec('node run.js --dumpUsers', { env: env, cwd: '../api' }, function(err, stdout, stderr) {
         if(err) console.log('error: ' + err.message);
         console.log('stdout: ' + stdout);
         console.log('stderr: ' + stderr);
