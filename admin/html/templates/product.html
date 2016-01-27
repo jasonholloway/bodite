@@ -1,21 +1,21 @@
 <form>            
     <div class="languages">
-        <input type="button" value="LV" class="LV" ng-click="product.switchLanguage('LV')" />
-        <input type="button" value="RU" class="RU" ng-click="product.switchLanguage('RU')" />
+        <input type="button" value="LV" class="LV" ng-click="product.switchLanguage('LV')">
+        <input type="button" value="RU" class="RU" ng-click="product.switchLanguage('RU')">
     </div>
     
     <div class="names">
-        <input ng-model="product.working.name.LV" class="lang-switchable LV" placeholder="Nosaukums" />
-        <input ng-model="product.working.name.RU" class="lang-switchable RU" placeholder="Hазвание"/>
+        <input name="NameLV" ng-model="product.working.name.LV" ng-blur="product.generateMachineName()" class="lang-switchable LV" placeholder="Nosaukums">
+        <input ng-model="product.working.name.RU" class="lang-switchable RU" placeholder="Hазвание">
     </div>
     
     <div class="machine-name">
-        <input ng-model="product.working.machineName" placeholder="Machine name" />
+        <input ng-model="product.working.machineName" ng-pattern-restrict="/[a-z-]+/" placeholder="Machine name">
     </div>
     
     <div class="price">
         <label>Cena (EUR)</label>
-        <input ng-model="product.working.price" currency-mask />
+        <input ng-model="product.working.price" currency-mask>
     </div>   
 
     <div class="description">
@@ -34,8 +34,8 @@
     </div>
 
     <div class="product-edit-buttons">    
-        <input type="button" ng-click="product.save()" value="Saglabāt" />
-        <input type="button" ng-click="product.revert()" value="Atcelt" />
-        <input type="button" value="Dzēst" />
+        <input type="button" ng-click="product.save()" value="Saglabāt">
+        <input type="button" ng-click="product.revert()" value="Atcelt">
+        <input type="button" value="Dzēst">
     </div>
 </form>

@@ -14,7 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "angularjs#~1.4.8",
+    "angular": "~1.4.9",
     "angular-route": "*",
     "angular-bootstrap": "~0.14.3",
     "angular-sanitize": "*",
@@ -31,6 +31,6 @@
     "url-join": "*"
   },
   "resolutions": {
-    "angular": "~1.4.7"
+    "angular": "1.4.8"
   }
 }

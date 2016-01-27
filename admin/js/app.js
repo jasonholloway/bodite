@@ -1,12 +1,13 @@
 global.jQuery = global.$ = require('jquery');
 require('angular');
 require('angular-sanitize');
+require('ng-pattern-restrict');
 
 (function () {
     require('angular-route');
     require('angular-dialog-service');
 
-    var app = angular.module('BoditeAdmin', ['ngRoute', 'dialogs.main']);
+    var app = angular.module('BoditeAdmin', ['ngRoute', 'dialogs.main', 'ngPatternRestrict']);
 
     app.constant('DB_LOCATION', 'https://jasonholloway.cloudant.com/bb/');
 

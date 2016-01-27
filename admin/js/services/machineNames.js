@@ -13,5 +13,7 @@ app.service('machineNames', function(productRepo) {
     
     var prov = new MachineNameProvider(fnNames);
         
-    this.get = prov.get;
+    return {
+        get: function(n) { return prov.get(n); }  
+    }
 });
