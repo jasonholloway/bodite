@@ -103,7 +103,7 @@ gulp.task('js', [], function () {
                         write(null);
                     }
                 }))
-                //.pipe(exorcist('content/js/bundle.js.map'))
+                .pipe(exorcist('build/js/bundle.js.map'))
                 .pipe(source('bundle.js'))
                 .pipe(gulp.dest('build/js'))
                 .pipe(print());
@@ -130,10 +130,10 @@ gulp.task('server', function() {
 
 
 gulp.task('server-sourcemaps', function() {
-//    connect.server({
-//        root: '',
-//        port: 9991
-//    });
+   connect.server({
+       root: '',
+       port: 9991
+   });
 })
 
 

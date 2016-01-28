@@ -4,7 +4,7 @@
 
     // Get map of access keys from server
 
-    app.service('accessKeyProvider', [function () {
+    app.service('accessKeyProvider', function () {
 
         var keys;
 
@@ -23,7 +23,7 @@
         }
 
 
-    }]);
+    });
 
 
 

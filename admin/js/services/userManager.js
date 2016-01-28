@@ -6,7 +6,7 @@
     var app = angular.module('BoditeAdmin');
     
 
-    app.service('user', ['$http', 'dialogs', function ($http, dialogs) {
+    app.service('userManager', ['$http', 'dialogs', function ($http, dialogs) {
         var self = this;
         var currentUser = null;
 

@@ -4,7 +4,7 @@ var urlJoin = require('url-join');
 
 
 
-function ApiRequest(baseUrl) {
+function ApiClient(baseUrl) {
     this.baseUrl = baseUrl || '';
     this.retryAuth = false;
 
@@ -13,7 +13,7 @@ function ApiRequest(baseUrl) {
 }
 
 
-ApiRequest.prototype.authorize = function(getCreds) {
+ApiClient.prototype.authorize = function(getCreds) {
     var self = this;
 
     if(self._current) return self._current;
@@ -62,9 +62,9 @@ ApiRequest.prototype.authorize = function(getCreds) {
 }
 
 
-ApiRequest.prototype.getKeys = function() {
+ApiClient.prototype.getKeys = function() {
     //...
 }
 
 
-module.exports = ApiRequest;
+module.exports = ApiClient;

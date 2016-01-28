@@ -2,6 +2,7 @@ global.jQuery = global.$ = require('jquery');
 require('angular');
 require('angular-sanitize');
 require('ng-pattern-restrict');
+var urlJoin = require('url-join');
 
 (function () {
     require('angular-route');
@@ -9,7 +10,10 @@ require('ng-pattern-restrict');
 
     var app = angular.module('BoditeAdmin', ['ngRoute', 'dialogs.main', 'ngPatternRestrict']);
 
-    app.constant('DB_LOCATION', 'https://jasonholloway.cloudant.com/bb/');
+    var dbBaseUrl = 'https://jasonholloway.cloudant.com/bb/';
+    
+    app.constant('DB_ALL_PRODUCTS_URL', urlJoin(dbBaseUrl, '_design/bb/_view/all_products'));
+
 
     app.config(['$routeProvider', function ($routeProvider) {
 
