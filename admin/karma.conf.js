@@ -21,17 +21,15 @@ module.exports = function(config) {
     ],
     browserify: {
       debug: true,
-      transform: [ 'debowerify', 'bulkify' ]
+      transform: [ 'debowerify'] //, 'bulkify' ]
     },
     ngHtml2JsPreprocessor: {
-        moduleName: 'BoditeAdmin',
+        moduleName: 'BoditeAdminTemplates',
         stripPrefix: 'html/templates/',
         prependPrefix: '../templates/',
         
-        // cacheIdFromPath: function(f) {
-            
-        //     console.log(f);
-            
+        // cacheIdFromPath: function(f) {            
+        //     console.log(f);            
         //     return f;
         // }
     }

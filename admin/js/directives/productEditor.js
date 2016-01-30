@@ -1,17 +1,17 @@
-require('angular');
-var $ = require('jquery');
+// var $ = global.$ = require('jquery');
+// require('angular');
 var Translator = require('../Translator');
 var app = angular.module('BoditeAdmin');
     
+app.directive('productEditor', function($templateCache) {    
     
-app.directive('productEditor', function ($templateCache) {
     return {
         restrict: 'E',
         scope: true,
         templateUrl: '../templates/productEditor.html',
         bindToController: true,
-        controllerAs: 'product',
-        controller: function ($http, $scope, $element, productRepo, machineNames) {                
+        controllerAs: 'editor',
+        controller: function ($http, $scope, $element, productRepo, machineNames) {
             var self = this;
 
             self.pristine = {};
@@ -84,11 +84,21 @@ app.directive('productEditor', function ($templateCache) {
 
 
             self.generateMachineName = function() {           
+                
+                console.log('generating machineName');
+                
                 self.working.machineName = machineNames.get(self.working.name.LV);
+                
+                console.log(self.working.name.LV);
+                console.log(self.working.machineName);
+                
                 $scope.$applyAsync();
             }
 
-        }
+            $scope.generateMachineName = self.generateMachineName;
 
+        }
+        
     }
+    
 })
