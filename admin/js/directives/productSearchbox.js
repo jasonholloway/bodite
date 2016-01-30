@@ -1,5 +1,8 @@
 (function() {
 	
+    //////////////////
+    //OBSOLETE!//////
+    
 	var app = angular.module('BoditeAdmin');
 	
     app.directive('productSearchbox', function () {

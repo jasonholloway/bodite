@@ -1,5 +1,3 @@
-// var $ = global.$ = require('jquery');
-// require('angular');
 var Translator = require('../Translator');
 var app = angular.module('BoditeAdmin');
     

@@ -1,7 +1,11 @@
-<div id="productFilterBar">
-    <product-searchbox></product-searchbox>
-    <input type="button" ng-click="products.create()" value="Pievienot jaunu" />
-</div>
+<div ng-controller="ProductListCtrl as productList">
 
-<product-editor ng-repeat="p in products.filteredItems track by p._id" ng-init="product.init(p)">
-</product-editor>
+    <div id="productFilterBar">
+        <input type="search" placeholder="Meklēt..." ng-model="productList.searchTerm">
+        <input type="button" ng-click="productList.create()" value="Pievienot jaunu">
+    </div>
+
+    <product-editor ng-repeat="p in productList.current track by p._id" ng-init="editor.init(p)">
+    </product-editor>
+
+</div>

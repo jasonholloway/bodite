@@ -1,6 +1,6 @@
 module.exports = function(config) {
   config.set({
-    browsers: ['PhantomJS'], //['Chrome'],
+    browsers: ['Chrome'], //PhantomJS'], //['Chrome'],
     frameworks: ['browserify', 'mocha'],
     plugins: [
       'karma-mocha-reporter',
