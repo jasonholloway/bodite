@@ -69,8 +69,7 @@ describe('ProductEditor', function() {
         elName.val('jason').trigger('input');
         x.scope.$apply();
                      
-        $(elName).trigger('click'); //..blur();     //CLICK!! so nothing wrong with expression, just the blurring mechanism...
-        // x.scope.$apply();                     
+        elName.blur();
                              
         return new Promise(function(done) {         
             process.nextTick(function() {

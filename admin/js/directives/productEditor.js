@@ -83,19 +83,10 @@ app.directive('productEditor', function($templateCache) {
             }
 
 
-            self.generateMachineName = function() {           
-                
-                console.log('generating machineName');
-                
-                self.working.machineName = machineNames.get(self.working.name.LV);
-                
-                console.log(self.working.name.LV);
-                console.log(self.working.machineName);
-                
+            self.generateMachineName = function() {
+                self.working.machineName = machineNames.get(self.working.name.LV);                
                 $scope.$applyAsync();
             }
-
-            $scope.generateMachineName = self.generateMachineName;
 
         }
         
