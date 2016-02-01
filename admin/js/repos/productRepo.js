@@ -8,8 +8,13 @@ app.service('productRepo', function ($http, DB_ALL_PRODUCTS_URL) {
     var self = this;
     
     var items;
-    var fuse;
-
+        
+    var fuse = new Fuse({
+        keys: ['name.LV', 'name.RU'],
+        threshold: 0.45
+    });
+    
+       
     function complete(p) {            
         p.name = p.name || {};
         p.description = p.description || {};
@@ -21,28 +26,23 @@ app.service('productRepo', function ($http, DB_ALL_PRODUCTS_URL) {
         //normalize title here...
         //...
         
-        items[prod._id] = prod;
+        items.push(prod);
+        
+        //items[prod._id] = prod;
     }
 
 
 
     this.getItems = function() {            
-        if(items) {
-            return Promise.resolve(items);
-        }
+        if(items) return Promise.resolve(items);
         
-        items = {};
+        items = [];
                     
         return $http.get(DB_ALL_PRODUCTS_URL)                        
                     .then(function (resp) {                                
                         resp.data.rows.forEach(function(row) {
                             var product = complete(row.value);                                
                             addProdToFuse(product);
-                        });
-                        
-                        fuse = new Fuse({
-                            keys: ['name.LV', 'name.RU'],
-                            threshold: 0.45
                         });
                         
                         return items;
@@ -52,7 +52,7 @@ app.service('productRepo', function ($http, DB_ALL_PRODUCTS_URL) {
     this.filter = function (term) {
         return this.getItems()
                     .then(function(items) {
-                        return fuse ? fuse.search(items, term) : []; 
+                        return fuse.search(items, term); 
                     });
     };
 

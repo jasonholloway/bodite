@@ -13,22 +13,8 @@ describe('ProductEditor', function() {
     var $compile;
     var $injector;
     var $templateCache;
-       
-    beforeEach(angular.mock.module('BoditeAdmin', 'BoditeAdminTemplates', function($provide) {
-        $provide.value('productRepo', {
-            items: [] 
-        });        
-    }));
-
-    beforeEach(angular.mock.inject(function(_$rootScope_, _$compile_, _$injector_, _$templateCache_) {
-        $rootScope = _$rootScope_;
-        $compile = _$compile_;
-        $injector = _$injector_;
-        $templateCache = _$templateCache_;        
-    }));
-   
-          
-        
+  
+  
     function compileEditor(prod) {
         prod = prod || { name: { LV: '', RU: '' }, machineName: '' };
         
@@ -43,6 +29,21 @@ describe('ProductEditor', function() {
             elem: $(elem)
         };
     }
+  
+       
+    beforeEach(angular.mock.module('BoditeAdmin', 'BoditeAdminTemplates', function($provide) {
+        $provide.value('productRepo', {
+            getItems: sinon.stub().returns(Promise.resolve([])) 
+        });        
+    }));
+
+    beforeEach(angular.mock.inject(function(_$rootScope_, _$compile_, _$injector_, _$templateCache_) {
+        $rootScope = _$rootScope_;
+        $compile = _$compile_;
+        $injector = _$injector_;
+        $templateCache = _$templateCache_;        
+    }));
+        
    
    
     it('directive is available', function() {        
@@ -70,11 +71,14 @@ describe('ProductEditor', function() {
         x.scope.$apply();
                      
         elName.blur();
-                             
+               
         return new Promise(function(done) {         
-            process.nextTick(function() {
+            process.nextTick(function() {                
+                x.scope.$apply();
+                                      
                 expect(x.scope.$$childHead.editor.working.machineName, 'model').to.equal('jason');
                 expect(elMachName.val(), 'view').to.equal('jason');
+                
                 done();            
             });
         })

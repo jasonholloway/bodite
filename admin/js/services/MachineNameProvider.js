@@ -1,6 +1,12 @@
 var latinize = require('latinize');
 
 
+//keeping my options open with this one:
+//stateless at mo, but what about some nice indexing in the future?
+//hence as object. Though any indexing would have to be done more centrally...
+
+//so this should just be a static function, with a nameExists function as input
+
 
 var MachineNameProvider = function(fnNames) {
     this._fnNames = fnNames;

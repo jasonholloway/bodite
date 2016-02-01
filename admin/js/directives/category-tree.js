@@ -142,7 +142,7 @@
                                     }
     
                                     node.remove();
-                                    fixCatNodes(node.tree.rootNode.children, scope.categories.workingTree.roots);
+                                    fixCatNodes(node.tree.rootNode.children, scope.categories.workingTree.children);
                                     scope.$apply();
                                 })
                                 )
@@ -158,7 +158,7 @@
     
                             node.setExpanded(true);
     
-                            fixCatNodes(node.tree.rootNode.children, scope.categories.workingTree.roots);
+                            fixCatNodes(node.tree.rootNode.children, scope.categories.workingTree.children);
                         })
                         .appendTo(node.divAfter);
                 }
@@ -214,7 +214,7 @@
     
     
                 tree = treeDiv.fancytree({
-                    source: scope.categories.workingTree.roots,
+                    source: scope.categories.workingTree.children,
                     extensions: ["dnd", "bodite_fancytree"],
                     keyboard: false,
     
@@ -362,7 +362,7 @@
                             var n = data.otherNode;
     
                             n.moveTo(node, data.hitMode);
-                            fixCatNodes(data.tree.rootNode.children, scope.categories.workingTree.roots);
+                            fixCatNodes(data.tree.rootNode.children, scope.categories.workingTree.children);
                             scope.$apply();
     
                             node.setExpanded(true);

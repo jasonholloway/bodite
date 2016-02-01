@@ -82,8 +82,13 @@ app.directive('productEditor', function($templateCache) {
 
 
             self.generateMachineName = function() {
-                self.working.machineName = machineNames.get(self.working.name.LV);                
-                $scope.$applyAsync();
+                return machineNames.get(self.working.name.LV)
+                        .then(function(machName) {
+                            self.working.machineName = machName;              
+                            $scope.$applyAsync();      
+                                                   
+                            return self.working.machineName;                  
+                        });
             }
 
         }

@@ -10,6 +10,7 @@ var expect = chai.expect;
 var sinon = require('sinon');
 var Promise = require('promise');
 var urlJoin = require('url-join');
+var _ = require('lodash');
 
 
 describe('productRepo', function() {
@@ -18,29 +19,20 @@ describe('productRepo', function() {
         // server = sinon.fakeServer.create(),
         $httpBackend;
    
-   var products = [
-       {
-           _id: '1',
+   
+   function createRandomProduct() {
+       return {
+           _id: Math.ceil(Math.random() * 10000).toString(),
            name: {
-               LV: 'Suit',
-               RU: 'Blah'
-           }
-       },
-       {
-           _id: '2',
-           name: {
-               LV: 'Sock',
-               RU: 'Blahblah'
-           }
-       },
-       {
-           _id: '3',
-           name: {
-               LV : 'Sockette',
-               RU: 'asdad'
-           }
+               LV: Math.ceil(Math.random() * 100000).toString()
+           },
+           description: {},
+           images: {},
+           machineName: ''
        }
-   ];
+   }
+   
+   var products = _.range(10).map(function(i) { return createRandomProduct() });
    
    var productResponseBody = {
         rows: products.map(function(p) {
@@ -81,13 +73,13 @@ describe('productRepo', function() {
    }    
    
    
-   it('fetches products from DB_ALL_PRODUCTS_URL on first get', function() {
+   it('fetches products from DB_ALL_PRODUCTS_URL on first get, returns array', function() {
        $httpBackend.expectGET(DB_ALL_PRODUCTS_URL)
                     .respond(200, productResponseBody, {'Content-Type': 'application/json'});
           
        var r = productRepo.getItems()
-                .then(function(items) {
-                    expect(items).to.shallowDeepEqual(productMap);
+                .then(function(items) { 
+                    expect(items).to.shallowDeepEqual(products);
                 });           
        
        flush();
@@ -105,7 +97,7 @@ describe('productRepo', function() {
                                      
                 productRepo.getItems()
                     .then(function(items) {
-                        expect(items).to.shallowDeepEqual(productMap);       
+                        expect(items).to.shallowDeepEqual(products);       
                         cb();                         
                     })
                     .catch(cb);
@@ -120,12 +112,15 @@ describe('productRepo', function() {
    it('filter returns substring name.LV matches (case-insensitive), returned via promise', function() {
        productRepo.getItems = sinon.stub().returns(Promise.resolve(products));
        
-       return productRepo.filter('sock')
-                .then(function(r) {
-                    expect(r).to.shallowDeepEqual(products
-                                                    .filter(function(p) {
-                                                        return p.name.LV.indexOf('sock') > -1;
-                                                    }));
+       var term = products[3].name.LV.toLowerCase();
+       
+       return productRepo.filter(term)
+                .then(function(r) {                    
+                    var expectedProds = products.filter(function(p) {
+                                                            return p.name.LV.indexOf(term) > -1;
+                                                        });
+                                                                            
+                    expect(r).to.shallowDeepEqual(expectedProds);
                 });
    });
    

@@ -36,7 +36,7 @@
 
                 buildCrawler(function (n, p) {
                     catMap.set(n._id, n);
-                })(tree.roots);
+                })(tree.children);
 
                 return catMap;
             });
@@ -52,7 +52,7 @@
                                 buildCrawler(function (n, path) {
                                     n.$$path = path.slice();
                                     n.$$pathString = $.map(n.$$path, function (x) { return '/' + x.name.LV }).join('') + '/' + n.name.LV;
-                                })(resp.data.roots);
+                                })(resp.data.children);
 
                                 return catTree = resp.data;
                             }
@@ -81,7 +81,7 @@
                         .then(function (map) {
                             var r = [];
                             
-                            map.values().forEach(function(v) {                    
+                            map.forEach(function(v) {                    
                                 r.push(v);                    
                             });
 
