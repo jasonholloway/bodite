@@ -1,13 +1,14 @@
 var Fuse = require('../bodite_fuse');
-var Promise = this.Promise || require('promise');        
+var Promise = this.Promise || require('promise');
+var urlJoin = require('url-join');        
 require('../math.uuid');
 
 var app = angular.module('BoditeAdmin');
 
-app.service('productRepo', function ($http, DB_ALL_PRODUCTS_URL) {
+app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
     var self = this;
     
-    var items;
+    var items, itemMap;
         
     var fuse = new Fuse({
         keys: ['name.LV', 'name.RU'],
@@ -26,9 +27,8 @@ app.service('productRepo', function ($http, DB_ALL_PRODUCTS_URL) {
         //normalize title here...
         //...
         
+        itemMap[prod._id] = prod;
         items.push(prod);
-        
-        //items[prod._id] = prod;
     }
 
 
@@ -37,6 +37,7 @@ app.service('productRepo', function ($http, DB_ALL_PRODUCTS_URL) {
         if(items) return Promise.resolve(items);
         
         items = [];
+        itemMap = {};
                     
         return $http.get(DB_ALL_PRODUCTS_URL)                        
                     .then(function (resp) {                                
@@ -67,21 +68,21 @@ app.service('productRepo', function ($http, DB_ALL_PRODUCTS_URL) {
     };
 
 
-    this.save = function (prod) {
-        throw Error('SAVING CURRENTLY UNIMPLEMENTED!');
+    this.save = function (prod) {        
+        var url = urlJoin(DB_BASE_URL, prod._id);
         
-        // return new Promise(function (fulfilled, rejected) {
-        //     $http.put(urlJoin(DB_LOCATION, encodeURIComponent(prod._id)), prod)
-        //     .then(function (r) {
-        //         prod._rev = r.data.rev;
-
-        //         items.set(prod._id, prod);
-
-        //         fulfilled(prod);
-        //     }, function () {
-        //         rejected();
-        //     })
-        // })
+        return $http.put(url)
+                    .then(function(r) {                        
+                        prod._rev = r.data.rev;
+                        
+                        if(!items) {
+                            items = [];
+                            itemMap = {};                            
+                            items.push(prod);
+                        }
+                                                
+                        return itemMap[prod._id] = prod;
+                    });                
     };
     
 });

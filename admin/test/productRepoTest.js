@@ -13,16 +13,16 @@ var urlJoin = require('url-join');
 var _ = require('lodash');
 
 
+
 describe('productRepo', function() {
    
    var productRepo, 
-        // server = sinon.fakeServer.create(),
         $httpBackend;
    
    
    function createRandomProduct() {
        return {
-           _id: Math.ceil(Math.random() * 10000).toString(),
+           _id: 'product/' + Math.ceil(Math.random() * 10000).toString(),
            name: {
                LV: Math.ceil(Math.random() * 100000).toString()
            },
@@ -32,26 +32,28 @@ describe('productRepo', function() {
        }
    }
    
-   var products = _.range(10).map(function(i) { return createRandomProduct() });
-   
+   var products = _.range(10).map(function() { return createRandomProduct() });
+      
    var productResponseBody = {
         rows: products.map(function(p) {
-                    return { value: p };
-                })  
+                                return { value: p };
+                            })  
    };
    
-   var productMap = {};
-   products.forEach(function(p) {
-       productMap[p._id] = p;
-   });
+
+   function flush() {
+       process.nextTick(function() {       
+           $httpBackend.flush();       
+       });
+   }    
    
    
-   
-   
-   var DB_ALL_PRODUCTS_URL = 'http://blah.com/data';
+   var DB_BASE_URL = 'http://blah.com/db'
+   var DB_ALL_PRODUCTS_URL = DB_BASE_URL + 'all_products';
    
    
    beforeEach(module('BoditeAdmin', function($provide) {
+       $provide.constant('DB_BASE_URL', DB_BASE_URL);
        $provide.constant('DB_ALL_PRODUCTS_URL', DB_ALL_PRODUCTS_URL);
    }));
    
@@ -64,13 +66,6 @@ describe('productRepo', function() {
        $httpBackend.verifyNoOutstandingExpectation();
        $httpBackend.verifyNoOutstandingRequest();
    });
-
-
-   function flush() {
-       process.nextTick(function() {       
-           $httpBackend.flush();       
-       });
-   }    
    
    
    it('fetches products from DB_ALL_PRODUCTS_URL on first get, returns array', function() {
@@ -78,8 +73,8 @@ describe('productRepo', function() {
                     .respond(200, productResponseBody, {'Content-Type': 'application/json'});
           
        var r = productRepo.getItems()
-                .then(function(items) { 
-                    expect(items).to.shallowDeepEqual(products);
+                .then(function(items) {
+                    expect(items).to.deep.equal(products);
                 });           
        
        flush();
@@ -97,7 +92,7 @@ describe('productRepo', function() {
                                      
                 productRepo.getItems()
                     .then(function(items) {
-                        expect(items).to.shallowDeepEqual(products);       
+                        expect(items).to.deep.equal(products);       
                         cb();                         
                     })
                     .catch(cb);
@@ -116,12 +111,30 @@ describe('productRepo', function() {
        
        return productRepo.filter(term)
                 .then(function(r) {                    
-                    var expectedProds = products.filter(function(p) {
-                                                            return p.name.LV.indexOf(term) > -1;
-                                                        });
+                    var expectedProds = _.values(products).filter(function(p) {
+                                                                return p.name.LV.indexOf(term) > -1;
+                                                            });
                                                                             
-                    expect(r).to.shallowDeepEqual(expectedProds);
+                    expect(r).to.deep.equal(expectedProds);
                 });
    });
+   
+   
+   it('save puts to correct couchdb doc', function() {      
+       
+      var prod = products[0];
+      
+      var url = urlJoin(DB_BASE_URL, prod._id);
+      
+      $httpBackend.expectPUT(url)
+                    .respond(200, { 'Content-Type': 'application/json'}, { _rev: 'asadasdd' });
+      
+      var r = productRepo.save(prod);
+      
+      flush();
+      
+      return r;       
+   });
+   
    
 });

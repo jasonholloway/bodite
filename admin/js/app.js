@@ -12,6 +12,7 @@ var urlJoin = require('url-join');
 
     var dbBaseUrl = 'https://jasonholloway.cloudant.com/bb/';
     
+    app.constant('DB_BASE_URL', dbBaseUrl);
     app.constant('DB_ALL_PRODUCTS_URL', urlJoin(dbBaseUrl, '_design/bb/_view/all_products'));
 
 

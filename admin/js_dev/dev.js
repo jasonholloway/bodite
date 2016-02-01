@@ -13,6 +13,7 @@
         
        $provide.constant('DB_LOCATION', dbBaseUrl);
     
+       $provide.constant('DB_BASE_URL', dbBaseUrl);
        $provide.constant('DB_ALL_PRODUCTS_URL', urlJoin(dbBaseUrl, '_design/bb/_view/all_products'));
                        
     });
