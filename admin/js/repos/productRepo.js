@@ -71,7 +71,7 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
     this.save = function (prod) {        
         var url = urlJoin(DB_BASE_URL, prod._id);
         
-        return $http.put(url)
+        return $http.put(url, prod)
                     .then(function(r) {                        
                         prod._rev = r.data.rev;
                         

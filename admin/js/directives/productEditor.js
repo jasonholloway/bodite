@@ -65,8 +65,10 @@ app.directive('productEditor', function($templateCache) {
                             .then(function (p) {
                                 self.pristine = p;
                                 self.working = angular.copy(self.pristine);
-                                $scope.$apply();
-                                refresh();
+                                
+                                $scope.$applyAsync(function() {
+                                    refresh();                                    
+                                });
                             });
             }
 

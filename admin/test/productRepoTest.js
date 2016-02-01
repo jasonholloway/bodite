@@ -110,23 +110,25 @@ describe('productRepo', function() {
        var term = products[3].name.LV.toLowerCase();
        
        return productRepo.filter(term)
-                .then(function(r) {                    
-                    var expectedProds = _.values(products).filter(function(p) {
+                .then(function(filtered) {                    
+                    var expectedProds = products.filter(function(p) {
                                                                 return p.name.LV.indexOf(term) > -1;
-                                                            });
-                                                                            
-                    expect(r).to.deep.equal(expectedProds);
+                                                            });  
+                                                                  
+                    expectedProds.forEach(function(p) {                                                                                                                 
+                        expect(filtered).to.deep.include(p);                        
+                    });                       
                 });
    });
    
    
-   it('save puts to correct couchdb doc', function() {      
+   it('save puts product to correct couchdb doc', function() {      
        
       var prod = products[0];
       
       var url = urlJoin(DB_BASE_URL, prod._id);
       
-      $httpBackend.expectPUT(url)
+      $httpBackend.expectPUT(url, prod)
                     .respond(200, { 'Content-Type': 'application/json'}, { _rev: 'asadasdd' });
       
       var r = productRepo.save(prod);
