@@ -1,7 +1,10 @@
+require('../BoditeAdmin');
+
 var Fuse = require('../bodite_fuse');
-var Promise = this.Promise || require('promise');
+var Promise = window.Promise || require('promise');
 var urlJoin = require('url-join');        
 require('../math.uuid');
+// var D = require('derived');
 
 var app = angular.module('BoditeAdmin');
 
@@ -25,10 +28,13 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
 
     function addProdToFuse(prod) {
         //normalize title here...
-        //...
+        //...        
+        items.push(prod);
+        
+        
+        
         
         itemMap[prod._id] = prod;
-        items.push(prod);
     }
 
 
@@ -37,6 +43,9 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
         if(items) return Promise.resolve(items);
         
         items = [];
+        
+        // itemMap = D(items)
+        
         itemMap = {};
                     
         return $http.get(DB_ALL_PRODUCTS_URL)                        
@@ -69,8 +78,8 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
 
 
     this.save = function (prod) {        
-        var url = urlJoin(DB_BASE_URL, prod._id);
-        
+        var url = urlJoin(DB_BASE_URL, encodeURIComponent(prod._id));
+                
         return $http.put(url, prod)
                     .then(function(r) {                        
                         prod._rev = r.data.rev;

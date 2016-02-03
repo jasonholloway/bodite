@@ -1,32 +1,26 @@
-﻿(function () {
-    
-    var app = angular.module('BoditeAdmin');
+﻿require('../BoditeAdmin');
 
-    // Get map of access keys from server
+var app = angular.module('BoditeAdmin');
 
-    app.service('accessKeyProvider', function () {
+// Get map of access keys from server
 
-        var keys;
+app.service('accessKeyProvider', function () {
 
-        this.getKeys = function () {
-            if (!keys) {
-                //load this from server...
-                keys = {
-                    aws: {
-                        accessKeyId: 'AKIAJBNPCUXVCW3HFRHA',
-                        secretAccessKey: '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'
-                    }
-                };
-            }
+    var keys;
 
-            return keys;
+    this.getKeys = function () {
+        if (!keys) {
+            //load this from server...
+            keys = {
+                aws: {
+                    accessKeyId: 'AKIAJBNPCUXVCW3HFRHA',
+                    secretAccessKey: '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'
+                }
+            };
         }
 
-
-    });
-
-
-
-})();
+        return keys;
+    }
 
 
+});

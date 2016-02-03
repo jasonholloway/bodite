@@ -1,31 +1,21 @@
-﻿(function () {
+﻿require('../BoditeAdmin');
 
-    var AWS = require('aws-sdk');
+var AWS = require('aws-sdk');
 
-    var app = angular.module('BoditeAdmin');
+var app = angular.module('BoditeAdmin');
 
+app.service('aws', ['accessKeyProvider', function (accessKeyProv) {
 
+    //or shouldn't we provide keys individually?
+    //packing them all together into one cached object seems naff.
+    //Should have single API key which we can store locally
+    //Then all services will enquire for the exact details they need
 
-    app.service('aws', ['accessKeyProvider', function (accessKeyProv) {
+    var awsKeys = accessKeyProv.getKeys().aws;
 
-        //or shouldn't we provide keys individually?
-        //packing them all together into one cached object seems naff.
-        //Should have single API key which we can store locally
-        //Then all services will enquire for the exact details they need
+    AWS.config.update(awsKeys);
 
-        var awsKeys = accessKeyProv.getKeys().aws;
+    AWS.config.region = 'eu-central-1';
 
-        AWS.config.update(awsKeys);
-
-        AWS.config.region = 'eu-central-1';
-
-        return AWS;
-    }])
-
-
-
-
-})();
-
-
-
+    return AWS;
+}])

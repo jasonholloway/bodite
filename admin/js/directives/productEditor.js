@@ -1,3 +1,5 @@
+require('../BoditeAdmin');
+
 var Translator = require('../Translator');
 var app = angular.module('BoditeAdmin');
     

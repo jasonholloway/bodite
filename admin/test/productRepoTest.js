@@ -4,9 +4,7 @@ require('../js/repos/productRepo');
 var module = angular.mock.module;
 var inject = angular.mock.inject;
 
-var chai = require('chai');
-chai.use(require('chai-shallow-deep-equal'));
-var expect = chai.expect;
+var expect = require('chai').expect;
 var sinon = require('sinon');
 var Promise = require('promise');
 var urlJoin = require('url-join');
@@ -126,7 +124,7 @@ describe('productRepo', function() {
        
       var prod = products[0];
       
-      var url = urlJoin(DB_BASE_URL, prod._id);
+      var url = urlJoin(DB_BASE_URL, encodeURIComponent(prod._id));
       
       $httpBackend.expectPUT(url, prod)
                     .respond(200, { 'Content-Type': 'application/json'}, { _rev: 'asadasdd' });

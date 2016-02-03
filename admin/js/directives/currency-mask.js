@@ -1,37 +1,35 @@
-(function () {
+require('../BoditeAdmin');
 
-    angular.module('BoditeAdmin')
-    .directive('currencyMask', function ($filter) {
+angular.module('BoditeAdmin')
+.directive('currencyMask', function ($filter) {
 
-        function link(scope, el, attrs, ngModelCtrl) {
+    function link(scope, el, attrs, ngModelCtrl) {
 
-            function formatter(value) {
-                value = value ? parseFloat(value.toString().replace(/[^0-9._-]/g, '')) || 0 : 0;
-                var formattedValue = $filter('currency')(value);
-                el.val(formattedValue);
-                
-                ngModelCtrl.$setViewValue(value);
-                scope.$applyAsync();
+        function formatter(value) {
+            value = value ? parseFloat(value.toString().replace(/[^0-9._-]/g, '')) || 0 : 0;
+            var formattedValue = $filter('currency')(value);
+            el.val(formattedValue);
+            
+            ngModelCtrl.$setViewValue(value);
+            scope.$applyAsync();
 
-                return formattedValue;
-            }
-
-            ngModelCtrl.$formatters.push(formatter);
-
-            el.bind('focus', function () {
-                el.val('');
-            });
-
-            el.bind('blur', function () {
-                formatter(el.val());
-            });
+            return formattedValue;
         }
 
-        return {
-            require: '^ngModel',
-            scope: true,
-            link: link
-        };
-    });
+        ngModelCtrl.$formatters.push(formatter);
 
-})();
+        el.bind('focus', function () {
+            el.val('');
+        });
+
+        el.bind('blur', function () {
+            formatter(el.val());
+        });
+    }
+
+    return {
+        require: '^ngModel',
+        scope: true,
+        link: link
+    };
+});

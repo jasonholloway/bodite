@@ -21,7 +21,10 @@ module.exports = function(config) {
     ],
     browserify: {
       debug: true,
-      transform: [ 'debowerify'] //, 'bulkify' ]
+      transform: [            
+          'debowerify',
+          ['babelify', { presets: ['es2015'], ignore: /node_modules|bower_components/ }]
+        ]
     },
     ngHtml2JsPreprocessor: {
         moduleName: 'BoditeAdminTemplates',

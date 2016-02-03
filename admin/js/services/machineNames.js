@@ -1,3 +1,5 @@
+require('../BoditeAdmin');
+
 require('angular');
 var MachineNameProvider = require('../services/MachineNameProvider');
 

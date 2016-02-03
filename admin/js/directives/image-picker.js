@@ -1,156 +1,149 @@
-(function () {
+require('../BoditeAdmin');
 
-    var Croppic = require('../bodite_croppic');
-    var pica = require('pica');
-    require('angular-bootstrap');
-    require('angular-dialog-service');
-    require('blueimp-canvas-to-blob');
-
-    
-    var app = angular.module('BoditeAdmin');
+var Croppic = require('../bodite_croppic');
+var pica = require('pica');
+require('angular-bootstrap');
+require('angular-dialog-service');
+require('blueimp-canvas-to-blob');
 
 
-    app.directive('imagePicker', ['croppic', function (croppic) {        
-        return {
-            restrict: 'E',
-            scope: {
-                images: '='
-            },
-            bindToController: true,
-
-            controller: function ($scope) {
-                var self = this;
-                                
-                self.add = function () {
-                    croppic.loadAndCrop('')
-                        .then(function (key) {
-                            if (!self.images) {
-                                self.images = [];
-                            }
-
-                            self.images.push({ key: key });
-                            $scope.$apply();
-                        })
-                        .catch(function () {
-                            alert('Attēls netika saglabāts!');
-                        });
-                };
-            },
-            controllerAs: '$ctrl',
-
-            template: [
-                '<image-instance ng-repeat="image in $ctrl.images" image="image" images="$ctrl.images"></image-instance>' +
-                '<input type="button" class="add-image-button" value="Pievienot" ng-click="$ctrl.add()" />'
-            ].join()
-        }
-    }])
+var app = angular.module('BoditeAdmin');
 
 
-    app.directive('imageInstance', ['imageRepo', function (imageRepo) {
-        return {
-            restrict: 'E',
-            scope: {
-                image: '=',
-                images: '='
-            },
-            bindToController: true,
+app.directive('imagePicker', ['croppic', function (croppic) {        
+    return {
+        restrict: 'E',
+        scope: {
+            images: '='
+        },
+        bindToController: true,
 
-            controller: function () {
-                this.remove = function () {
-                    this.images = this.images.filter(function (i) {
-                        return i !== this.image
-                    }.bind(this));
-                }
-
-                this.url = imageRepo.getUrl(this.image.key)
-            },
-            controllerAs: '$c',
-
-            template: [
-                '<input type="button" class="remove-image" ng-click="$c.remove()" />',
-                '<img src="{{$c.url}}" crossOrigin="anonymous" />',
-            ].join('')
-        }
-
-    }])
-
-
-    app.service('croppic', ['$http', 'imageRepo', function ($http, imageRepo) {
-        return {
-            loadAndCrop: function (sourcePath) {
-
-                return new Promise(function (fulfilled, rejected) {
-                    var croppic = new Croppic({
-                        //processInline: true,
-                        modal: true,
-                        cropUrl: 'images/cropandstore',
-                        rotateControls: false,
-
-                        onAfterImgCrop: function (resp) {
-                            croppic.destroy();
-                            fulfilled(resp.url);
+        controller: function ($scope) {
+            var self = this;
+                            
+            self.add = function () {
+                croppic.loadAndCrop('')
+                    .then(function (key) {
+                        if (!self.images) {
+                            self.images = [];
                         }
+
+                        self.images.push({ key: key });
+                        $scope.$apply();
+                    })
+                    .catch(function () {
+                        alert('Attēls netika saglabāts!');
                     });
+            };
+        },
+        controllerAs: '$ctrl',
 
-                    croppic.objW = 400;
-                    croppic.objH = 400;
-
-                    croppic.getLocalFile()
-                    .then(function (blob) {
-                        croppic.open(blob)
-                        .then(function (spec) {
-                            croppic.destroy();
-
-                            var canvSource = document.createElement('canvas');
-                            canvSource.width = spec.image.width;
-                            canvSource.height = spec.image.height;
-
-                            var canvResized = document.createElement('canvas');
-                            canvResized.width = spec.resizeWidth;
-                            canvResized.height = spec.resizeHeight;
-
-                            var ctxSource = canvSource.getContext('2d');
-                            ctxSource.drawImage(spec.image, 0, 0);
-
-                            pica.resizeCanvas(
-                                canvSource,
-                                canvResized,
-                                {
-                                    unsharpAmount: 0,
-                                    unsharpRadius: 0.6,
-                                    unsharpThreshop: 2
-                                },
-                                function (err) {
-                                    if (err) { rejected() }
-
-                                    var canvCropped = canvSource;
-                                    canvCropped.width = spec.cropWidth;
-                                    canvCropped.height = spec.cropHeight;
-
-                                    var ctxCropped = canvCropped.getContext('2d');
-                                    ctxCropped.drawImage(canvResized, spec.cropX, spec.cropY, spec.cropWidth, spec.cropHeight, 0, 0, spec.cropWidth, spec.cropHeight);
-
-                                    canvCropped.toBlob(function (blob) {
-                                        imageRepo.save(blob)
-                                        .then(function (key) {
-                                            fulfilled(key);
-                                        }, function () {
-                                            rejected();
-                                        })
-                                    }, "image/jpeg", 0.8);
-                                });
+        template: [
+            '<image-instance ng-repeat="image in $ctrl.images" image="image" images="$ctrl.images"></image-instance>' +
+            '<input type="button" class="add-image-button" value="Pievienot" ng-click="$ctrl.add()" />'
+        ].join()
+    }
+}])
 
 
-                        })
-                    });
-                });
+app.directive('imageInstance', ['imageRepo', function (imageRepo) {
+    return {
+        restrict: 'E',
+        scope: {
+            image: '=',
+            images: '='
+        },
+        bindToController: true,
+
+        controller: function () {
+            this.remove = function () {
+                this.images = this.images.filter(function (i) {
+                    return i !== this.image
+                }.bind(this));
             }
+
+            this.url = imageRepo.getUrl(this.image.key)
+        },
+        controllerAs: '$c',
+
+        template: [
+            '<input type="button" class="remove-image" ng-click="$c.remove()" />',
+            '<img src="{{$c.url}}" crossOrigin="anonymous" />',
+        ].join('')
+    }
+
+}])
+
+
+app.service('croppic', ['$http', 'imageRepo', function ($http, imageRepo) {
+    return {
+        loadAndCrop: function (sourcePath) {
+
+            return new Promise(function (fulfilled, rejected) {
+                var croppic = new Croppic({
+                    //processInline: true,
+                    modal: true,
+                    cropUrl: 'images/cropandstore',
+                    rotateControls: false,
+
+                    onAfterImgCrop: function (resp) {
+                        croppic.destroy();
+                        fulfilled(resp.url);
+                    }
+                });
+
+                croppic.objW = 400;
+                croppic.objH = 400;
+
+                croppic.getLocalFile()
+                .then(function (blob) {
+                    croppic.open(blob)
+                    .then(function (spec) {
+                        croppic.destroy();
+
+                        var canvSource = document.createElement('canvas');
+                        canvSource.width = spec.image.width;
+                        canvSource.height = spec.image.height;
+
+                        var canvResized = document.createElement('canvas');
+                        canvResized.width = spec.resizeWidth;
+                        canvResized.height = spec.resizeHeight;
+
+                        var ctxSource = canvSource.getContext('2d');
+                        ctxSource.drawImage(spec.image, 0, 0);
+
+                        pica.resizeCanvas(
+                            canvSource,
+                            canvResized,
+                            {
+                                unsharpAmount: 0,
+                                unsharpRadius: 0.6,
+                                unsharpThreshop: 2
+                            },
+                            function (err) {
+                                if (err) { rejected() }
+
+                                var canvCropped = canvSource;
+                                canvCropped.width = spec.cropWidth;
+                                canvCropped.height = spec.cropHeight;
+
+                                var ctxCropped = canvCropped.getContext('2d');
+                                ctxCropped.drawImage(canvResized, spec.cropX, spec.cropY, spec.cropWidth, spec.cropHeight, 0, 0, spec.cropWidth, spec.cropHeight);
+
+                                canvCropped.toBlob(function (blob) {
+                                    imageRepo.save(blob)
+                                    .then(function (key) {
+                                        fulfilled(key);
+                                    }, function () {
+                                        rejected();
+                                    })
+                                }, "image/jpeg", 0.8);
+                            });
+
+
+                    })
+                });
+            });
         }
-    }])
-    
-
-})();
-
-
-
-
+    }
+}])

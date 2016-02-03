@@ -1,6 +1,7 @@
-var app = angular.module('BoditeAdmin');
+require('../BoditeAdmin');
 
-app.controller(
+angular.module('BoditeAdmin')
+.controller(
     'ProductListCtrl', 
     function($scope, productRepo) {
         var self = this;

@@ -6,6 +6,7 @@ var watchify = require('uber-watchify');
 var source = require('vinyl-source-stream');
 var debowerify = require('debowerify');
 var bulkify = require('bulkify');
+var babelify = require('babelify');
 var exorcist = require('exorcist');
 var path = require('path');
 var gutil = require('gulp-util');
@@ -20,6 +21,7 @@ var runSequence = require('run-sequence');
 var karma = require('karma');
 var exec = require('child_process').exec;
 var crypto = require('crypto-js');
+// var transform = require('vinyl-transform');
 
 
 var devMode = false;
@@ -72,13 +74,16 @@ gulp.task('js', [], function () {
     var cacheFilePath = 'tmp/watchify.cache.json';
 
     var b = browserify({
-        entries: ['js/app.js'].concat(devMode ? ['js_dev/dev.js'] : []),
+        entries: ['js/BoditeAdmin.js'].concat(devMode ? ['js_dev/dev.js'] : []),
         cache: watchify.getCache(cacheFilePath),
         packageCache: {},
         debug: true
     })
-    .transform(debowerify)
-    .transform(bulkify);
+    .transform(babelify, { 
+        presets: ['es2015'],
+        ignore: /bower_components|node_modules/
+    })
+    .transform(debowerify);
 
     var w = devMode 
             ? watchify(b, { cacheFile: cacheFilePath }) 
