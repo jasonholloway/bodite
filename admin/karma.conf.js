@@ -29,12 +29,7 @@ module.exports = function(config) {
     ngHtml2JsPreprocessor: {
         moduleName: 'BoditeAdminTemplates',
         stripPrefix: 'html/templates/',
-        prependPrefix: '../templates/',
-        
-        // cacheIdFromPath: function(f) {            
-        //     console.log(f);            
-        //     return f;
-        // }
+        prependPrefix: '../templates/'
     }
   });
 };

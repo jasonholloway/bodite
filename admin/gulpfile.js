@@ -21,6 +21,7 @@ var runSequence = require('run-sequence');
 var karma = require('karma');
 var exec = require('child_process').exec;
 var crypto = require('crypto-js');
+var glob = require('glob');
 // var transform = require('vinyl-transform');
 
 
@@ -74,7 +75,7 @@ gulp.task('js', [], function () {
     var cacheFilePath = 'tmp/watchify.cache.json';
 
     var b = browserify({
-        entries: ['js/BoditeAdmin.js'].concat(devMode ? ['js_dev/dev.js'] : []),
+        entries: glob.sync('js/**/*.js').concat(devMode ? glob.sync('js_dev/**/*.js') : []),
         cache: watchify.getCache(cacheFilePath),
         packageCache: {},
         debug: true

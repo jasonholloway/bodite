@@ -5,8 +5,12 @@
  */
 
 (function (window, document) {
+    
+    
+    var $ = window.$ = require('jquery');
+    
         
-	Croppic = function (options) {
+	var Croppic = function (options) {
 
 		var that = this;
 		that.id = Math.uuidFast(); // id;

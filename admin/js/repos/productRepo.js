@@ -31,9 +31,6 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
         //...        
         items.push(prod);
         
-        
-        
-        
         itemMap[prod._id] = prod;
     }
 
@@ -43,9 +40,7 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
         if(items) return Promise.resolve(items);
         
         items = [];
-        
-        // itemMap = D(items)
-        
+                
         itemMap = {};
                     
         return $http.get(DB_ALL_PRODUCTS_URL)                        
