@@ -3,6 +3,7 @@ require('../BoditeAdmin');
 var Fuse = require('../bodite_fuse');
 var Promise = window.Promise || require('promise');
 var urlJoin = require('url-join');        
+var _ = require('lodash');
 require('../math.uuid');
 // var D = require('derived');
 
@@ -11,7 +12,7 @@ var app = angular.module('BoditeAdmin');
 app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
     var self = this;
     
-    var items, itemMap;
+    var itemMap;
         
     var fuse = new Fuse({
         keys: ['name.LV', 'name.RU'],
@@ -29,18 +30,20 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
     function addProdToFuse(prod) {
         //normalize title here...
         //...        
-        items.push(prod);
+        // items.push(prod);
         
         itemMap[prod._id] = prod;
     }
 
 
 
-    this.getItems = function() {            
-        if(items) return Promise.resolve(items);
+    this.getItems = function() {        
+        function renderIterable() {
+            return _.values(itemMap);
+        }
+                    
+        if(itemMap) return Promise.resolve(renderIterable());
         
-        items = [];
-                
         itemMap = {};
                     
         return $http.get(DB_ALL_PRODUCTS_URL)                        
@@ -50,7 +53,7 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
                             addProdToFuse(product);
                         });
                         
-                        return items;
+                        return renderIterable();
                     });                
     };
         
@@ -79,13 +82,13 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
                     .then(function(r) {                        
                         prod._rev = r.data.rev;
                         
-                        if(!items) {
-                            items = [];
+                        if(!itemMap) {
+                            // items = [];
                             itemMap = {};                            
-                            items.push(prod);
+                            // items.push(prod);
                         }
                                                 
-                        return itemMap[prod._id] = prod;
+                        return itemMap[prod._id] = prod; //AAARRRRRRGGGGGGHHHHHH!
                     });                
     };
     
