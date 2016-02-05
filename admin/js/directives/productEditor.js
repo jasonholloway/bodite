@@ -11,7 +11,7 @@ app.directive('productEditor', function($templateCache) {
         templateUrl: '../templates/productEditor.html',
         bindToController: true,
         controllerAs: 'editor',
-        controller: function ($http, $scope, $element, productRepo, machineNames) {
+        controller: function ($http, $scope, $element, productRepo) {
             var self = this;
 
             self.pristine = {};
@@ -85,15 +85,15 @@ app.directive('productEditor', function($templateCache) {
             }
 
 
-            self.generateMachineName = function() {
-                return machineNames.get(self.working.name.LV)
-                        .then(function(machName) {
-                            self.working.machineName = machName;              
-                            $scope.$applyAsync();      
+            // self.generateMachineName = function() {
+            //     return machineNames.get(self.working.name.LV)
+            //             .then(function(machName) {
+            //                 self.working.machineName = machName;              
+            //                 $scope.$applyAsync();      
                                                    
-                            return self.working.machineName;                  
-                        });
-            }
+            //                 return self.working.machineName;                  
+            //             });
+            // }
 
         }
         

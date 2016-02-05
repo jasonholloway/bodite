@@ -68,7 +68,7 @@ app.directive('imageInstance', ['imageRepo', function (imageRepo) {
 
         template: [
             '<input type="button" class="remove-image" ng-click="$c.remove()" />',
-            '<img src="{{$c.url}}" crossOrigin="anonymous" />',
+            '<img ng-src="{{$c.url}}" crossOrigin="anonymous" />',
         ].join('')
     }
 

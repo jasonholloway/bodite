@@ -1,6 +1,6 @@
 require('./_global');
 require('../js/directives/productEditor');
-require('../js/services/machineNames');
+// require('../js/services/machineNames');
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
