@@ -1,0 +1,15 @@
+{
+  "name": "catflattener",
+  "version": "1.0.0",
+  "description": "Ad-hoc couchdb data changer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.9.1",
+    "bluebird": "^3.2.1"
+  }
+}
