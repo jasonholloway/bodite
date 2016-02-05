@@ -1,15 +1,17 @@
 require('../BoditeAdmin');
+require('./productDb');
 
 var Fuse = require('../bodite_fuse');
 var Promise = window.Promise || require('promise');
-var urlJoin = require('url-join');        
+var MachineNameProvider = require('../services/MachineNameProvider');
+// var urlJoin = require('url-join');        
 var _ = require('lodash');
 require('../math.uuid');
 // var D = require('derived');
 
 var app = angular.module('BoditeAdmin');
 
-app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
+app.service('productRepo', function (productDb) {
     var self = this;
     
     var itemMap;
@@ -46,15 +48,15 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
         
         itemMap = {};
                     
-        return $http.get(DB_ALL_PRODUCTS_URL)                        
-                    .then(function (resp) {                                
-                        resp.data.rows.forEach(function(row) {
-                            var product = complete(row.value);                                
-                            addProdToFuse(product);
-                        });
-                        
+        return productDb.getAll()
+                    .then(prods => {
+                        prods.forEach(p => {
+                            var prod = complete(p);
+                            addProdToFuse(prod);
+                        })
+                                                
                         return renderIterable();
-                    });                
+                    })
     };
         
     this.filter = function (term) {
@@ -76,20 +78,18 @@ app.service('productRepo', function ($http, DB_BASE_URL, DB_ALL_PRODUCTS_URL) {
 
 
     this.save = function (prod) {        
-        var url = urlJoin(DB_BASE_URL, encodeURIComponent(prod._id));
-                
-        return $http.put(url, prod)
-                    .then(function(r) {                        
-                        prod._rev = r.data.rev;
-                        
-                        if(!itemMap) {
-                            // items = [];
-                            itemMap = {};                            
-                            // items.push(prod);
-                        }
-                                                
-                        return itemMap[prod._id] = prod; //AAARRRRRRGGGGGGHHHHHH!
-                    });                
+        return productDb.save(prod)
+                .then(p => {
+                    if(!itemMap) itemMap = {};
+                    
+                    var machineNames = _.values(itemMap) //inefficient
+                                        .map(i => i.machineName)
+                                        .filter(n => n !== p.machineName);
+                    
+                    prod.machineName = new MachineNameProvider(() => machineNames).get(prod.name.LV);                                              
+                    
+                    return itemMap[prod._id] = prod;                        
+                });                
     };
     
 });

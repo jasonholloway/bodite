@@ -14,19 +14,19 @@ var _ = require('lodash');
 
 describe('productRepo', function() {
    
-   var productRepo, 
-        $httpBackend;
-   
+   var productRepo, productDb;
    
    function createRandomProduct() {
+       var name = Math.ceil(Math.random() * 1000000).toString();
+       
        return {
            _id: 'product/' + Math.ceil(Math.random() * 10000).toString(),
            name: {
-               LV: Math.ceil(Math.random() * 100000).toString()
+               LV: name
            },
            description: {},
            images: {},
-           machineName: ''
+           machineName: name
        }
    }
    
@@ -38,67 +38,43 @@ describe('productRepo', function() {
                             })  
    };
    
-
-   function flush() {
-       process.nextTick(function() {       
-           $httpBackend.flush();       
-       });
-   }    
    
-   
-   var DB_BASE_URL = 'http://blah.com/db'
-   var DB_ALL_PRODUCTS_URL = DB_BASE_URL + 'all_products';
-   
-   
-   beforeEach(module('BoditeAdmin', function($provide) {
-       $provide.constant('DB_BASE_URL', DB_BASE_URL);
-       $provide.constant('DB_ALL_PRODUCTS_URL', DB_ALL_PRODUCTS_URL);
+   beforeEach(module('BoditeAdmin', function($provide) {       
+       productDb = {
+           getAll: sinon.stub().returns(Promise.resolve(products)),
+           save: sinon.stub().returns(Promise.resolve(null))           
+       }
+              
+       $provide.value('productDb', productDb);
    }));
    
    beforeEach(inject(function(_productRepo_, _$httpBackend_) {
-       productRepo = _productRepo_;
-       $httpBackend = _$httpBackend_;       
+       productRepo = _productRepo_;       
    }));
+   
        
-   afterEach(function() {
-       $httpBackend.verifyNoOutstandingExpectation();
-       $httpBackend.verifyNoOutstandingRequest();
-   });
-   
-   
-   it('fetches products from DB_ALL_PRODUCTS_URL on first get, returns array', function() {
-       $httpBackend.expectGET(DB_ALL_PRODUCTS_URL)
-                    .respond(200, productResponseBody, {'Content-Type': 'application/json'});
-          
-       var r = productRepo.getItems()
-                .then(function(items) {
+   it('fetches products from db on first get, returns array', function() {       
+       return productRepo.getItems()
+                .then(items => {
                     expect(items).to.deep.equal(products);
-                });           
-       
-       flush();
-           
-       return r;
+                });
    });
    
    
-   it('caches products on first fetch; doesn\'t bother server again', function(cb) {        
-       $httpBackend.expectGET(DB_ALL_PRODUCTS_URL)
-                    .respond(200, productResponseBody, {'Content-Type': 'application/json'});
-           
+   it('caches products on first fetch; doesn\'t bother db again', function(cb) {       
        productRepo.getItems()
-            .then(function(_) {       
+            .then(() => {       
                                      
                 productRepo.getItems()
-                    .then(function(items) {
-                        expect(items).to.deep.equal(products);       
+                    .then(items => {
+                        expect(items).to.deep.equal(products);                               
+                        expect(productDb.getAll.calledOnce).to.be.true;
                         cb();                         
                     })
                     .catch(cb);
                     
             })
             .catch(cb);
-          
-       flush();
    });
    
    
@@ -109,9 +85,7 @@ describe('productRepo', function() {
        
        return productRepo.filter(term)
                 .then(function(filtered) {                    
-                    var expectedProds = products.filter(function(p) {
-                                                                return p.name.LV.indexOf(term) > -1;
-                                                            });  
+                    var expectedProds = products.filter(p => p.name.LV.indexOf(term) > -1);
                                                                   
                     expectedProds.forEach(function(p) {                                                                                                                 
                         expect(filtered).to.deep.include(p);                        
@@ -120,21 +94,65 @@ describe('productRepo', function() {
    });
    
    
-   it('save puts product to correct couchdb doc', function() {      
-       
+   it('save puts to db', function() {             
       var prod = products[0];
       
-      var url = urlJoin(DB_BASE_URL, encodeURIComponent(prod._id));
-      
-      $httpBackend.expectPUT(url, prod)
-                    .respond(200, { 'Content-Type': 'application/json'}, { _rev: 'asadasdd' });
-      
-      var r = productRepo.save(prod);
-      
-      flush();
-      
-      return r;       
+      return productRepo.save(prod)
+                .then(p => {
+                    expect(productDb.save.callCount).to.equal(1);
+                    expect(productDb.save.firstCall.calledWith(prod));
+                });
    });
+   
+   
+   it('generates machine name on product save', () => {
+       var prod = createRandomProduct();
+              
+       return new Promise((done, err) => {                 
+            productRepo.save(prod)
+                .then(p => {           
+                        productRepo.getItems()
+                            .then(items => {
+                                expect(items).to.have.lengthOf(1);                                
+                                expect(items[0].machineName).to.equal(items[0].name.LV);
+                                done();
+                            })
+                            .catch(err);
+                })
+                .catch(err);
+       });
+   });
+   
+   
+   it('product retains same machine name on save if still valid', (cb) => {
+       productRepo.getItems()
+            .then(prods => {               
+               //internal product map now populated               
+               var prod = prods[1];
+               var machName = prod.machineName;               
+               
+               productDb.save = sinon.stub().returns(Promise.resolve(prod));
+               
+               productRepo.save(prod)
+                    .then(p => {
+                        expect(p.machineName).to.equal(machName);
+                        cb();
+                    })
+                    .catch(cb);
+            })
+            .catch(cb);
+   });
+   
+   
+   
+   //should also use stateless machinenameprovider through DI? or maybe proxify?
+   
+   it.skip('generates unique machine name on clash', () => {
+      
+      //...
+       
+   });
+   
    
    
 });
