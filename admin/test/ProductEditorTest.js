@@ -61,57 +61,57 @@ describe('ProductEditor', function() {
              
         
    
-    it('fills machine name on leaving name field', function() {
-        var x = compileEditor();   
+    // it('fills machine name on leaving name field', function() {
+    //     var x = compileEditor();   
         
-        var elName = x.elem.find('div.names input.LV');        
-        var elMachName = x.elem.find('div.machine-name input');
+    //     var elName = x.elem.find('div.names input.LV');        
+    //     var elMachName = x.elem.find('div.machine-name input');
                 
-        elName.val('jason').trigger('input');
-        x.scope.$apply();
+    //     elName.val('jason').trigger('input');
+    //     x.scope.$apply();
                      
-        elName.blur();
+    //     elName.blur();
                
-        return new Promise(function(done) {         
-            process.nextTick(function() {                
-                x.scope.$apply();
+    //     return new Promise(function(done) {         
+    //         process.nextTick(function() {                
+    //             x.scope.$apply();
                                       
-                expect(x.scope.$$childHead.editor.working.machineName, 'model').to.equal('jason');
-                expect(elMachName.val(), 'view').to.equal('jason');
+    //             expect(x.scope.$$childHead.editor.working.machineName, 'model').to.equal('jason');
+    //             expect(elMachName.val(), 'view').to.equal('jason');
                 
-                done();            
-            });
-        })
-    });
+    //             done();            
+    //         });
+    //     })
+    // });
    
    
-    it.skip('machine name is limited by mask', function() {
-        //Apparently needs protractor, cos Karma doesn't do integration testing, apparently...
-        //Though it surely bloody does. Can't sendkeys however without special interface to browser.
+    // it.skip('machine name is limited by mask', function() {
+    //     //Apparently needs protractor, cos Karma doesn't do integration testing, apparently...
+    //     //Though it surely bloody does. Can't sendkeys however without special interface to browser.
         
-        var x = compileEditor();   
+    //     var x = compileEditor();   
         
-        var elMach = $(x.elem).find('div.machine-name input');
+    //     var elMach = $(x.elem).find('div.machine-name input');
         
-        elMach[0].clear().sendKeys('illegal name!');
-        x.scope.$apply();
+    //     elMach[0].clear().sendKeys('illegal name!');
+    //     x.scope.$apply();
         
-        return new Promise(function(done) {
-            process.nextTick(function() {
-                expect(elMach.val()).to.be.empty;
-                done(); 
-            });            
-        });        
-    });
+    //     return new Promise(function(done) {
+    //         process.nextTick(function() {
+    //             expect(elMach.val()).to.be.empty;
+    //             done(); 
+    //         });            
+    //     });        
+    // });
     
     
-    it.skip('manually editing machine name stops auto-creation', function(cb) {
-        //flag to be set on product        
-        //..
+    // it.skip('manually editing machine name stops auto-creation', function(cb) {
+    //     //flag to be set on product        
+    //     //..
         
-        //not entirely necessary at moment
-        //...
-    });
+    //     //not entirely necessary at moment
+    //     //...
+    // });
     
     
    

@@ -22,7 +22,7 @@ MachineNameProvider.prototype.get = function(s) {
     s = s.toLowerCase();   
     s = latinize(s);
     s = s.replace(/ /g, '-');    
-    s = s.replace(/[^a-z-]/g, '');
+    s = s.replace(/[^a-z-0-9]/g, '');
     
     
     var n = 1;
