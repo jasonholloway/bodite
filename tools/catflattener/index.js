@@ -5,6 +5,10 @@ var Promise = require('bluebird');
 //get tree
 
 
+console.log(process.env.CLOUDANT_AUTH);
+
+
+
 
 
 function flatten(n, r) {
@@ -23,11 +27,7 @@ function flatten(n, r) {
 
 
 
-function normalizeCatNode(n) {
-    
- 
-    
-        
+function normalizeCatNode(n) {        
     return {
         name : n.name,
         description: n.description,
@@ -39,29 +39,26 @@ function normalizeCatNode(n) {
 
 function flattenCats() {
     Promise.coroutine(function*() {
-        var res = yield axios.get('https://jasonholloway.cloudant.com/bb/categorytree').catch(console.error);
+        var res = yield axios.get('http://localhost:5984/bb/categorytree')
+                                .catch(console.error);
         
         var catTree = res.data;
         
         var cats = flatten(catTree).map(normalizeCatNode);
                 
-        console.log(cats);  
+        // console.log(cats);  
         
         for(var i = 0; i < cats.length; i++) {
             var cat = cats[i];            
-            var res = yield axios.post(
-                            'https://jasonholloway.cloudant.com/bb/category-' + cat._id, 
-                            cat,
-                            { 
-                                headers: { 
-                                    'Content-Type': 'application/json',
-                                    'Authorization': 'Basic ' + process.env.CLOUDANT_AUTH  
-                                } 
-                            }).catch(console.error);
-            
-            
-            
-            // console.log(res);
+            yield axios.put(
+                    'http://localhost:5984/bb/category-' + cat._id, 
+                    cat,
+                    { 
+                        headers: { 
+                            'Content-Type': 'application/json'//,
+                            //'Authorization': 'Basic ' + process.env.CLOUDANT_AUTH  
+                        } 
+                    }).catch(console.error);
         }
     })()
 }
